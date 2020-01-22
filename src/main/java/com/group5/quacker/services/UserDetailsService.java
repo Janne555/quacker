@@ -1,14 +1,13 @@
 package com.group5.quacker.services;
 
 import com.group5.quacker.entities.User;
-import com.group5.quacker.repositories.OldUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
+import com.group5.quacker.repositories.UserRepository;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,12 +17,12 @@ import java.util.stream.Collectors;
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     @Autowired
-    private OldUserRepository oldUserRepository;
+    private UserRepository userRepository;
 
     public UserDetails loadUserByUsername(String name)
             throws UsernameNotFoundException {
 
-        User user = oldUserRepository.findByName(name);
+        User user = userRepository.findByName(name);
         if (user == null) {
             throw new UsernameNotFoundException(
                     "No user found with username: " + name);

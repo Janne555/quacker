@@ -21,14 +21,14 @@ public class RegistrationController {
     @Autowired
     private UserService service;
 
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String showRegistrationForm(WebRequest request, Model model) {
         UserDto userDto = new UserDto();
         model.addAttribute("user", userDto);
         return "register";
     }
 
-    @RequestMapping(value = "/user/registration", method = RequestMethod.POST)
+    @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public ModelAndView registerUserAccount(
             @ModelAttribute("user") @Valid UserDto accountDto,
             BindingResult result, WebRequest request, Errors errors) {
@@ -36,7 +36,7 @@ public class RegistrationController {
         if (!result.hasErrors()) {
             service.registerNewUserAccount(accountDto);
         } else {
-            return new ModelAndView("registration", "user", accountDto);
+            return new ModelAndView("register", "user", accountDto);
         }
         return new ModelAndView("registrationSuccess", "user", accountDto);
     }
