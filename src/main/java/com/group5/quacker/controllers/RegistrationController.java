@@ -32,16 +32,13 @@ public class RegistrationController {
     public ModelAndView registerUserAccount(
             @ModelAttribute("user") @Valid UserDto accountDto,
             BindingResult result, WebRequest request, Errors errors) {
-        User registered = new User();
+
         if (!result.hasErrors()) {
-            registered = createUserAccount(accountDto);
+            service.registerNewUserAccount(accountDto);
         } else {
             return new ModelAndView("registration", "user", accountDto);
         }
         return new ModelAndView("registrationSuccess", "user", accountDto);
     }
 
-    private User createUserAccount(UserDto accountDto) {
-        return service.registerNewUserAccount(accountDto);
-    }
 }
