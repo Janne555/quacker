@@ -1,4 +1,4 @@
-package com.group5.quacker;
+package com.group5.quacker.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.group5.quacker;
+package com.group5.quacker.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +22,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().sameOrigin();
 
         http
-                .authorizeRequests().antMatchers("/").permitAll().anyRequest().authenticated()
+                .authorizeRequests().antMatchers("/register").permitAll().anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").permitAll().failureUrl("/login-error")
                 .and()
