@@ -4,14 +4,20 @@ package com.group5.quacker.services;
 import com.group5.quacker.entities.User;
 import com.group5.quacker.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserRepository accountRepository;
+    private UserRepository userRepository;
 
     @PostConstruct
     public void init() {
@@ -20,14 +26,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Account account = accountRepository.findByUsername(username);
+        User account = userRepository.findByName(username);
         if (account == null) {
             throw new UsernameNotFoundException("No such user: " + username);
         }
 
         return new org.springframework.security.core.userdetails.User(
-                account.getUsername(),
-                account.getPassword(),
+                account.getName(),
+                account.getPasswordHash(),
                 true,
                 true,
                 true,
