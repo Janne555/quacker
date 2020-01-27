@@ -30,6 +30,8 @@ public class LoginController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String newUser(@RequestParam String username, @RequestParam String password) {
 
+        if(userRepository.findByName(username) != null)
+            return "redirect:/register";
 
         PasswordEncoder enc = new BCryptPasswordEncoder();
         String hash = enc.encode(password);

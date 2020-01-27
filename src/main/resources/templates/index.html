@@ -7,6 +7,21 @@
 <body>
     <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
 
+    <h2>Latest Quacks:</h2>
+    <div th:each="quack : ${quacks}">
+        <p>
+            <b><span th:text="${quack.poster.getName()}">poster</span></b>
+            :
+            <span th:text="${quack.getQuackMessage()}">message</span>
+        </p>
+    </div>
+
+    <h2>Post quack:</h2>
+    <form action="#" th:action="@{/quack}" method="POST">
+        <p><label for="message">Message</label>: <input type="text" name="message" id="message"/></p>
+        <p><input type="submit" value="Submit" /></p>
+    </form>
+
     <form th:action="@{/logout}" method="post">
         <input type="submit" value="Sign Out"/>
     </form>

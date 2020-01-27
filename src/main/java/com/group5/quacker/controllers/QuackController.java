@@ -1,18 +1,19 @@
 package com.group5.quacker.controllers;
 
+import com.group5.quacker.entities.Quack;
+import com.group5.quacker.entities.User;
 import com.group5.quacker.repositories.QuackRepository;
 import com.group5.quacker.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class TestController {
+public class QuackController {
 
     @Autowired
     UserRepository userRepository;
@@ -20,17 +21,21 @@ public class TestController {
     @Autowired
     QuackRepository quackRepository;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String adminGet(Model model) {
+    @RequestMapping(value = "/quack", method = RequestMethod.POST)
+    public String newQuack(@RequestParam String message) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("User: \"" + auth.getName() + "\" got the index page.");
-        model.addAttribute("username", auth.getName());
 
-        if(quackRepository.count()>5)
-            model.addAttribute("quacks", quackRepository.findAll().subList((int)quackRepository.count()-5, (int)quackRepository.count()));
-        else
-            model.addAttribute("quacks", quackRepository.findAll());
+        User poster = userRepository.findByName(auth.getName());
+        if(poster == null)
+            return "redirect:/login";
 
-        return "index";
+        Quack newQuack = new Quack();
+        newQuack.setPoster(poster);
+        newQuack.setQuackMessage(message);
+        quackRepository.save(newQuack);
+
+        return "redirect:/";
     }
+
+
 }
