@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.UUID;
 
@@ -15,9 +13,6 @@ import java.util.UUID;
 public class FileService {
     @Autowired
     FileMapRepository fileMapRepository;
-
-    @Autowired
-    private HttpServletRequest request;
 
     @Value("${fileStorage.path}")
     private String FILEPATH;
