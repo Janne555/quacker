@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,8 +26,8 @@ public class FileController {
     @Autowired
     FileMapRepository fileMapRepository;
 
-    @GetMapping("/files")
-    public ResponseEntity getFile(@RequestParam("id") String id, @RequestParam(name = "with-original-name", required = false) String withOriginalName) throws IOException {
+    @GetMapping("/files/{id}")
+    public ResponseEntity getFile(@PathVariable("id") String id, @RequestParam(name = "with-original-name", required = false) String withOriginalName) throws IOException {
         FileMap fileMap = fileMapRepository.findByPublicId(id);
 
         if (fileMap == null) {
@@ -57,6 +58,6 @@ public class FileController {
         }
 
         // TODO Tää redirect on enimmäkseen testausta varten. Me kuitenkin halutaan et se redirect riippuu kontekstista.
-        return "redirect:/files?id=" + fileMap.getPublicId();
+        return "redirect:/files/" + fileMap.getPublicId();
     }
 }
