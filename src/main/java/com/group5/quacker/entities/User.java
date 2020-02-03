@@ -16,6 +16,9 @@ public class User {
 
     private String passwordHash;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "file_map_id")
+    private FileMap profilePhoto;
 
     public String getName() {
         return name;
@@ -41,4 +44,11 @@ public class User {
         this.passwordHash = passwordHash;
     }
 
+    public FileMap getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(FileMap profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
 }

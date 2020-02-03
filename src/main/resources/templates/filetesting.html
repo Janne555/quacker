@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quacker</title>
+</head>
+<body>
+<div>
+    <form method="POST" enctype="multipart/form-data" th:action="@{/files}">
+        <input type="file" name="file" />
+        <button type="submit">Upload</button>
+    </form>
+</div>
+
+</body>
+</html>

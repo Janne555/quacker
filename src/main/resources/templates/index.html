@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-
+    <a th:href="@{/settings/profile-photo}">Settings</a>
     <h2>Latest Quacks:</h2>
     <div th:each="quack : ${quacks}">
         <p>
