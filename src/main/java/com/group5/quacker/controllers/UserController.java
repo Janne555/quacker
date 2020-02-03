@@ -26,6 +26,7 @@ public class UserController {
         User user = userRepository.findByName(name);
         if(user==null) {
             List<User> users = userRepository.findByNameContaining(name);
+
             model.addAttribute("users", users);
             return "user-search";
         }
@@ -41,5 +42,15 @@ public class UserController {
 
         return "userpage";
     }
+
+    @RequestMapping(value = {"/user/", "/users/"}, method = RequestMethod.GET)
+    public String userPageGet(Model model) {
+
+            List<User> users = userRepository.findAll();
+
+            model.addAttribute("users", users);
+            return "user-search";
+    }
+
 
 }
