@@ -43,7 +43,7 @@ public class UserController {
         return "userpage";
     }
 
-    @RequestMapping(value = {"/user/", "/users/"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/user/", "/users/", "/user", "/users"}, method = RequestMethod.GET)
     public String userPageGet(Model model) {
 
             List<User> users = userRepository.findAll();
