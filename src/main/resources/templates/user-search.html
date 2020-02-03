@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Userpage</title>
+    <title>User search</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -11,20 +11,12 @@
 <div class="container">
     <div class="jumbotron">
         <div class="row">
-            <p>This is the page for user: <span th:text="${user.getName()}">username</span></p>
+            Result for search:
         </div>
 
-    <div th:if="${profilePhotoUrl != null}" class="card" style="height: 100px; width: 100px; margin-bottom: 1rem">
-        <img class="card-img-top" th:src="${profilePhotoUrl}" alt="profile photo"/>
-    </div>
-        <div class="row">
-            <p>Latest quacks posted by <span th:text="${user.getName()}">username</span>:</p>
-        </div>
-        <div class="row" th:each="quack : ${userquacks}">
+        <div class="row" th:each="user : ${users}">
             <p>
-                <span th:text="${quack.getFormattedDate()}">dateposted</span>
-                <b><span th:text="${quack.poster.getName()}">poster</span></b>:
-                <span th:text="${quack.getQuackMessage()}">message</span>
+                <a th:text="${user.getName()}" th:href="@{'/user/' + ${user.getName()}}">username</a>
             </p>
         </div>
 

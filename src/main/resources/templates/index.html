@@ -10,8 +10,8 @@
     <h2>Latest Quacks:</h2>
     <div th:each="quack : ${quacks}">
         <p>
-            <b><span th:text="${quack.poster.getName()}">poster</span></b>
-            :
+            <span th:text="${quack.getFormattedDate()}">dateposted</span>
+            <b><span th:text="${quack.poster.getName()}">poster</span></b>:
             <span th:text="${quack.getQuackMessage()}">message</span>
         </p>
     </div>
@@ -21,6 +21,7 @@
         <p><label for="message">Message</label>: <input type="text" name="message" id="message"/></p>
         <p><input type="submit" value="Submit" /></p>
     </form>
+
 
     <form th:action="@{/logout}" method="post">
         <input type="submit" value="Sign Out"/>

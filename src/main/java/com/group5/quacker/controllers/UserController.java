@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
+
 @Controller
 public class UserController {
     @Autowired
@@ -22,8 +24,12 @@ public class UserController {
     public String userPageGet(@PathVariable("name") String name, Model model) {
 
         User user = userRepository.findByName(name);
-        if(user==null)
-            return "redirect:/";
+        if(user==null) {
+            List<User> users = userRepository.findByNameContaining(name);
+            model.addAttribute("users", users);
+            return "user-search";
+        }
+
 
         model.addAttribute("user", user);
 

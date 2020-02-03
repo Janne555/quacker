@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Controller
 public class QuackController {
 
@@ -29,9 +33,13 @@ public class QuackController {
         if(poster == null)
             return "redirect:/login";
 
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+
         Quack newQuack = new Quack();
         newQuack.setPoster(poster);
         newQuack.setQuackMessage(message);
+        newQuack.setDatePosted(new Date());
+        newQuack.setFormattedDate(dateFormat.format(newQuack.getDatePosted()));
         quackRepository.save(newQuack);
 
         return "redirect:/";

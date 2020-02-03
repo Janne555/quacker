@@ -1,6 +1,7 @@
 package com.group5.quacker.entities;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Quack {
@@ -13,6 +14,12 @@ public class Quack {
     private String quackMessage;
 
     private int likes;
+
+    private Date datePosted;
+
+
+
+    private String formattedDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -44,5 +51,21 @@ public class Quack {
 
     public void setPoster(User poster) {
         this.poster = poster;
+    }
+
+    public Date getDatePosted() {
+        return datePosted;
+    }
+
+    public void setDatePosted(Date datePosted) {
+        this.datePosted = datePosted;
+    }
+
+    public String getFormattedDate() {
+        return formattedDate;
+    }
+
+    public void setFormattedDate(String formattedDate) {
+        this.formattedDate = formattedDate;
     }
 }
