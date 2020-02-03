@@ -1,6 +1,7 @@
 package com.group5.quacker.controllers;
 
 import com.group5.quacker.entities.User;
+import com.group5.quacker.repositories.QuackRepository;
 import com.group5.quacker.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,9 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    QuackRepository quackRepository;
+
     @RequestMapping(value = "/user/{name}", method = RequestMethod.GET)
     public String userPageGet(@PathVariable("name") String name, Model model) {
 
@@ -26,6 +30,8 @@ public class UserController {
         if (user.getProfilePhoto() != null) {
             model.addAttribute("profilePhotoUrl", "/files/" + user.getProfilePhoto().getPublicId());
         }
+
+        model.addAttribute("userquacks", quackRepository.findByPoster(user));
 
         return "userpage";
     }

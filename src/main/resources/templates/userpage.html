@@ -10,13 +10,20 @@
 <body>
 <div class="container">
     <div class="jumbotron">
-        This is the page for user: <span th:text="${user.getName()}">username</span>
-
+        <div class="row">
+            <p>This is the page for user: <span th:text="${user.getName()}">username</span></p>
+        </div>
 
     <div th:if="${profilePhotoUrl != null}" class="card" style="height: 100px; width: 100px; margin-bottom: 1rem">
         <img class="card-img-top" th:src="${profilePhotoUrl}" alt="profile photo"/>
     </div>
-
+        <div class="row">
+            <p>Latest quacks posted by <span th:text="${user.getName()}">username</span>:</p>
+        </div>
+        <div class="row" th:each="quack : ${userquacks}">
+                <b><span th:text="${quack.poster.getName()}">poster</span></b>:
+                <span th:text="${quack.getQuackMessage()}">message</span>
+        </div>
 
     </div>
 </div>
