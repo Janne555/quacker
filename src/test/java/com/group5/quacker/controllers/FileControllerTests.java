@@ -62,7 +62,7 @@ public class FileControllerTests {
         fileMap.setOriginalFileName("originalName.txt");
         fileMap.setPublicId("publicId");
 
-        testdataText = new ByteArrayInputStream("this file is for automated testing".getBytes());;
+        testdataText = new ByteArrayInputStream("this file is for automated testing".getBytes());
     }
 
     @Test
@@ -103,7 +103,6 @@ public class FileControllerTests {
 
         mockMvc
                 .perform(multipart("/files").file(mockMultipartFile).contentType(MediaType.MULTIPART_FORM_DATA).with(csrf()))
-                .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/files/publicId"));
 
