@@ -21,7 +21,7 @@ public class TestController {
     QuackRepository quackRepository;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String adminGet(Model model) {
+    public String pageRootGet(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         System.out.println("User: \"" + auth.getName() + "\" got the index page.");
         model.addAttribute("username", auth.getName());

@@ -9,18 +9,40 @@
 </head>
 <body>
 <div class="container">
-    <div class="jumbotron">
-        <div class="row">
-            Result for search:
-        </div>
 
-        <div class="row" th:each="user : ${users}">
-            <p>
-                <a th:text="${user.getName()}" th:href="@{'/user/' + ${user.getName()}}">username</a>
-            </p>
-        </div>
+        <table class="table table-bordered table-striped table-hover">
 
-    </div>
+            <thead>
+            <tr>
+                <td colspan="1">Result for search</td>
+            </tr>
+            </thead>
+
+            <tbody>
+            <th class="text-center">Username</th>
+            <th class="text-center">Followers</th>
+            <th class="text-center">Following</th>
+            <th class="text-center">Total quacks</th>
+
+             <tr th:each="user : ${users}">
+                 <td>
+                    <a th:text="${user.getName()}" th:href="@{'/user/' + ${user.getName()}}">username</a>
+                 </td>
+
+                 <td>
+                     0
+                 </td>
+
+                 <td>
+                     0
+                 </td>
+
+                 <td>
+                     0
+                 </td>
+            </tr>
+            </tbody>
+    </table>
 </div>
 </body>
 

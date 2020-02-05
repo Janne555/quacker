@@ -11,32 +11,40 @@
 <div class="container">
     <div class="jumbotron">
         <div class="row">
-            <p>This is the page for user: <span th:text="${user.getName()}">username</span></p>
+            <h4>This is the page for user: <span th:text="${user.getName()}">username</span></h4>
         </div>
         <div class="row">
-                <p>Contact email: <span th:text="${user.getEmail()}">email</span>:</p>
+            <p>Contact email: <span th:text="${user.getEmail()}">email</span></p>
         </div>
         <div class="row">
-            <td><a th:href="'mailto:' + ${user.getEmail()}">Send email </a></td>
+            <a th:href="'mailto:' + ${user.getEmail()}">Send email </a>
         </div>
 
-    <div th:if="${profilePhotoUrl != null}" class="card" style="height: 100px; width: 100px; margin-bottom: 1rem">
-        <img class="card-img-top" th:src="${profilePhotoUrl}" alt="profile photo"/>
-    </div>
-        <div class="row">
-            <p>Latest quacks posted by <span th:text="${user.getName()}">username</span>:</p>
+        <div th:if="${profilePhotoUrl != null}" class="card" style="height: 100px; width: 100px; margin-bottom: 1rem">
+            <img class="card-img-top" th:src="${profilePhotoUrl}" alt="profile photo"/>
         </div>
 
-
-        <div class="row" th:each="quack : ${userquacks}">
-            <p>
-                <span th:text="${quack.getFormattedDate()}">dateposted</span>
-                <b><span th:text="${quack.poster.getName()}">poster</span></b>:
-                <span th:text="${quack.getQuackMessage()}">message</span>
-            </p>
-        </div>
 
     </div>
+
+    <div class="row">
+        Latest quacks posted by <span th:text="${user.getName()}">username</span>:
+    </div>
+
+    <div class="row">
+        <div class="panel-group">
+            <div class="panel panel-default" th:each="quack : ${userquacks}">
+                <div class="panel-heading">
+                    <span th:text="${quack.getFormattedDate()}">dateposted</span>
+                    <b><span th:text="${quack.poster.getName()}">poster</span></b>
+                </div>
+                <div class="panel-body">
+                    <span th:text="${quack.getQuackMessage()}">message</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 </body>
 

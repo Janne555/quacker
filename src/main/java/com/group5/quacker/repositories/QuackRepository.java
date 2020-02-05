@@ -8,6 +8,5 @@ import java.util.List;
 
 public interface QuackRepository extends JpaRepository<Quack, Long> {
     Quack findById(long id);
-
     List<Quack> findByPoster(User user);
 }

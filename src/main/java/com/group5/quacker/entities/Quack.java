@@ -17,8 +17,6 @@ public class Quack {
 
     private Date datePosted;
 
-
-
     private String formattedDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
