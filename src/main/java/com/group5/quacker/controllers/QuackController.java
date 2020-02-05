@@ -41,6 +41,8 @@ public class QuackController {
         newQuack.setDatePosted(new Date());
         newQuack.setFormattedDate(dateFormat.format(newQuack.getDatePosted()));
         quackRepository.save(newQuack);
+        poster.addQuack(newQuack);
+        userRepository.save(poster);
 
         return "redirect:/";
     }

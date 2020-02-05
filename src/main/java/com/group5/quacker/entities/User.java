@@ -1,6 +1,7 @@
 package com.group5.quacker.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class User {
@@ -19,6 +20,10 @@ public class User {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "file_map_id")
     private FileMap profilePhoto;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "quack_id")
+    private List<Quack> quacks;
 
     public String getName() {
         return name;
@@ -51,4 +56,13 @@ public class User {
     public void setProfilePhoto(FileMap profilePhoto) {
         this.profilePhoto = profilePhoto;
     }
+
+    public void addQuack(Quack quack) {
+        quacks.add(quack);
+    }
+
+    public long getNumberOfQuacks() {
+        return quacks.size();
+    }
+
 }
