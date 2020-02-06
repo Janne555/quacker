@@ -29,8 +29,8 @@
                     <a th:text="${user.getName()}" th:href="@{'/user/' + ${user.getName()}}">username</a>
                  </td>
 
-                 <td>
-                    0
+                 <td th:text="${user.getNumberFollowers()}">
+
                  </td>
 
                  <td th:text="${user.getNumberFollowing()}">

@@ -60,10 +60,11 @@ public class UserController {
             return "redirect:/";
         }
 
-        if(!follower.getFollowing().contains(user) && !user.equals(follower)) {
+        if(!follower.getFollowing().contains(user) && !user.getFollowers().contains(follower) && !user.equals(follower)) {
             follower.addFollowing(user);
-
+            user.addFollower(follower);
             userRepository.save(follower);
+            userRepository.save(user);
         }
 
         return "redirect:/user/" + name;
