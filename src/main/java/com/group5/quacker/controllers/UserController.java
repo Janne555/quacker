@@ -46,6 +46,29 @@ public class UserController {
         return "userpage";
     }
 
+    @RequestMapping(value = "/follow/{name}", method = RequestMethod.GET)
+    public String userFollow(@PathVariable("name") String name, Model model) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        User follower = userRepository.findByName(auth.getName());
+        if(follower == null)
+            return "redirect:/login";
+
+        User user = userRepository.findByName(name);
+        if(user==null) {
+            return "redirect:/";
+        }
+
+        if(!follower.getFollowing().contains(user) && !user.equals(follower)) {
+            follower.addFollowing(user);
+
+            userRepository.save(follower);
+        }
+
+        return "redirect:/user/" + name;
+    }
+
     @RequestMapping(value = {"/user/", "/users/", "/user", "/users"}, method = RequestMethod.GET)
     public String userPageGet(Model model) {
 

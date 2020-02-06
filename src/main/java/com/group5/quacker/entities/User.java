@@ -25,6 +25,10 @@ public class User {
     @JoinColumn(name = "quack_id")
     private List<Quack> quacks;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private List<User> following;
+
     public String getName() {
         return name;
     }
@@ -64,5 +68,15 @@ public class User {
     public long getNumberOfQuacks() {
         return quacks.size();
     }
+
+    public void addFollowing(User user) {
+        following.add(user);
+    }
+
+
+    public List<User> getFollowing() { return following; }
+
+
+    public long getNumberFollowing() { return following.size(); }
 
 }
