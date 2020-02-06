@@ -28,7 +28,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String newUser(@RequestParam String username, @RequestParam String password) {
+    public String newUser(@RequestParam String username, @RequestParam String email, @RequestParam String password) {
 
         if(userRepository.findByName(username) != null)
             return "redirect:/register";
@@ -41,6 +41,7 @@ public class LoginController {
         User newAcc = new User();
         newAcc.setName(username);
         newAcc.setPasswordHash(hash);
+        newAcc.setEmail(email);
         userRepository.save(newAcc);
 
         return "redirect:/login";
