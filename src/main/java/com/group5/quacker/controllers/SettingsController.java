@@ -39,11 +39,14 @@ public class SettingsController {
             model.addAttribute("profilePhotoUrl", "/files/" + user.getProfilePhoto().getPublicId());
         }
 
+        model.addAttribute("user", user);
 
         switch (setting) {
             case "profile-photo":
                 model.addAttribute("setting", "profile-photo");
                 break;
+            case "personal-info":
+                model.addAttribute("setting", "personal-info");
         }
 
         return "settings";
