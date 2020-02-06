@@ -11,16 +11,12 @@
     margin-left: auto;
 }
 
+.personal-info-form {
+    margin-left: 1rem;
+}
+
 .personal-info-form input {
     margin-left: 1rem;
     margin-right: 1rem;
 }
 
-.not-a-button {
-    border: none;
-    outline: none;
-}
-
-.not-a-button:focus {
-    outline: none;
-}

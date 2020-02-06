@@ -25,3 +25,15 @@ body {background-image: url(../images/tausta.png);}
 .con2{
 	margin-top: 1em;
 }
+
+
+.not-a-button {
+    border: none;
+    outline: none;
+    padding: 0;
+    background-color: unset;
+}
+
+.not-a-button:focus {
+    outline: none;
+}
