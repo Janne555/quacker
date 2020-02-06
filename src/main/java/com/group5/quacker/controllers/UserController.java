@@ -26,6 +26,12 @@ public class UserController {
     @RequestMapping(value = "/user/{name}", method = RequestMethod.GET)
     public String userPageGet(@PathVariable("name") String name, Model model) {
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        User loggedUser = userRepository.findByName(auth.getName());
+        if(loggedUser==null)
+            return "redirect:/login";
+
         User user = userRepository.findByName(name);
         if(user==null) {
             List<User> users = userRepository.findByNameContaining(name);
@@ -34,11 +40,15 @@ public class UserController {
             return "user-search";
         }
 
-
+        model.addAttribute("loggedUser", loggedUser);
         model.addAttribute("user", user);
 
         if (user.getProfilePhoto() != null) {
             model.addAttribute("profilePhotoUrl", "/files/" + user.getProfilePhoto().getPublicId());
+        }
+
+        if(user.getFollowers().contains(userRepository.findByName(auth.getName()))) {
+            model.addAttribute("isFollowed", true);
         }
 
         model.addAttribute("userquacks", quackRepository.findByPoster(user));
@@ -63,6 +73,30 @@ public class UserController {
         if(!follower.getFollowing().contains(user) && !user.getFollowers().contains(follower) && !user.equals(follower)) {
             follower.addFollowing(user);
             user.addFollower(follower);
+            userRepository.save(follower);
+            userRepository.save(user);
+        }
+
+        return "redirect:/user/" + name;
+    }
+
+    @RequestMapping(value = "/unfollow/{name}", method = RequestMethod.GET)
+    public String userUnfollow(@PathVariable("name") String name, Model model) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        User follower = userRepository.findByName(auth.getName());
+        if(follower == null)
+            return "redirect:/login";
+
+        User user = userRepository.findByName(name);
+        if(user==null) {
+            return "redirect:/";
+        }
+
+        if(follower.getFollowing().contains(user) && user.getFollowers().contains(follower) && !user.equals(follower)) {
+            follower.removeFollowing(user);
+            user.removeFollower(follower);
             userRepository.save(follower);
             userRepository.save(user);
         }

@@ -17,7 +17,7 @@
             <p>Contact email: <span th:text="${user.getEmail()}">email</span></p>
         </div>
         <div class="row">
-            <a th:href="'mailto:' + ${user.getEmail()}">Send email </a>
+            <a class="btn btn-primary" role="button" th:href="'mailto:' + ${user.getEmail()}">Send email </a>
         </div>
 
         <div th:if="${profilePhotoUrl != null}" class="card" style="height: 100px; width: 100px; margin-bottom: 1rem">
@@ -25,31 +25,48 @@
         </div>
 
 
-
+        <div class="row">
+        <div th:if="${isFollowed}">
+            <h4><a class="btn btn-danger" role="button" th:text="@{Unfollow this user!}" th:href="@{'/unfollow/' + ${user.getName()}}">Unfollow</a></h4>
+        </div>
+        <div th:unless="${isFollowed}">
+            <h4><a class="btn btn-success" role="button" th:text="@{Follow this user!}" th:href="@{'/follow/' + ${user.getName()}}">Follow</a></h4>
+        </div>
+        </div>
 
     </div>
 
-    <div class="row">
+    <div class="card">
+        <div class="card-body">
+        <h2>
         Latest quacks posted by <span th:text="${user.getName()}">username</span>:
-    </div>
-
-    <div class="row">
-        <div class="panel-group">
-            <div class="panel panel-default" th:each="quack : ${userquacks}">
-                <div class="panel-heading">
-                    <span th:text="${quack.getFormattedDate()}">dateposted</span>
-                    <b><span th:text="${quack.poster.getName()}">poster</span></b>
-                </div>
-                <div class="panel-body">
-                    <span th:text="${quack.getQuackMessage()}">message</span>
-                </div>
-            </div>
+        </h2>
         </div>
     </div>
 
-</div>
-</body>
+    <div class="card" th:each="quack : ${userquacks}">
+        <div class="card-body">
+            <h5 class="card-title">
+                <span th:text="${quack.getFormattedDate()}">dateposted</span>
+                <b><span th:text="${quack.poster.getName()}">poster</span></b>
+            </h5>
+            <p class="card-text"  th:text="${quack.getQuackMessage()}">
+            </p>
 
+            <div th:if="${quack.getLikers().contains(loggedUser)}">
+                <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Unike</a>
+            </div>
+            <div th:unless="${quack.getLikers().contains(loggedUser)}">
+                <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Like</a>
+            </div>
+
+            <p>Likes: <span th:text="${quack.getLikers().size()}"></span></p>
+        </div>
+    </div>
+
+
+
+</div>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>
@@ -59,5 +76,8 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
+</body>
+
+
 
 </html>
