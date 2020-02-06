@@ -17,12 +17,12 @@
             <ul class="nav nav-pills flex-column">
                 <li class="nav-item">
                     <a class="nav-link"
-                       th:classappend="${#strings.equals(setting, 'personal-info')} ? active : not-active"
+                       th:classappend="${#strings.equals(setting, 'personal-info')} ? 'active' : ''"
                        th:href="@{/settings/personal-info}">Personal Information</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link"
-                       th:classappend="${#strings.equals(setting, 'profile-photo')} ? active : not-active"
+                       th:classappend="${#strings.equals(setting, 'profile-photo')} ? 'active' : ''"
                        th:href="@{/settings/profile-photo}">Profile Photo</a>
                 </li>
                 <li class="nav-item">

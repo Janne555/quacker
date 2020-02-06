@@ -2,6 +2,8 @@ package com.group5.quacker.controllers;
 
 import com.group5.quacker.entities.FileMap;
 import com.group5.quacker.entities.User;
+import com.group5.quacker.models.PersonalInfo;
+import com.group5.quacker.models.PersonalInfoForm;
 import com.group5.quacker.repositories.UserRepository;
 import com.group5.quacker.services.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +11,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.io.IOException;
 
 @Controller
@@ -71,5 +75,24 @@ public class SettingsController {
         userRepository.save(user);
 
         return "redirect:/settings/profile-photo";
+    }
+
+    @PostMapping("/settings/personal-info/username")
+    public String postPersonalInfo(@Valid PersonalInfoForm form, BindingResult bindingResult, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = userRepository.findByName(auth.getName());
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "redirect:/settings/personal-info?username-error=not-unique";
+        }
+
+        user.setName(form.getUsername());
+        userRepository.save(user);
+
+        return "redirect:/settings/personal-info";
     }
 }
