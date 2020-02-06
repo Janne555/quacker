@@ -22,7 +22,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().sameOrigin();
 
         http
-                .authorizeRequests().antMatchers("/register", "/files" ,"/files/{id}", "/filetesting").permitAll().anyRequest().authenticated() // TODO Laita POST requestit /files endpointtiin autentikaation taakse
+                .authorizeRequests().antMatchers("/register", "/files" ,"/files/{id}", "/filetesting", "/images/**", "/css/**").permitAll().anyRequest().authenticated() // TODO Laita POST requestit /files endpointtiin autentikaation taakse
                 .and()
                 .formLogin().loginPage("/login").permitAll().failureUrl("/login-error")
                 .and()
