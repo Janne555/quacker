@@ -63,20 +63,29 @@
                                 </div>
                                 <form id="username-form" style="display: none" class="form-inline personal-info-form" th:action="@{/settings/personal-info/username}" method="post">
                                     <div class="form-group">
-                                        <label for="username">New Name</label>
-                                        <input required class="form-control" id="username" name="username">
+                                        <input placeholder="New Username" required class="form-control" name="username">
                                     </div>
                                     <button type="submit" class="btn btn-primary">Save</button>
                                 </form>
                             </li>
-                            <li class="list-group-item personal-info-item">
+                            <li class="list-group-item">
                                 <div class="personal-info-item">
                                     <span>Email </span><span th:text="${user.email}">email</span>
+                                    <button class="not-a-button" onclick="$('#email-form').toggle()">
+                                        <i data-feather="edit"></i>
+                                    </button>
                                 </div>
+                                <form id="email-form" style="display: none" class="form-inline personal-info-form" th:action="@{/settings/personal-info/email}" method="post">
+                                    <div class="form-group">
+                                        <input placeholder="New Email" required class="form-control" name="email">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </form>
                             </li>
                         </ul>
                     </div>
                 </div>
+                <div th:default></div>
             </div>
         </div>
     </div>
@@ -87,7 +96,6 @@
 <script>
     // file input fix
     $("#profile-photo-input").change(function(event) {
-        console.log(event)
         if (event.target.files && event.target.files[0]) {
             $("#profile-photo-label").text(event.target.files[0].name)
         } else {
