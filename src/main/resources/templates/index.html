@@ -2,11 +2,41 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <title>Quacker</title>
+    <link rel="stylesheet" type="text/css" href="static/css/homePage.css" 
+    th:href="@{/css/homePage.css}"/>
 </head>
-<body>
-    <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
 
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
+<div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <ul class="navbar-nav mr-auto">
+        	<li>
+  				<img src="/main/resources/img/quack.png">
+  			</li>
+            <li class="nav-item active">
+               <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+            </li>
+        </ul>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+  		<ul class="navbar-nav ml-auto">
+    		<li>
+      			<form th:action="@{/logout}" method="post">
+        			<input type="submit" value="Sign Out"/>
+    			</form>
+    		</li>
+  		</ul>
+  	</div>
+</nav>
+
+<div id="container">
+<div id="quacks">
     <h2>Latest Quacks:</h2>
     <div th:each="quack : ${quacks}">
         <p>
@@ -15,15 +45,14 @@
             <span th:text="${quack.getQuackMessage()}">message</span>
         </p>
     </div>
-
+</div>    
+<div id="posts">    
     <h2>Post quack:</h2>
     <form action="#" th:action="@{/quack}" method="POST">
         <p><label for="message">Message</label>: <input type="text" name="message" id="message"/></p>
-        <p><input type="submit" value="Submit" /></p>
+        <p><input type="submit" value="Submit" class="btn btn-primary"></p>
     </form>
-
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Sign Out"/>
-    </form>
+</div> 
+</div>
 </body>
 </html>
