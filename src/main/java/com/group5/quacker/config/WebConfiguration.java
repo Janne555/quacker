@@ -16,6 +16,7 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("index");
+        registry.addViewController("/filetesting").setViewName("filetesting");
     }
 
     @Bean
@@ -28,9 +29,11 @@ public class WebConfiguration implements WebMvcConfigurer {
 
         return bean;
     }
-    
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
+        registry.addResourceHandler("/images/**").addResourceLocations("classpath:/static/images/");
     }
+
 }

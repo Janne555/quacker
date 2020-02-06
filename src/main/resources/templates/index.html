@@ -3,45 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Quacker</title
+    
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <title>Quacker</title>
-    <link rel="stylesheet" type="text/css" href="static/css/homePage.css" 
-    th:href="@{/css/homePage.css}"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    
+    
+ <link href="../static/css/Layout.css" th:href="@{/css/main.css}" rel="stylesheet"/>
+    
+    
 </head>
 
 <body>
-<nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
-<div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-        <ul class="navbar-nav mr-auto">
-        	<li>
-  				<img src="/main/resources/img/quack.png">
-  			</li>
-            <li class="nav-item active">
-               <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-            </li>
-        </ul>
-    </div>
-    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-  		<ul class="navbar-nav ml-auto">
-    		<li>
-      			<form th:action="@{/logout}" method="post">
-        			<input type="submit" value="Sign Out"/>
-    			</form>
-    		</li>
-  		</ul>
-  	</div>
-</nav>
+    <div class="page-header">
+    <div class="container">      
+    <a href="/index">
+<img border="0" alt="W3Schools" src="../static/images/quacker1.png" th:src="@{/images/quacker1.png}" style="width:100px; height:100">
+</a>
+ <h2 class="centered" style="font-family: Amiri; font-size: 50px ; letter-spacing: 10px; color: red">
+<a style="color: black; text-decoration: none" href="/index">
+ Quacker
+    </a></h2> 
+</div>    
+  </div>
 
-<div id="container">
-<div id="quacks">
-    <h2>Latest Quacks:</h2>
+    <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+    <a th:href="@{/settings/profile-photo}">Settings</a>
+    <h2>Latest Quacks from users you are following:</h2>
     <div th:each="quack : ${quacks}">
         <p>
-            <b><span th:text="${quack.poster.getName()}">poster</span></b>
-            :
+            <span th:text="${quack.getFormattedDate()}">dateposted</span>
+            <b><span th:text="${quack.poster.getName()}">poster</span></b>:
             <span th:text="${quack.getQuackMessage()}">message</span>
         </p>
     </div>
@@ -50,7 +44,13 @@
     <h2>Post quack:</h2>
     <form action="#" th:action="@{/quack}" method="POST">
         <p><label for="message">Message</label>: <input type="text" name="message" id="message"/></p>
-        <p><input type="submit" value="Submit" class="btn btn-primary"></p>
+        <p><input type="submit" value="Submit" /></p>
+    </form>
+
+    <h2><a href="/users">List users</a></h2>
+
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
     </form>
 </div> 
 </div>
