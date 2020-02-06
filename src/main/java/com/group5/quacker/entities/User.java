@@ -81,6 +81,14 @@ public class User {
         followers.add(user);
     }
 
+    public void removeFollowing(User user) {
+        following.remove(user);
+    }
+
+    public void removeFollower(User user) {
+        followers.remove(user);
+    }
+
     public List<User> getFollowing() { return following; }
 
     public List<User> getFollowers() { return followers; }
@@ -88,4 +96,6 @@ public class User {
     public long getNumberFollowing() { return following.size(); }
 
     public long getNumberFollowers() { return followers.size(); }
+
+    public List<Quack> getQuacks() { return quacks; }
 }

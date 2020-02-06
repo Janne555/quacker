@@ -31,7 +31,7 @@
 
     <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
     <a th:href="@{/settings/profile-photo}">Settings</a>
-    <h2>Latest Quacks:</h2>
+    <h2>Latest Quacks from users you are following:</h2>
     <div th:each="quack : ${quacks}">
         <p>
             <span th:text="${quack.getFormattedDate()}">dateposted</span>

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,6 +46,35 @@ public class QuackController {
         userRepository.save(poster);
 
         return "redirect:/";
+    }
+
+    @RequestMapping(value = "/like/{id}", method = RequestMethod.GET)
+    public String newQuack(@PathVariable("id") long id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        User liker = userRepository.findByName(auth.getName());
+        if(liker == null)
+            return "redirect:/login";
+
+
+        Quack quack = quackRepository.findById(id);
+        if(quack == null) {
+            return "redirect:/";
+        }
+
+        if(quack.getPoster().equals(liker)) {
+            return "redirect:/user/" + quack.getPoster().getName();
+        }
+
+        if(!quack.getLikers().contains(liker)) {
+            quack.addLiker(liker);
+            quackRepository.save(quack);
+        } else {
+            quack.removeLiker(liker);
+            quackRepository.save(quack);
+        }
+
+        return "redirect:/user/" + quack.getPoster().getName();
     }
 
 
