@@ -40,10 +40,10 @@
                             <img class="card-img-top" th:src="${profilePhotoUrl}" alt="profile photo"/>
                         </div>
                         <form th:action="@{/settings/profile-photo}" enctype="multipart/form-data" method="post">
-                            <div class="form-group">
+                            <div class="form-group input-group mb-3">
                                 <div class="custom-file">
-                                    <input required type="file" class="custom-file-input" id="customFile" name="file">
-                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                    <input required type="file" class="custom-file-input" id="profile-photo-input" name="file" accept="image/*" aria-describedby="inputGroupFileAddon01">
+                                    <label class="custom-file-label" for="profile-photo-input" id="profile-photo-label">Choose file</label>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -85,6 +85,16 @@
 <div th:replace="fragments/common :: bootstrap-scripts"></div>
 
 <script>
+    // file input fix
+    $("#profile-photo-input").change(function(event) {
+        console.log(event)
+        if (event.target.files && event.target.files[0]) {
+            $("#profile-photo-label").text(event.target.files[0].name)
+        } else {
+            $("#profile-photo-label").text("Choose File") //TODO jos me tehdään lokalisaatio niin tämä pitää ottaa huomioon
+        }
+    })
+
     feather.replace()
 </script>
 </body>
