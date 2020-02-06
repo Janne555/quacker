@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Quacker - Preferences</title>
+    <link href="../static/css/Layout.css" th:href="@{/css/main.css}" rel="stylesheet"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -13,10 +15,14 @@
         <div class="col">
             <ul class="nav nav-pills flex-column">
                 <li class="nav-item">
-                    <a class="nav-link" th:classappend="${#strings.equals(setting, 'profile-photo')} ? active : notactive" th:href="@{/settings/profile-photo}">Profile Photo</a>
+                    <a class="nav-link"
+                       th:classappend="${#strings.equals(setting, 'personal-info')} ? active : not-active"
+                       th:href="@{/settings/personal-info}">Personal Information</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link">Other stuff</a>
+                    <a class="nav-link"
+                       th:classappend="${#strings.equals(setting, 'profile-photo')} ? active : not-active"
+                       th:href="@{/settings/profile-photo}">Profile Photo</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link">More stuff</a>
@@ -28,18 +34,36 @@
                 <div th:case="profile-photo">
                     <div>
                         <h3>Profile Photo</h3>
-                        <div th:if="${profilePhotoUrl != null}" class="card" style="height: 100px; width: 100px; margin-bottom: 1rem">
+                        <div th:if="${profilePhotoUrl != null}" class="card"
+                             style="height: 100px; width: 100px; margin-bottom: 1rem">
                             <img class="card-img-top" th:src="${profilePhotoUrl}" alt="profile photo"/>
                         </div>
                         <form th:action="@{/settings/profile-photo}" enctype="multipart/form-data" method="post">
                             <div class="form-group">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="customFile" name="file">
+                                    <input required type="file" class="custom-file-input" id="customFile" name="file">
                                     <label class="custom-file-label" for="customFile">Choose file</label>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
+                    </div>
+                </div>
+                <div th:case="personal-info">
+                    <div>
+                        <h3>Personal Information</h3>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="personal-info-item">
+                                    <span>Name </span><span th:text="${user.name}">name</span><i data-feather="edit"></i>
+                                </div>
+                            </li>
+                            <li class="list-group-item personal-info-item">
+                                <div class="personal-info-item">
+                                    <span>Email </span><span th:text="${user.email}">email</span>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -56,5 +80,8 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
+<script>
+    feather.replace()
+</script>
 </body>
 </html>
