@@ -11,12 +11,17 @@
     margin-left: auto;
 }
 
-.personal-info-form {
+.personal-info-form.personal-info-form {
+    margin-top: 0.5rem;
     margin-left: 1rem;
+    align-items: flex-start;
 }
 
-.personal-info-form input {
+.personal-info-form.personal-info-form > div {
     margin-left: 1rem;
     margin-right: 1rem;
+    flex-direction: column;
+    justify-items: flex-start;
+    align-items: flex-start;
 }
 
