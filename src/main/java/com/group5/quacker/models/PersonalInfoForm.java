@@ -1,16 +1,16 @@
 package com.group5.quacker.models;
 
-import com.group5.quacker.validators.UniqueNameConstraint;
+import com.group5.quacker.constraints.UniqueEmailConstraint;
 
 public class PersonalInfoForm {
-    @UniqueNameConstraint
-    private String username;
+    @UniqueEmailConstraint
+    private String email;
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

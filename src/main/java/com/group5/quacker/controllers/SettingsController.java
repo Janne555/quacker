@@ -15,9 +15,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Map;
 
 @Controller
 public class SettingsController {
@@ -27,8 +29,17 @@ public class SettingsController {
     @Autowired
     private FileService fileService;
 
+
+    @ModelAttribute("personalInfoForm")
+    public PersonalInfoForm newMyForm() {
+        return new PersonalInfoForm();
+    }
+
     @RequestMapping(value = {"/settings/{setting}", "/settings"}, method = RequestMethod.GET)
-    public String getSettings(@PathVariable(value = "setting", required = false) String setting, Model model) {
+    public String getSettings(
+            @PathVariable(value = "setting", required = false) String setting,
+            @RequestParam Map<String, String> allParams,
+            Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         User user = userRepository.findByName(auth.getName());
@@ -77,8 +88,11 @@ public class SettingsController {
         return "redirect:/settings/profile-photo";
     }
 
-    @PostMapping("/settings/personal-info/username")
-    public String postPersonalInfo(@Valid PersonalInfoForm form, BindingResult bindingResult, Model model) {
+    @PostMapping("/settings/personal-info/email")
+    public String postEmail(
+            @Valid PersonalInfoForm personalInfoForm,
+            final BindingResult bindingResult,
+            final RedirectAttributes redirectAttributes) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         User user = userRepository.findByName(auth.getName());
@@ -87,11 +101,12 @@ public class SettingsController {
         }
 
         if (bindingResult.hasErrors()) {
-            return "redirect:/settings/personal-info?username-error=not-unique";
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.personalInfoForm", bindingResult);
+            redirectAttributes.addFlashAttribute("personalInfoForm", personalInfoForm);
+        } else {
+            user.setEmail(personalInfoForm.getEmail());
+            userRepository.save(user);
         }
-
-        user.setName(form.getUsername());
-        userRepository.save(user);
 
         return "redirect:/settings/personal-info";
     }
