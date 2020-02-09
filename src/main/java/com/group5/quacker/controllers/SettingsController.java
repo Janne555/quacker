@@ -2,7 +2,6 @@ package com.group5.quacker.controllers;
 
 import com.group5.quacker.entities.FileMap;
 import com.group5.quacker.entities.User;
-import com.group5.quacker.models.PersonalInfo;
 import com.group5.quacker.models.PersonalInfoForm;
 import com.group5.quacker.repositories.UserRepository;
 import com.group5.quacker.services.FileService;
@@ -14,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
