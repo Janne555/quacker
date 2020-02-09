@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Quacker - Preferences</title>
@@ -42,8 +42,10 @@
                         <form th:action="@{/settings/profile-photo}" enctype="multipart/form-data" method="post">
                             <div class="form-group input-group mb-3">
                                 <div class="custom-file">
-                                    <input required type="file" class="custom-file-input" id="profile-photo-input" name="file" accept="image/*" aria-describedby="inputGroupFileAddon01">
-                                    <label class="custom-file-label" for="profile-photo-input" id="profile-photo-label">Choose file</label>
+                                    <input required type="file" class="custom-file-input" id="profile-photo-input"
+                                           name="file" accept="image/*" aria-describedby="inputGroupFileAddon01">
+                                    <label class="custom-file-label" for="profile-photo-input" id="profile-photo-label">Choose
+                                        file</label>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -57,16 +59,10 @@
                             <li class="list-group-item">
                                 <div class="personal-info-item">
                                     <span>Name </span><span th:text="${user.name}">name</span>
-                                    <button class="not-a-button" onclick="$('#username-form').toggle()">
+                                    <button class="not-a-button" style="visibility: hidden">
                                         <i data-feather="edit"></i>
                                     </button>
                                 </div>
-                                <form id="username-form" style="display: none" class="form-inline personal-info-form" th:action="@{/settings/personal-info/username}" method="post">
-                                    <div class="form-group">
-                                        <input placeholder="New Username" required class="form-control" name="username">
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </form>
                             </li>
                             <li class="list-group-item">
                                 <div class="personal-info-item">
@@ -75,9 +71,15 @@
                                         <i data-feather="edit"></i>
                                     </button>
                                 </div>
-                                <form id="email-form" style="display: none" class="form-inline personal-info-form" th:action="@{/settings/personal-info/email}" method="post">
+                                <form id="email-form"
+                                      th:style="${#fields.hasErrors('email') ? 'display: flex' : 'display: none'}"
+                                      th:object="${personalInfoForm}" class="form-inline personal-info-form"
+                                      th:action="@{/settings/personal-info/email}"
+                                      method="post">
                                     <div class="form-group">
-                                        <input placeholder="New Email" required class="form-control" name="email">
+                                        <input placeholder="New Email" required class="form-control" name="email"
+                                               th:field="*{email}">
+                                        <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</span>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Save</button>
                                 </form>
@@ -95,8 +97,8 @@
 
 <script>
     // file input fix
-    $("#profile-photo-input").change(function(event) {
-        if (event.target.files && event.target.files[0]) {
+    $("#profile-photo-input").change(function (event) {
+        if (event.target.files && event.target.files[0]) {
             $("#profile-photo-label").text(event.target.files[0].name)
         } else {
             $("#profile-photo-label").text("Choose File") //TODO jos me tehdään lokalisaatio niin tämä pitää ottaa huomioon
