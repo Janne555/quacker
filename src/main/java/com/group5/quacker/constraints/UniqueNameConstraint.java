@@ -1,4 +1,6 @@
-package com.group5.quacker.validators;
+package com.group5.quacker.constraints;
+
+import com.group5.quacker.validators.UniqueNameValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
