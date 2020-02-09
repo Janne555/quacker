@@ -73,8 +73,9 @@
                                 </div>
                                 <form id="email-form"
                                       th:style="${#fields.hasErrors('email') ? 'display: flex' : 'display: none'}"
-                                      th:object="${personalInfoForm}" class="form-inline personal-info-form"
+                                      th:object="${personalInfoForm}"
                                       th:action="@{/settings/personal-info/email}"
+                                      class="form-inline personal-info-form"
                                       method="post">
                                     <div class="form-group">
                                         <input placeholder="New Email" required class="form-control" name="email"
