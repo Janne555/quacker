@@ -17,6 +17,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
@@ -28,8 +29,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -112,5 +112,34 @@ public class SettingsControllerTests {
 
         verify(fileService, atLeast(0)).storeFile(argCaptor.capture());
         assertThat(argCaptor.getValue(), equalTo(mockMultipartFile));
+    }
+
+    @Test
+    @DisplayName("Post to /settings/personal-info/email with unique email updates email address")
+    @WithMockUser(username = "test", password = "pwd", roles = "USER")
+    public void postUniqueEmailAddress() throws Exception {
+        when(userRepository.findByName(anyString())).thenReturn(user);
+        mockMvc
+                .perform(post("/settings/personal-info/email")
+                        .with(csrf())
+                        .param("email", "tääSpostiPitääVaihtaaSitkuValidoidaanSpostei"))
+                .andExpect(model().hasNoErrors());
+
+        verify(userRepository, times(1)).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("Post to /settings/personal-info/email with unique email updates email address")
+    @WithMockUser(username = "test", password = "pwd", roles = "USER")
+    public void postNonUniqueEmail() throws Exception {
+        when(userRepository.findByName(anyString())).thenReturn(user);
+        when(userRepository.findByEmailIs(anyString())).thenReturn(user);
+
+        mockMvc
+                .perform(post("/settings/personal-info/email")
+                        .with(csrf())
+                        .param("email", "tääSpostiPitääVaihtaaSitkuValidoidaanSpostei"));
+
+        verify(userRepository, times(0)).save(any(User.class));
     }
 }

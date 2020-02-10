@@ -1,27 +1,36 @@
-.personal-info-item {
-    display: flex;
-    justify-content: space-between;
+body {
+    background-image: url(../images/tausta.png);
 }
 
-body {background-image: url(../images/tausta.png);}
-
 .centered {
-  position: absolute;
-  top: 4%;
-  left:50%;
-  transform: translate(-50%, -50%);
+    position: absolute;
+    top: 4%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .page-header {
-	 background-color: rgba(132, 87, 87, 0.5);
-	margin-bottom: 10em;
+    background-color: rgba(132, 87, 87, 0.5);
+    margin-bottom: 10em;
     text-align: center;
     margin-bottom: 0em;
-    
-    
 }
 
+.con2 {
+    margin-top: 1em;
+}
 
-.con2{
-	margin-top: 1em;
+.not-a-button {
+    border: none;
+    outline: none;
+    padding: 0;
+    background-color: unset;
+}
+
+.not-a-button:focus {
+    outline: none;
+}
+
+span.error {
+    color: red;
 }

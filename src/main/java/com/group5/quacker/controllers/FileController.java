@@ -26,7 +26,6 @@ public class FileController {
     @Autowired
     FileMapRepository fileMapRepository;
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping("/files/{id}")
     public ResponseEntity getFile(@PathVariable("id") String id, @RequestParam(name = "with-original-name", required = false) String withOriginalName) throws IOException {
         FileMap fileMap = fileMapRepository.findByPublicId(id);
