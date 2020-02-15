@@ -94,4 +94,12 @@ public class Quack {
     public void setAttachment(FileMap attachment) {
         this.attachment = attachment;
     }
+
+    /**
+     * Testaamista varten
+     * @param likers
+     */
+    public void setLikers(List<User> likers) {
+        this.likers = likers;
+    }
 }
