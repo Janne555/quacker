@@ -3,54 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <title>Quacker</title>
-    
-        
+
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    
-    
- <link href="../static/css/Layout.css" th:href="@{/css/main.css}" rel="stylesheet"/>
-    
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+
+    <link href="../static/css/Layout.css" th:href="@{/css/main.css}" rel="stylesheet"/>
+
+
 </head>
 <body>
-     <div class="page-header">
-    <div class="container">      
-    <a th:href="@{/}">
-<img border="0" alt="W3Schools" src="../static/images/quacker1.png" th:src="@{/images/quacker1.png}" style="width:100px; height:100">
-</a>
- <h2 class="centered" style="font-family: Amiri; font-size: 50px ; letter-spacing: 10px; color: red">
-<a style="color: black; text-decoration: none" th:href="@{/}">
- Quacker
-    </a></h2> 
-</div>    
-  </div>
-
-
-    <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-    <a th:href="@{/settings/profile-photo}">Settings</a>
-    <h2>Latest Quacks from users you are following:</h2>
-    <div th:each="quack : ${quacks}">
-        <p>
-            <span th:text="${quack.getFormattedDate()}">dateposted</span>
-            <b><span th:text="${quack.poster.getName()}">poster</span></b>:
-            <span th:text="${quack.getQuackMessage()}">message</span>
-        </p>
+<div class="page-header">
+    <div class="container">
+        <a th:href="@{/}">
+            <img border="0" alt="W3Schools" src="../static/images/quacker1.png" th:src="@{/images/quacker1.png}"
+                 style="width:100px; height:100">
+        </a>
+        <h2 class="centered" style="font-family: Amiri; font-size: 50px ; letter-spacing: 10px; color: red">
+            <a style="color: black; text-decoration: none" th:href="@{/}">
+                Quacker
+            </a></h2>
     </div>
+</div>
 
+
+<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+<a th:href="@{/settings/profile-photo}">Settings</a>
+<h2>Latest Quacks from users you are following:</h2>
+<div th:each="quack : ${quacks}">
+    <p>
+        <span th:text="${quack.getFormattedDate()}">dateposted</span>
+        <b><span th:text="${quack.poster.getName()}">poster</span></b>:
+        <span th:text="${quack.getQuackMessage()}">message</span>
+    </p>
+</div>
+
+<div id="post-quack-container">
     <h2>Post quack:</h2>
-    <form action="#" th:action="@{/quack}" method="POST">
-        <p><label for="message">Message</label>: <input type="text" name="message" id="message"/></p>
-        <p><input type="submit" value="Submit" /></p>
+    <form th:action="@{/quack}" enctype="multipart/form-data" method="post">
+        <div>
+            <label for="message">Message</label>: <input type="text" name="message" id="message"/>
+            <input type="submit" value="Submit"/>
+        </div>
+        <div>
+            <input type="file" id="quack-attachment"
+                   name="file" accept="image/*" aria-describedby="inputGroupFileAddon01">
+        </div>
     </form>
+</div>
 
-    <h2><a href="/users">List users</a></h2>
+
+<h2><a href="/users">List users</a></h2>
 
 
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Sign Out"/>
-    </form>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
+
+<script>
+    /**
+     * Lisää esikatselukuva jos tiedosto on jokin kuvaformaatti
+     */
+    document.querySelector("#quack-attachment").addEventListener('change', function () {
+        if (this.files && this.files[0] && this.files[0].type.includes('image')) {
+            const image = new Image()
+            const objectURL = URL.createObjectURL(this.files[0])
+            image.onload = () => {
+                document.querySelector("#post-quack-container").prepend(image)
+                URL.revokeObjectURL(objectURL)
+            }
+            image.src = objectURL
+        }
+    })
+</script>
 </body>
 </html>

@@ -29,6 +29,10 @@ public class Quack {
     @JoinColumn(name = "user_id")
     List<User> likers;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "file_map_id")
+    private FileMap attachment;
+
     public String getQuackMessage() {
         return quackMessage;
     }
@@ -81,5 +85,13 @@ public class Quack {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public FileMap getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(FileMap attachment) {
+        this.attachment = attachment;
     }
 }

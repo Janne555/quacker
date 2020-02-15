@@ -50,11 +50,14 @@
                 <span th:text="${quack.getFormattedDate()}">dateposted</span>
                 <b><span th:text="${quack.poster.getName()}">poster</span></b>
             </h5>
+            <div th:if="${quack.attachment != null}">
+                <img th:if="${quack.attachment.getContentType().startsWith('image')}" th:src="${quack.attachment.getUrl()}" />
+            </div>
             <p class="card-text"  th:text="${quack.getQuackMessage()}">
             </p>
 
             <div th:if="${quack.getLikers().contains(loggedUser)}">
-                <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Unike</a>
+                <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Unlike</a>
             </div>
             <div th:unless="${quack.getLikers().contains(loggedUser)}">
                 <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Like</a>
