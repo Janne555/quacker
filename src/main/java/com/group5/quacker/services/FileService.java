@@ -5,9 +5,12 @@ import com.group5.quacker.repositories.FileMapRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.util.UUID;
 
 @Service
@@ -39,9 +42,14 @@ public class FileService {
         fileMap.setPublicId(idService.generate());
         fileMap.setContentType(file.getContentType());
         fileMap.setOriginalFileName(file.getOriginalFilename());
+        fileMap.setSize(file.getSize());
         fileMapRepository.save(fileMap);
 
         file.transferTo(fileMakerService.makeFile(fileMap.getFileName()));
         return fileMap;
+    }
+
+    public UrlResource getAsUrlResource(FileMap fileMap) throws MalformedURLException {
+        return fileMakerService.getFileAsUrlResource(fileMap);
     }
 }
