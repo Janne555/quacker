@@ -10,6 +10,7 @@ import org.springframework.core.io.support.ResourceRegion;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,6 +53,9 @@ public class FileController {
             @PathVariable("id") String id,
             @RequestHeader HttpHeaders headers
     ) throws IOException {
+        if (headers.getRange().size() == 0) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
         FileMap fileMap = fileMapRepository.findByPublicId(id);
 
         if (fileMap == null) {
