@@ -53,6 +53,7 @@
             <div th:if="${quack.attachment != null}">
                 <img th:if="${quack.attachment.getContentType().startsWith('image')}" th:src="${quack.attachment.getUrl()}" />
                 <video controls th:if="${quack.attachment.getContentType().startsWith('video')}" th:src="${quack.attachment.getUrl()}" />
+                <audio controls th:if="${quack.attachment.getContentType().startsWith('audio')}" th:src="${quack.attachment.getUrl()}" />
             </div>
             <p class="card-text"  th:text="${quack.getQuackMessage()}">
             </p>

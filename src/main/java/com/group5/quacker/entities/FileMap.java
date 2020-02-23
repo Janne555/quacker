@@ -61,7 +61,14 @@ public class FileMap {
     }
 
     public String getUrl() {
-        return String.format("/%s/%s", contentType.startsWith("video") ? "video" : "files", getPublicId());
+        String endpoint;
+        if (contentType.startsWith("video") || contentType.startsWith("audio")) {
+            endpoint = "stream";
+        } else {
+            endpoint = "files";
+        }
+
+        return String.format("/%s/%s", endpoint, getPublicId());
     }
 
     public Long getSize() {
