@@ -47,7 +47,7 @@ public class FileController {
         return new ResponseEntity(IOUtils.toByteArray(inputStream), headers, HttpStatus.OK);
     }
 
-    @GetMapping("/video/{id}")
+    @GetMapping("/stream/{id}")
     public ResponseEntity<ResourceRegion> getVideo(
             @PathVariable("id") String id,
             @RequestHeader HttpHeaders headers
