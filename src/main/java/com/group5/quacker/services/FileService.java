@@ -48,8 +48,4 @@ public class FileService {
         file.transferTo(fileMakerService.makeFile(fileMap.getFileName()));
         return fileMap;
     }
-
-    public UrlResource getAsUrlResource(FileMap fileMap) throws MalformedURLException {
-        return fileMakerService.getFileAsUrlResource(fileMap);
-    }
 }
