@@ -18,6 +18,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * The FileController class contains endpoint methods related
+ * to file uploads and downloads
+ */
 @Controller
 public class FileController {
     @Autowired
@@ -26,7 +30,14 @@ public class FileController {
     @Autowired
     FileMapRepository fileMapRepository;
 
-	@GetMapping("/files/{id}")
+    /**
+     *
+     * @param id
+     * @param withOriginalName
+     * @return
+     * @throws IOException
+     */
+    @GetMapping("/files/{id}")
     public ResponseEntity getFile(@PathVariable("id") String id, @RequestParam(name = "with-original-name", required = false) String withOriginalName) throws IOException {
         FileMap fileMap = fileMapRepository.findByPublicId(id);
 
