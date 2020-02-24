@@ -57,4 +57,8 @@ public class FileMap {
     public void setOriginalFileName(String originalFileName) {
         this.originalFileName = originalFileName;
     }
+
+    public String getUrl() {
+        return String.format("/files/%s", getPublicId());
+    }
 }

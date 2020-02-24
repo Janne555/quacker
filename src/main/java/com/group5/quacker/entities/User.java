@@ -98,4 +98,16 @@ public class User {
     public long getNumberFollowers() { return followers.size(); }
 
     public List<Quack> getQuacks() { return quacks; }
+
+    /**
+     * Testaamista varten. Kunnes löytyy parempi tapa saada lista mukaan
+     * @param quacks
+     */
+    public void setQuacks(List<Quack> quacks) {
+        this.quacks = quacks;
+    }
+
+    public void setFollowers(List<User> followers) {
+        this.followers = followers;
+    }
 }
