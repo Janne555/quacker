@@ -22,6 +22,12 @@
                        th:classappend="${#strings.equals(setting, 'profile-photo')} ? 'active' : ''"
                        th:href="@{/settings/profile-photo}">Profile Photo</a>
                 </li>
+                                <li class="nav-item">
+                    <a class="nav-link"
+                       th:classappend="${#strings.equals(setting, 'password-change')} ? active : notactive"
+                       th:href="@{/settings/password-change}">Change Password</a>
+                </li>
+                
                 <li class="nav-item">
                     <a class="nav-link">More stuff</a>
                 </li>
@@ -83,6 +89,19 @@
                                 </form>
                             </li>
                         </ul>
+                    </div>
+                </div>
+                                <div th:case="password-change">
+                    <div>
+                        <h3>Change Password</h3>
+                        <form th:action="@{/settings/password-change}" method="post">
+                            <div class="form-group">
+                                <p><label for="current_password">Current Password</label>:<br> <input type="password" name="current_password" id="current_password" required/></p>
+                                <p><label for="new_password">New Password</label>:<br> <input type="password" name="new_password" id="new_password" required/></p>
+                                <p><label for="confirm_new_password">Confirm New Password</label>:<br> <input type="password" name="confirm_new_password" id="confirm_new_password" required/></p>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Change password</button>
+                        </form>
                     </div>
                 </div>
                 <div th:default></div>
