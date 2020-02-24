@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Userpage</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<head th:replace="fragments/common :: head">
 </head>
 <body>
-<div class="container">
-    <div class="jumbotron">
+
+<div th:replace="fragments/common :: headermain"></div>
+
+
+<div class="container con4">
+    <div class="jumbotron con4">
         <div class="row">
             <h4>This is the page for user: <span th:text="${user.getName()}">username</span></h4>
         </div>
@@ -36,7 +35,7 @@
 
     </div>
 
-    <div class="card">
+    <div class="card con4">
         <div class="card-body">
         <h2>
         Latest quacks posted by <span th:text="${user.getName()}">username</span>:
@@ -50,16 +49,11 @@
                 <span th:text="${quack.getFormattedDate()}">dateposted</span>
                 <b><span th:text="${quack.poster.getName()}">poster</span></b>
             </h5>
-            <div th:if="${quack.attachment != null}">
-                <img th:if="${quack.attachment.getContentType().startsWith('image')}" th:src="${quack.attachment.getUrl()}" />
-                <video controls th:if="${quack.attachment.getContentType().startsWith('video')}" th:src="${quack.attachment.getUrl()}" />
-                <audio controls th:if="${quack.attachment.getContentType().startsWith('audio')}" th:src="${quack.attachment.getUrl()}" />
-            </div>
             <p class="card-text"  th:text="${quack.getQuackMessage()}">
             </p>
 
             <div th:if="${quack.getLikers().contains(loggedUser)}">
-                <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Unlike</a>
+                <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Unike</a>
             </div>
             <div th:unless="${quack.getLikers().contains(loggedUser)}">
                 <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Like</a>
@@ -72,15 +66,6 @@
 
 
 </div>
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
 </body>
 
 
