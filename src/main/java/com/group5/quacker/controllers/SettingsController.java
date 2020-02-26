@@ -2,6 +2,7 @@ package com.group5.quacker.controllers;
 
 import com.group5.quacker.entities.FileMap;
 import com.group5.quacker.entities.User;
+import com.group5.quacker.models.PasswordForm;
 import com.group5.quacker.models.PersonalInfoForm;
 import com.group5.quacker.repositories.UserRepository;
 import com.group5.quacker.services.FileService;
@@ -14,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -107,5 +109,30 @@ public class SettingsController {
         }
 
         return "redirect:/settings/personal-info";
+    }
+
+    @PostMapping("/settings/password-change")
+    public String postPassword(@Valid PasswordForm passWordForm, final BindingResult bindingResult, final RedirectAttributes redirectAttributes)
+    {
+        org.springframework.security.crypto.password.PasswordEncoder encoder = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = userRepository.findByName(auth.getName());
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+
+
+        //System.out.println(passWordForm.getNew_password() + ", " + passWordForm.getConfirm_new_password());
+        System.out.println(user.hashCode());
+        System.out.println(encoder.matches(encoder.encode(passWordForm.getCurrent_password()), user.getPasswordHash()));
+
+        if(bindingResult.hasErrors())
+        {
+            redirectAttributes.addFlashAttribute("message", "Given new passwords does not match!");
+        }
+
+        return "redirect:/settings/password-change";
     }
 }
