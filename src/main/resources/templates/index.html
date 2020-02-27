@@ -3,35 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Quacker</title
+    <title>Quacker</title>
     
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     
-    
- <link href="../static/css/Layout.css" th:href="@{/css/main.css}" rel="stylesheet"/>
-    
-    
+    <link href="../static/css/Layout.css" th:href="@{/css/main.css}" rel="stylesheet"/>
+       
 </head>
 
 <body>
     <div class="page-header">
-    <div class="container">      
-    <a href="/index">
-<img border="0" alt="W3Schools" src="../static/images/quacker1.png" th:src="@{/images/quacker1.png}" style="width:100px; height:100">
-</a>
- <h2 class="centered" style="font-family: Amiri; font-size: 50px ; letter-spacing: 10px; color: red">
-<a style="color: black; text-decoration: none" href="/index">
- Quacker
-    </a></h2> 
-</div>    
-  </div>
+    	<div class="container">      
+    		<a href="/index">
+				<img border="0" alt="W3Schools" src="../static/images/quacker1.png" th:src="@{/images/quacker1.png}" style="width:100px; height:100">
+			</a>
+ 			<h2 class="centered" style="font-family: Amiri; font-size: 50px ; letter-spacing: 10px; color: red">
+				<a style="color: black; text-decoration: none" href="/index">Quacker</a>
+    		</h2> 
+		</div> 
+	</div>
 
-    <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-    <a th:href="@{/settings/profile-photo}">Settings</a>
-    <h2>Latest Quacks from users you are following:</h2>
+<div id="container" align="center">   
+
+    <h1 align="center" th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+    
+<div id="posts" align="center">    
+    <a href="/index">
+    	<img border="0" class="center" src="../static/images/Quacks.png" th:src="@{/images/Quacks.png}" style="width:400px; height:400">
+    </a>
+    <form action="#" th:action="@{/quack}" method="POST">
+        <p align="right"><label for="message">Message</label>: <input type="text" name="message" id="message"/></p>
+        <p align="right"><input type="submit" value="Submit" class="btn btn-info"/></p>
+    </form>
+
+    <h2><a href="/users">List users</a></h2>
+
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" class="btn btn-dark" value="Sign Out"/>
+        <a th:href="@{/settings/profile-photo}" class="btn btn-success">Settings</a>
+    </form>
+</div>   
+  
+<div id="latestQuacks" align="center">
+	<a href="/index">
+    	<img border="0" class="center" src="../static/images/LatestQuacks.png" th:src="@{/images/LatestQuacks.png}" style="width:600px; height:600">
+    </a>
     <div th:each="quack : ${quacks}">
         <p>
             <span th:text="${quack.getFormattedDate()}">dateposted</span>
@@ -40,19 +59,9 @@
         </p>
     </div>
 </div>    
-<div id="posts">    
-    <h2>Post quack:</h2>
-    <form action="#" th:action="@{/quack}" method="POST">
-        <p><label for="message">Message</label>: <input type="text" name="message" id="message"/></p>
-        <p><input type="submit" value="Submit" /></p>
-    </form>
+    
 
-    <h2><a href="/users">List users</a></h2>
-
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Sign Out"/>
-    </form>
-</div> 
 </div>
+
 </body>
 </html>
