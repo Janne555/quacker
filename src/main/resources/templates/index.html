@@ -1,44 +1,50 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/common :: head">   
+
+<head th:replace="fragments/common :: head">
 </head>
+
 <body>
+    <div th:replace="fragments/common :: headermain"></div>
 
-<div th:replace="fragments/common :: headermain"></div>
+    <div id="container" align="center">
 
+        <h1 align="center" th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+    
+    <div id="posts" align="center">    
+        <a href="/index">
+            <img border="0" class="center" src="../static/images/Quacks.png" th:src="@{/images/Quacks.png}" style="width:400px; height:400">
+        </a>
 
-<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-<a th:href="@{/settings/profile-photo}">Settings</a>
-<h2>Latest Quacks from users you are following:</h2>
-<div th:each="quack : ${quacks}">
-    <p>
-        <span th:text="${quack.getFormattedDate()}">dateposted</span>
-        <b><span th:text="${quack.poster.getName()}">poster</span></b>:
-        <span th:text="${quack.getQuackMessage()}">message</span>
-    </p>
-</div>
+        <form id="post-quack-form" th:action="@{/quack}" enctype="multipart/form-data" method="post">
+            <div>
+                <label for="message">Message</label>: <input type="text" name="message" id="message"/>
+                <input type="submit" value="Submit"/>
+            </div>
+            <div>
+                <input type="file" id="quack-attachment"
+                       name="file" aria-describedby="inputGroupFileAddon01">
+            </div>
+        </form>
 
-<div id="post-quack-container">
-    <h2>Post quack:</h2>
-    <form th:action="@{/quack}" enctype="multipart/form-data" method="post">
-        <div>
-            <label for="message">Message</label>: <input type="text" name="message" id="message"/>
-            <input type="submit" value="Submit"/>
+        <h2><a href="/users">List users</a></h2>
+    </div>   
+    
+    <div id="latestQuacks" align="center">
+        <a href="/index">
+            <img border="0" class="center" src="../static/images/LatestQuacks.png" th:src="@{/images/LatestQuacks.png}" style="width:600px; height:600">
+        </a>
+        <div th:each="quack : ${quacks}">
+            <p>
+                <span th:text="${quack.getFormattedDate()}">dateposted</span>
+                <b><span th:text="${quack.poster.getName()}">poster</span></b>:
+                <span th:text="${quack.getQuackMessage()}">message</span>
+            </p>
         </div>
-        <div>
-            <input type="file" id="quack-attachment"
-                   name="file" aria-describedby="inputGroupFileAddon01">
-        </div>
-    </form>
+    </div>    
+        
+
 </div>
-
-
- <h2><a href="/users">List users</a></h2>
-
-
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
 
 <script>
     /**
@@ -49,7 +55,7 @@
             const image = new Image()
             const objectURL = URL.createObjectURL(this.files[0])
             image.onload = () => {
-                document.querySelector("#post-quack-container").prepend(image)
+                document.querySelector("#post-quack-form").prepend(image)
                 URL.revokeObjectURL(objectURL)
             }
             image.src = objectURL

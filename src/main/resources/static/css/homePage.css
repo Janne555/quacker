@@ -1,0 +1,20 @@
+h1{
+	color: white;
+}
+
+h2{
+    color: blueviolet;
+}
+
+#container{
+    margin: auto;
+    width: 50%;
+    padding-top: 100px; 
+}
+
+#quacks, #posts{
+    margin: 10px;
+    padding: 20px;
+    float:left;
+    background: antiquewhite;
+}
