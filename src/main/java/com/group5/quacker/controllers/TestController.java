@@ -43,7 +43,7 @@ public class TestController {
             model.addAttribute("quacks", quacks);
             
             if (user.getProfilePhoto() != null) {
-                model.addAttribute("profilePhotoUrl", "/files/" + user.getProfilePhoto().getPublicId());
+                model.addAttribute("profilePhotoHead", "/files/" + user.getProfilePhoto().getPublicId());
             }
 
         }

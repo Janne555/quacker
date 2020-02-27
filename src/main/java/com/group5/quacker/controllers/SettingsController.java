@@ -48,6 +48,10 @@ public class SettingsController {
         if (user.getProfilePhoto() != null) {
             model.addAttribute("profilePhotoUrl", "/files/" + user.getProfilePhoto().getPublicId());
         }
+        
+        if (user.getProfilePhoto() != null) {
+            model.addAttribute("profilePhotoHead", "/files/" + user.getProfilePhoto().getPublicId());
+        }
 
         model.addAttribute("user", user);
 
