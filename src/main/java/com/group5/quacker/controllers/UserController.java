@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+/**
+ * This is the controller for user related endpoints
+ */
 @Controller
 public class UserController {
     @Autowired
@@ -23,16 +26,22 @@ public class UserController {
     @Autowired
     QuackRepository quackRepository;
 
+    /**
+     * This is the GET mapping for a users page.
+     * @param name  Name of the user
+     * @param model Model for populating the thymeleaf template
+     * @return Returns the thymeleaf template for a users page
+     */
     @RequestMapping(value = "/user/{name}", method = RequestMethod.GET)
     public String userPageGet(@PathVariable("name") String name, Model model) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        User loggedUser = userRepository.findByName(auth.getName());
+        User loggedUser = userRepository.findByName(auth.getName());    // check that the logged in user exists in the database
         if(loggedUser==null)
             return "redirect:/login";
 
-        User user = userRepository.findByName(name);
+        User user = userRepository.findByName(name);                    // if the user was not found, search for users containing the supplied name value
         if(user==null) {
             List<User> users = userRepository.findByNameContaining(name);
 
@@ -40,36 +49,43 @@ public class UserController {
             return "user-search";
         }
 
-        model.addAttribute("loggedUser", loggedUser);
+        model.addAttribute("loggedUser", loggedUser);               // populate the model with the user models
         model.addAttribute("user", user);
 
-        if (user.getProfilePhoto() != null) {
+        if (user.getProfilePhoto() != null) {                           // populate model with the profile photo
             model.addAttribute("profilePhotoUrl", "/files/" + user.getProfilePhoto().getPublicId());
         }
 
-        if(user.getFollowers().contains(userRepository.findByName(auth.getName()))) {
+        if(user.getFollowers().contains(userRepository.findByName(auth.getName()))) {   // check if the viewing user has followed the user
             model.addAttribute("isFollowed", true);
         }
 
-        model.addAttribute("userquacks", quackRepository.findByPoster(user));
+        model.addAttribute("userquacks", quackRepository.findByPoster(user));       // populate model with the users quacks
 
         return "userpage";
     }
 
+    /**
+     * GET mapping for following users
+     * @param name Name of the user to be followed
+     * @param model Model for populating the thyeleaf template
+     * @return Redirects to the users page that was followed
+     */
     @RequestMapping(value = "/follow/{name}", method = RequestMethod.GET)
     public String userFollow(@PathVariable("name") String name, Model model) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        User follower = userRepository.findByName(auth.getName());
+        User follower = userRepository.findByName(auth.getName());      // check that the logged in user actually exists in the database
         if(follower == null)
             return "redirect:/login";
 
-        User user = userRepository.findByName(name);
+        User user = userRepository.findByName(name);                    // check that the user to be followed actually exists
         if(user==null) {
             return "redirect:/";
         }
 
+        // check that the user has not already followed the other user and that the user is not trying to follow himself
         if(!follower.getFollowing().contains(user) && !user.getFollowers().contains(follower) && !user.equals(follower)) {
             follower.addFollowing(user);
             user.addFollower(follower);
@@ -85,15 +101,16 @@ public class UserController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        User follower = userRepository.findByName(auth.getName());
+        User follower = userRepository.findByName(auth.getName());      // check that the logged in user actually exists in the database
         if(follower == null)
             return "redirect:/login";
 
-        User user = userRepository.findByName(name);
+        User user = userRepository.findByName(name);                    // check that the user to be unfollowed actually exists
         if(user==null) {
             return "redirect:/";
         }
 
+        // check that the user has already followed the other user and that the user is not trying to unfollow himself
         if(follower.getFollowing().contains(user) && user.getFollowers().contains(follower) && !user.equals(follower)) {
             follower.removeFollowing(user);
             user.removeFollower(follower);
@@ -104,6 +121,11 @@ public class UserController {
         return "redirect:/user/" + name;
     }
 
+    /**
+     * Mapping to list users
+     * @param model Model to populate the thymeleaf template
+     * @return returns a list of users
+     */
     @RequestMapping(value = {"/user/", "/users/", "/user", "/users"}, method = RequestMethod.GET)
     public String userPageGet(Model model) {
 
