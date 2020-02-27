@@ -19,6 +19,9 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * Controller for handling the user settings page
+ */
 @Controller
 public class SettingsController {
     @Autowired
@@ -28,11 +31,23 @@ public class SettingsController {
     private FileService fileService;
 
 
+    /**
+     * Includes the class as an attribute
+     * @return
+     */
     @ModelAttribute("personalInfoForm")
     public PersonalInfoForm newMyForm() {
         return new PersonalInfoForm();
     }
 
+    /**
+     * Returns the specific settings page requested in the URL.
+     * Includes attributes required by the page.
+     * @param setting
+     * @param allParams
+     * @param model
+     * @return
+     */
     @RequestMapping(value = {"/settings/{setting}", "/settings"}, method = RequestMethod.GET)
     public String getSettings(
             @PathVariable(value = "setting", required = false) String setting,
@@ -69,6 +84,13 @@ public class SettingsController {
         return "settings";
     }
 
+    /**
+     * Accepts a new profile photo and sets
+     * it as the users current profile photo
+     * @param file
+     * @return
+     * @throws IOException
+     */
     @PostMapping("/settings/profile-photo")
     public String postProfilePhoto(@RequestParam("file") MultipartFile file) throws IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -86,6 +108,15 @@ public class SettingsController {
         return "redirect:/settings/profile-photo";
     }
 
+    /**
+     * Accepts a validated personal info form.
+     * If the form has errors, returns a redirect and
+     * includes the errors as a flash attribute
+     * @param personalInfoForm
+     * @param bindingResult
+     * @param redirectAttributes
+     * @return
+     */
     @PostMapping("/settings/personal-info/email")
     public String postEmail(
             @Valid PersonalInfoForm personalInfoForm,

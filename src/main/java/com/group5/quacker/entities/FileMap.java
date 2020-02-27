@@ -2,15 +2,24 @@ package com.group5.quacker.entities;
 
 import javax.persistence.*;
 
+/**
+ * The filemap entity is used to store information about files.
+ */
 @Entity
 public class FileMap {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    /**
+     * File name refers to the name of the file on the storage medium
+     */
     @Column(unique = true)
     private String fileName;
 
+    /**
+     * Public id is used outside the system to refer to a file
+     */
     @Column(unique = true)
     private String publicId;
 
@@ -60,6 +69,10 @@ public class FileMap {
         this.originalFileName = originalFileName;
     }
 
+    /**
+     * Returns a URL that allows access to the file outside the system
+     * @return
+     */
     public String getUrl() {
         String endpoint;
         if (contentType.startsWith("video") || contentType.startsWith("audio")) {
