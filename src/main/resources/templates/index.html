@@ -16,7 +16,7 @@
             <img border="0" class="center" src="../static/images/Quacks.png" th:src="@{/images/Quacks.png}" style="width:400px; height:400">
         </a>
 
-        <form th:action="@{/quack}" enctype="multipart/form-data" method="post">
+        <form id="post-quack-form" th:action="@{/quack}" enctype="multipart/form-data" method="post">
             <div>
                 <label for="message">Message</label>: <input type="text" name="message" id="message"/>
                 <input type="submit" value="Submit"/>
@@ -55,7 +55,7 @@
             const image = new Image()
             const objectURL = URL.createObjectURL(this.files[0])
             image.onload = () => {
-                document.querySelector("#post-quack-container").prepend(image)
+                document.querySelector("#post-quack-form").prepend(image)
                 URL.revokeObjectURL(objectURL)
             }
             image.src = objectURL
