@@ -5,16 +5,13 @@ import com.group5.quacker.repositories.FileMapRepository;
 import com.group5.quacker.services.FileService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.UrlResource;
+import org.springframework.core.io.support.ResourceRegion;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -30,13 +27,8 @@ public class FileController {
     @Autowired
     FileMapRepository fileMapRepository;
 
-    /**
-     *
-     * @param id
-     * @param withOriginalName
-     * @return
-     * @throws IOException
-     */
+    private Long CHUNK_SIZE = 10000L;
+
     @GetMapping("/files/{id}")
     public ResponseEntity getFile(@PathVariable("id") String id, @RequestParam(name = "with-original-name", required = false) String withOriginalName) throws IOException {
         FileMap fileMap = fileMapRepository.findByPublicId(id);
@@ -59,6 +51,32 @@ public class FileController {
 
         return new ResponseEntity(IOUtils.toByteArray(inputStream), headers, HttpStatus.OK);
     }
+
+    @GetMapping("/stream/{id}")
+    public ResponseEntity<ResourceRegion> getVideo(
+            @PathVariable("id") String id,
+            @RequestHeader HttpHeaders headers
+    ) throws IOException {
+        if (headers.getRange().size() == 0) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        FileMap fileMap = fileMapRepository.findByPublicId(id);
+
+        if (fileMap == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        long startRange = headers.getRange().get(0).getRangeStart(fileMap.getSize());
+        long endRange = startRange + CHUNK_SIZE > fileMap.getSize() ? fileMap.getSize() : startRange + CHUNK_SIZE;
+        UrlResource video = new UrlResource(fileService.getFile(fileMap.getFileName()).toURI());
+        ResourceRegion region = new ResourceRegion(video, startRange, endRange);
+
+        return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT)
+                .header("Content-type", fileMap.getContentType())
+                .contentLength(endRange - startRange)
+                .body(region);
+    }
+
 
     @PostMapping("/files")
     public String postFile(@RequestParam("file") MultipartFile file, @RequestParam(value = "redirect", required = false) String redirect) throws IOException {
