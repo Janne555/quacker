@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * Used by the unique name constraint to validate that the name is unique
+ */
 public class UniqueNameValidator implements ConstraintValidator<UniqueNameConstraint, String> {
     @Autowired
     UserRepository userRepository;

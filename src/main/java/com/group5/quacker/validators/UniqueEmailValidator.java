@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * Used by the unique email constraint to validate that an email is unique
+ */
 public class UniqueEmailValidator implements ConstraintValidator<UniqueEmailConstraint, String> {
     @Autowired
     UserRepository userRepository;

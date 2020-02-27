@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.net.MalformedURLException;
 
+/**
+ * Service used to decouple file creation in the file storage process
+ *
+ */
 @Service
 public class FileMakerService {
     @Value("${fileStorage.path}")
