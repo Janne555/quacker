@@ -18,6 +18,8 @@ public class FileMap {
 
     private String originalFileName;
 
+    private Long size;
+
     public long getId() {
         return id;
     }
@@ -56,5 +58,24 @@ public class FileMap {
 
     public void setOriginalFileName(String originalFileName) {
         this.originalFileName = originalFileName;
+    }
+
+    public String getUrl() {
+        String endpoint;
+        if (contentType.startsWith("video") || contentType.startsWith("audio")) {
+            endpoint = "stream";
+        } else {
+            endpoint = "files";
+        }
+
+        return String.format("/%s/%s", endpoint, getPublicId());
+    }
+
+    public Long getSize() {
+        return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
     }
 }

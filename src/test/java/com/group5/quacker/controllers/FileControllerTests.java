@@ -17,6 +17,7 @@ import com.group5.quacker.services.FileService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -35,6 +36,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
 
 
 @WebMvcTest(FileController.class)
@@ -61,12 +66,13 @@ public class FileControllerTests {
         fileMap.setFileName("text.txt");
         fileMap.setOriginalFileName("originalName.txt");
         fileMap.setPublicId("publicId");
+        fileMap.setSize(1000000L);
 
         testdataText = new ByteArrayInputStream("this file is for automated testing".getBytes());
     }
 
     @Test
-    @DisplayName("GET request returns a file")
+    @DisplayName("GET request to /files returns a file")
     public void shouldReturnFileTest() throws Exception {
         when(fileMapRepository.findByPublicId("fileId")).thenReturn(this.fileMap);
         when(fileService.getInputStream("text.txt")).thenReturn(this.testdataText);
@@ -108,5 +114,31 @@ public class FileControllerTests {
 
         verify(fileService, atLeast(0)).storeFile(argCaptor.capture());
         assertThat(argCaptor.getValue(), equalTo(mockMultipartFile));
+    }
+
+    @Test
+    @DisplayName("Get request to /stream should return a partial response")
+    public void shouldGetPartial(@TempDir Path tempDir) throws Exception {
+        Path testFile = tempDir.resolve("testFile");
+        List<String> lines = Arrays.asList("this file is for automated testing");
+        Files.write(testFile, lines);
+
+        when(fileMapRepository.findByPublicId("fileId")).thenReturn(this.fileMap);
+        when(fileService.getFile("text.txt")).thenReturn(testFile.toFile());
+
+        this.mockMvc
+                .perform(get("/stream/fileId").header("Range", "bytes=0-"))
+                .andExpect(content().string(containsString("this file is for automated testing")))
+                .andExpect(header().string("Content-Type", "text/plain"))
+                .andExpect(header().string("Content-Range", "bytes 0-34/35"))
+                .andExpect(status().isPartialContent());
+    }
+
+    @Test
+    @DisplayName("Get request to /stream without range header should return bad request")
+    public void shouldReturnBadWithMissingHeader(@TempDir Path tempDir) throws Exception {
+        this.mockMvc
+                .perform(get("/stream/fileId"))
+                .andExpect(status().isBadRequest());
     }
 }

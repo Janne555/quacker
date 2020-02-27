@@ -1,29 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Quacker - Preferences</title>
-    <link href="../static/css/Layout.css" th:href="@{/css/main.css}" rel="stylesheet"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/common :: head">
 </head>
 <body>
+
+<div th:replace="fragments/common :: headermain"></div>
+
+
+
 <div class="container">
     <div class="row">
         <div class="col">
             <ul class="nav nav-pills flex-column">
                 <li class="nav-item">
                     <a class="nav-link"
-                       th:classappend="${#strings.equals(setting, 'personal-info')} ? active : not-active"
+                       th:classappend="${#strings.equals(setting, 'personal-info')} ? 'active' : ''"
                        th:href="@{/settings/personal-info}">Personal Information</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link"
-                       th:classappend="${#strings.equals(setting, 'profile-photo')} ? active : not-active"
+                       th:classappend="${#strings.equals(setting, 'profile-photo')} ? 'active' : ''"
                        th:href="@{/settings/profile-photo}">Profile Photo</a>
                 </li>
+                                <li class="nav-item">
+                    <a class="nav-link"
+                       th:classappend="${#strings.equals(setting, 'password-change')} ? active : notactive"
+                       th:href="@{/settings/password-change}">Change Password</a>
+                </li>
+                
                 <li class="nav-item">
                     <a class="nav-link">More stuff</a>
                 </li>
@@ -39,10 +43,12 @@
                             <img class="card-img-top" th:src="${profilePhotoUrl}" alt="profile photo"/>
                         </div>
                         <form th:action="@{/settings/profile-photo}" enctype="multipart/form-data" method="post">
-                            <div class="form-group">
+                            <div class="form-group input-group mb-3">
                                 <div class="custom-file">
-                                    <input required type="file" class="custom-file-input" id="customFile" name="file">
-                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                    <input required type="file" class="custom-file-input" id="profile-photo-input"
+                                           name="file" accept="image/*" aria-describedby="inputGroupFileAddon01">
+                                    <label class="custom-file-label" for="profile-photo-input" id="profile-photo-label">Choose
+                                        file</label>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -55,32 +61,66 @@
                         <ul class="list-group">
                             <li class="list-group-item">
                                 <div class="personal-info-item">
-                                    <span>Name </span><span th:text="${user.name}">name</span><i data-feather="edit"></i>
+                                    <span>Name </span><span th:text="${user.name}">name</span>
+                                    <button class="not-a-button" style="visibility: hidden">
+                                        <i data-feather="edit"></i>
+                                    </button>
                                 </div>
                             </li>
-                            <li class="list-group-item personal-info-item">
+                            <li class="list-group-item">
                                 <div class="personal-info-item">
                                     <span>Email </span><span th:text="${user.email}">email</span>
+                                    <button class="not-a-button" onclick="$('#email-form').toggle()">
+                                        <i data-feather="edit"></i>
+                                    </button>
                                 </div>
+                                <form id="email-form"
+                                      th:style="${#fields.hasErrors('email') ? 'display: flex' : 'display: none'}"
+                                      th:object="${personalInfoForm}"
+                                      th:action="@{/settings/personal-info/email}"
+                                      class="form-inline personal-info-form"
+                                      method="post">
+                                    <div class="form-group">
+                                        <input placeholder="New Email" required class="form-control" name="email"
+                                               th:field="*{email}">
+                                        <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</span>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </form>
                             </li>
                         </ul>
                     </div>
                 </div>
+                                <div th:case="password-change">
+                    <div>
+                        <h3>Change Password</h3>
+                        <form th:action="@{/settings/password-change}" method="post">
+                            <div class="form-group">
+                                <p><label for="current_password">Current Password</label>:<br> <input type="password" name="current_password" id="current_password" required/></p>
+                                <p><label for="new_password">New Password</label>:<br> <input type="password" name="new_password" id="new_password" required/></p>
+                                <p><label for="confirm_new_password">Confirm New Password</label>:<br> <input type="password" name="confirm_new_password" id="confirm_new_password" required/></p>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Change password</button>
+                        </form>
+                    </div>
+                </div>
+                <div th:default></div>
             </div>
         </div>
     </div>
 </div>
+<div th:replace="fragments/common :: footer"></div>
 
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
 <script>
+    // file input fix
+    $("#profile-photo-input").change(function (event) {
+        if (event.target.files && event.target.files[0]) {
+            $("#profile-photo-label").text(event.target.files[0].name)
+        } else {
+            $("#profile-photo-label").text("Choose File") //TODO jos me tehdään lokalisaatio niin tämä pitää ottaa huomioon
+        }
+    })
+
     feather.replace()
 </script>
 </body>

@@ -16,7 +16,6 @@ public class LoginController {
     @Autowired
     private UserRepository userRepository;
 
-
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginGet() {
         return "login";
