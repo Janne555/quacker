@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Entity for quacks
+ */
 @Entity
 public class Quack {
 
@@ -12,6 +15,9 @@ public class Quack {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    /**
+     * This is the data lob for the message data
+     */
     @Lob
     private String quackMessage;
 
@@ -21,14 +27,23 @@ public class Quack {
 
     private String formattedDate;
 
+    /**
+     * Object reference for the user who posted the quack as a JPA relation
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     User poster;
 
+    /**
+     * List of users who have liked the quack as a JPA relation
+     */
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     List<User> likers;
 
+    /**
+     * Object reference for the attachment posted with the quack
+     */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "file_map_id")
     private FileMap attachment;

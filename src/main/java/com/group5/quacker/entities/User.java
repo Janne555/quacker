@@ -3,6 +3,9 @@ package com.group5.quacker.entities;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * Entity for users
+ */
 @Entity
 public class User {
 
@@ -17,18 +20,30 @@ public class User {
 
     private String passwordHash;
 
+    /**
+     * Object reference for the profile photo of a user
+     */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "file_map_id")
     private FileMap profilePhoto;
 
+    /**
+     * Object references to the quacks posted by a user as a JPA relation
+     */
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "quack_id")
     private List<Quack> quacks;
 
+    /**
+     * Object references to users that this user has followed as a JPA relation
+     */
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private List<User> following;
 
+    /**
+     * Object references to users that have followed this user as a JPA relation
+     */
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private List<User> followers;

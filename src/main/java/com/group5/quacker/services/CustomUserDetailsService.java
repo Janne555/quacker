@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
 
+/**
+ * Service class for UserDetails
+ * This is where roles can be assigned with thymeleaf security
+ */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
