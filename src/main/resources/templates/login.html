@@ -7,7 +7,10 @@
 <div th:replace="fragments/common :: headermain"></div>
     
 <div class="container con2">
-<form action="#" th:action="@{/login}" method="POST">
+<form action="#" th:action="@{/login}"
+      method="POST">
+
+
     
     <div class="form-group">
     <label for="username">Username:</label>
@@ -20,6 +23,11 @@
     </div> 
     
     <input class="btn btn-primary btn-lg btn-block" type="submit" value="Sign in">
+
+    <div th:if="${loginError != null}">
+        <span class="error" th:text="${loginError}"></span>
+    </div>
+
     
 <p> </p>
 <p style=" font-weight: bold">OR</p>
