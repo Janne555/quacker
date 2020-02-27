@@ -64,9 +64,15 @@
             <div class="dropdown profileimg" >
           <p style="display:inline; font-family: Amiri; font-size: 30px ; letter-spacing: 5px;">  [[${#httpServletRequest.remoteUser}]]  </p>
   <a href="#" id="imageDropdown" data-toggle="dropdown">
-  <img border="0" alt="oma profiilikuva" class="rounded-circle border border-dark" 
+  
+  
+  <img th:if="${profilePhotoUrl != null}" border="0" alt="oma profiilikuva" class="rounded-circle border border-dark" 
   src="${profilePhotoUrl}" th:src="${profilePhotoUrl}" 
   style="width:100px; height:65px ">
+  <img th:if="${profilePhotoUrl == null}" border="0" alt="oma profiilikuva" class="rounded-circle border border-dark" 
+  src="${profilePhotoUrl}" th:src="@{/images/quackerhar.png}" 
+  style="width:100px; height:65px ">
+  
   <span class="caret"></span>
    </a>
    

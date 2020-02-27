@@ -83,6 +83,9 @@ public class SettingsController {
 
         return "settings";
     }
+    
+    
+
 
     /**
      * Accepts a new profile photo and sets
