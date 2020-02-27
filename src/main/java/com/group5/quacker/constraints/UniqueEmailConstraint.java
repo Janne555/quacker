@@ -6,6 +6,10 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
+/**
+ * A constraint interface for validating email uniqueness
+ * To be used as a decorator for validated fields
+ */
 @Documented
 @Constraint(validatedBy = UniqueEmailValidator.class)
 @Target( { ElementType.METHOD, ElementType.FIELD })

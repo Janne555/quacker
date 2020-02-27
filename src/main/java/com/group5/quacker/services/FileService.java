@@ -13,6 +13,9 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.util.UUID;
 
+/**
+ * Service used for storing and retrieving files
+ */
 @Service
 public class FileService {
     @Autowired
@@ -24,10 +27,21 @@ public class FileService {
     @Autowired
     private FileMakerService fileMakerService;
 
+    /**
+     * Returns a new file
+     * @param fileName
+     * @return
+     */
     public File getFile(String fileName) {
         return fileMakerService.makeFile(fileName);
     }
 
+    /**
+     * Returns an InputStream
+     * @param fileName
+     * @return
+     * @throws FileNotFoundException
+     */
     public InputStream getInputStream(String fileName) throws FileNotFoundException {
         File file = getFile(fileName);
         if (file == null) {
@@ -36,6 +50,12 @@ public class FileService {
         return new FileInputStream(file);
     }
 
+    /**
+     * Stores a multipart file as a file in the filesystem
+     * @param file
+     * @return
+     * @throws IOException
+     */
     public FileMap storeFile(MultipartFile file) throws IOException {
         FileMap fileMap = new FileMap();
         fileMap.setFileName(idService.generate());
