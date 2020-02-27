@@ -68,6 +68,9 @@ public class SettingsController {
 
         return "settings";
     }
+    
+    
+
 
     @PostMapping("/settings/profile-photo")
     public String postProfilePhoto(@RequestParam("file") MultipartFile file) throws IOException {

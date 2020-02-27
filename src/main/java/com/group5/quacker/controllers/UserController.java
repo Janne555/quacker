@@ -106,11 +106,23 @@ public class UserController {
 
     @RequestMapping(value = {"/user/", "/users/", "/user", "/users"}, method = RequestMethod.GET)
     public String userPageGet(Model model) {
+    	 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+         User user = userRepository.findByName(auth.getName());
+         if(user==null)
+             return "redirect:/login";
+         
             List<User> users = userRepository.findAll();
 
             model.addAttribute("users", users);
+            
+            if (user.getProfilePhoto() != null) {
+                model.addAttribute("profilePhotoUrl", "/files/" + user.getProfilePhoto().getPublicId());
+            }
+
+            
             return "user-search";
+            
     }
 
 

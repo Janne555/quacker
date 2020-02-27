@@ -31,6 +31,7 @@ public class TestController {
         System.out.println("User: \"" + auth.getName() + "\" got the index page.");
         model.addAttribute("username", auth.getName());
 
+        
         User user = userRepository.findByName(auth.getName());
         if(user!=null) {
             List<User> following = user.getFollowing();
@@ -40,6 +41,11 @@ public class TestController {
             }
 
             model.addAttribute("quacks", quacks);
+            
+            if (user.getProfilePhoto() != null) {
+                model.addAttribute("profilePhotoUrl", "/files/" + user.getProfilePhoto().getPublicId());
+            }
+
         }
 
         /*

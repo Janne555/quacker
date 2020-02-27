@@ -19,7 +19,7 @@
             <a class="btn btn-primary" role="button" th:href="'mailto:' + ${user.getEmail()}">Send email </a>
         </div>
 
-        <div th:if="${profilePhotoUrl != null}" class="card" style="height: 100px; width: 100px; margin-bottom: 1rem">
+        <div th:if="${profilePhotoUrl != null}" class="card" style="height: 100; width: 100px; margin-bottom: 1rem">
             <img class="card-img-top" th:src="${profilePhotoUrl}" alt="profile photo"/>
         </div>
 

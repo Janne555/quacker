@@ -39,7 +39,7 @@
                     <div>
                         <h3>Profile Photo</h3>
                         <div th:if="${profilePhotoUrl != null}" class="card"
-                             style="height: 100px; width: 100px; margin-bottom: 1rem">
+                             style="height: 100; width: 100px; margin-bottom: 1rem">
                             <img class="card-img-top" th:src="${profilePhotoUrl}" alt="profile photo"/>
                         </div>
                         <form th:action="@{/settings/profile-photo}" enctype="multipart/form-data" method="post">
