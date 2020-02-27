@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * The FileController class contains endpoint methods related
- * to file uploads and downloads
+ * The FileController class contains endpoints
+ * to handle file upload, download and streaming
  */
 @Controller
 public class FileController {
@@ -29,6 +29,14 @@ public class FileController {
 
     private Long CHUNK_SIZE = 10000L;
 
+    /**
+     * Returns a file for an id. If a file can't be found responds
+     * with not found
+     * @param id
+     * @param withOriginalName
+     * @return
+     * @throws IOException
+     */
     @GetMapping("/files/{id}")
     public ResponseEntity getFile(@PathVariable("id") String id, @RequestParam(name = "with-original-name", required = false) String withOriginalName) throws IOException {
         FileMap fileMap = fileMapRepository.findByPublicId(id);
@@ -52,6 +60,13 @@ public class FileController {
         return new ResponseEntity(IOUtils.toByteArray(inputStream), headers, HttpStatus.OK);
     }
 
+    /**
+     * Returns a part of a file. Requires range header.
+     * @param id
+     * @param headers
+     * @return
+     * @throws IOException
+     */
     @GetMapping("/stream/{id}")
     public ResponseEntity<ResourceRegion> getVideo(
             @PathVariable("id") String id,
@@ -78,6 +93,14 @@ public class FileController {
     }
 
 
+    /**
+     * Saves a file to the server. Requires a file to be
+     * in a multipart form under the file attribute.
+     * @param file
+     * @param redirect
+     * @return
+     * @throws IOException
+     */
     @PostMapping("/files")
     public String postFile(@RequestParam("file") MultipartFile file, @RequestParam(value = "redirect", required = false) String redirect) throws IOException {
         FileMap fileMap = fileService.storeFile(file);
