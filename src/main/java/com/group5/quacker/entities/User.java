@@ -125,4 +125,9 @@ public class User {
     public void setFollowers(List<User> followers) {
         this.followers = followers;
     }
+
+    public void setFollowing(List<User> following) {
+        this.following = following;
+    }
+
 }
