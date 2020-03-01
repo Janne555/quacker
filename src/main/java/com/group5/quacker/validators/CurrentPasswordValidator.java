@@ -2,14 +2,17 @@ package com.group5.quacker.validators;
 
 import com.group5.quacker.constraints.CurrentPasswordConstraint;
 import com.group5.quacker.constraints.UniqueEmailConstraint;
+import com.group5.quacker.entities.User;
 import com.group5.quacker.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class CurrentPasswordValidator implements ConstraintValidator<CurrentPasswordConstraint, String>
-{
+public class CurrentPasswordValidator implements ConstraintValidator<CurrentPasswordConstraint, String> {
     @Autowired
     UserRepository userRepository;
 
@@ -19,7 +22,12 @@ public class CurrentPasswordValidator implements ConstraintValidator<CurrentPass
 
     @Override
     public boolean isValid(String password, ConstraintValidatorContext cxt) {
-
-        return true;
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByName(auth.getName());
+        if (user == null) {
+            return false;
+        } else {
+            return new BCryptPasswordEncoder().matches(password, user.getPasswordHash());
+        }
     }
 }
