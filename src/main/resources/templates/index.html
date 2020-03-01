@@ -52,7 +52,8 @@
      */
     document.querySelector("#quack-attachment").addEventListener('change', function () {
         if (this.files && this.files[0] && this.files[0].type.includes('image')) {
-            const image = new Image()
+            const image = document.querySelector("#quack-image-preview") ?? new Image()
+            image.id = "quack-image-preview"
             const objectURL = URL.createObjectURL(this.files[0])
             image.onload = () => {
                 document.querySelector("#post-quack-form").prepend(image)
