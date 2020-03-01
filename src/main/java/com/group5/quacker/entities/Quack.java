@@ -30,7 +30,7 @@ public class Quack {
     /**
      * Object reference for the user who posted the quack as a JPA relation
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id")
     User poster;
 
@@ -44,7 +44,7 @@ public class Quack {
     /**
      * Object reference for the attachment posted with the quack
      */
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "file_map_id")
     private FileMap attachment;
 
