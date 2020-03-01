@@ -8,13 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 public class CurrentPasswordValidator implements ConstraintValidator<CurrentPasswordConstraint, String> {
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public void initialize(CurrentPasswordConstraint temp) {
@@ -27,7 +31,7 @@ public class CurrentPasswordValidator implements ConstraintValidator<CurrentPass
         if (user == null) {
             return false;
         } else {
-            return new BCryptPasswordEncoder().matches(password, user.getPasswordHash());
+            return passwordEncoder.matches(password, user.getPasswordHash());
         }
     }
 }
