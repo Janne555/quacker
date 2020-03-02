@@ -7,7 +7,6 @@
 <div th:replace="fragments/common :: headermain"></div>
 
 
-
 <div class="container">
     <div class="row">
         <div class="col">
@@ -22,12 +21,17 @@
                        th:classappend="${#strings.equals(setting, 'profile-photo')} ? 'active' : ''"
                        th:href="@{/settings/profile-photo}">Profile Photo</a>
                 </li>
-                                <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link"
                        th:classappend="${#strings.equals(setting, 'password-change')} ? active : notactive"
                        th:href="@{/settings/password-change}">Change Password</a>
                 </li>
-                
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:classappend="${#strings.equals(setting, 'delete-account')} ? active : notactive"
+                       th:href="@{/settings/delete-account}">Delete Account</a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link">More stuff</a>
                 </li>
@@ -39,7 +43,7 @@
                     <div>
                         <h3>Profile Photo</h3>
                         <div th:if="${profilePhotoUrl != null}" class="card"
-                             style="height: 100; width: 100px; margin-bottom: 1rem">
+                             style="height: 100px; width: 100px; margin-bottom: 1rem">
                             <img class="card-img-top" th:src="${profilePhotoUrl}" alt="profile photo"/>
                         </div>
                         <form th:action="@{/settings/profile-photo}" enctype="multipart/form-data" method="post">
@@ -91,23 +95,51 @@
                         </ul>
                     </div>
                 </div>
-                                <div th:case="password-change">
+                <div th:case="password-change">
                     <div>
                         <h3>Change Password</h3>
                         <form th:action="@{/settings/password-change}" method="post">
                             <div class="form-group">
-                                <p><label for="current_password">Current Password</label>:<br> <input type="password" name="current_password" id="current_password" required/></p>
-                                <p><label for="new_password">New Password</label>:<br> <input type="password" name="new_password" id="new_password" required/></p>
-                                <p><label for="confirm_new_password">Confirm New Password</label>:<br> <input type="password" name="confirm_new_password" id="confirm_new_password" required/></p>
+                                <p><label for="current_password">Current Password</label>:<br> <input type="password"
+                                                                                                      name="current_password"
+                                                                                                      id="current_password"
+                                                                                                      required/></p>
+                                <p><label for="new_password">New Password</label>:<br> <input type="password"
+                                                                                              name="new_password"
+                                                                                              id="new_password"
+                                                                                              required/></p>
+                                <p><label for="confirm_new_password">Confirm New Password</label>:<br> <input
+                                        type="password" name="confirm_new_password" id="confirm_new_password" required/>
+                                </p>
                             </div>
                             <button type="submit" class="btn btn-primary">Change password</button>
                         </form>
                     </div>
                 </div>
-                <div th:default></div>
+                <div th:case="delete-account">
+                    <h3>Delete Account</h3>
+                    <form th:object="${currentPasswordForm}"
+                          th:action="@{/settings/delete-account}"
+                          class="form"
+                          method="post"
+                          id="delete-account-form"
+                    >
+                        <div class="form-group">
+                            <label for="delete-account-current-password">Current Password</label>
+                            <input type="password" required class="form-control"
+                                   name="currentPassword" id="delete-account-current-password"
+                                   th:field="*{currentPassword}">
+                            <span class="error" th:if="${#fields.hasErrors('currentPassword')}"
+                                  th:errors="*{currentPassword}">Password error</span>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Delete Account</button>
+                    </form>
+                </div>
             </div>
+            <div th:default></div>
         </div>
     </div>
+</div>
 </div>
 <div th:replace="fragments/common :: footer"></div>
 
@@ -118,6 +150,12 @@
             $("#profile-photo-label").text(event.target.files[0].name)
         } else {
             $("#profile-photo-label").text("Choose File") //TODO jos me tehdään lokalisaatio niin tämä pitää ottaa huomioon
+        }
+    })
+
+    document.querySelector("#delete-account-form").addEventListener('submit', event => {
+        if (!window.confirm("A deleted account can't be restored. Are you sure you want to delete?")) {
+            event.preventDefault()
         }
     })
 

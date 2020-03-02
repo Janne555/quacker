@@ -23,14 +23,14 @@ public class User {
     /**
      * Object reference for the profile photo of a user
      */
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "file_map_id")
     private FileMap profilePhoto;
 
     /**
      * Object references to the quacks posted by a user as a JPA relation
      */
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "quack_id")
     private List<Quack> quacks;
 
@@ -125,4 +125,9 @@ public class User {
     public void setFollowers(List<User> followers) {
         this.followers = followers;
     }
+
+    public void setFollowing(List<User> following) {
+        this.following = following;
+    }
+
 }
