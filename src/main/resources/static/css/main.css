@@ -167,3 +167,8 @@ body {
 span.error {
   color: red;
 }
+
+#quack-image-preview, .quack-image {
+  max-width: 500px;
+  max-height: 500px;
+}
