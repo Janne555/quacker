@@ -30,7 +30,7 @@ public class Quack {
     /**
      * Object reference for the user who posted the quack as a JPA relation
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     User poster;
 
