@@ -2,6 +2,7 @@ package com.group5.quacker.entities;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Entity for users
@@ -130,4 +131,19 @@ public class User {
         this.following = following;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                getName().equals(user.getName()) &&
+                getEmail().equals(user.getEmail()) &&
+                getPasswordHash().equals(user.getPasswordHash());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, getName(), getEmail(), getPasswordHash());
+    }
 }
