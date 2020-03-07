@@ -172,3 +172,12 @@ span.error {
   max-width: 500px;
   max-height: 500px;
 }
+
+.quack-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.quack-buttons > * {
+  margin: 10px;
+}
