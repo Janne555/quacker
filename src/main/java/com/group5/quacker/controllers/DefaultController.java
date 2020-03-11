@@ -39,6 +39,10 @@ public class DefaultController {
         User user = userRepository.findByName(auth.getName());
         model.addAttribute("user", user);
         if(user!=null && displayQuacks != null) {
+            if (user.getProfilePhoto() != null) {
+                model.addAttribute("profilePhotoHead", "/files/" + user.getProfilePhoto().getPublicId());
+            }
+
             switch(displayQuacks) {
                 case "followed":        // Vain seurattujen käyttäjien quackit näkyviin
                     List<User> following = user.getFollowing();
@@ -64,9 +68,6 @@ public class DefaultController {
 
                     model.addAttribute("quackView", "followed");    // All/Followed napin highlightausta varten
 
-                    if (user.getProfilePhoto() != null) {
-                        model.addAttribute("profilePhotoHead", "/files/" + user.getProfilePhoto().getPublicId());
-                    }
                     break;
 
                 default:            // Kaikki quackit näkyviin
