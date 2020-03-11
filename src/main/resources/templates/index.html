@@ -18,12 +18,12 @@
 
         <form id="post-quack-form" th:action="@{/quack}" enctype="multipart/form-data" method="post">
             <div>
-                <label for="message">Message</label>: <input type="text" name="message" id="message"/>
-                <input type="submit" value="Submit"/>
+                <label for="message" style="color:rgb(7, 121, 85)">Message:</label> <input type="text" name="message" id="message"/>
+                <input id="quackInput" type="submit" value="Quack!" />
             </div>
             <div>
                 <input type="file" id="quack-attachment"
-                       name="file" aria-describedby="inputGroupFileAddon01">
+                       name="file" aria-describedby="inputGroupFileAddon01" style="color:rgb(7, 121, 85)">
             </div>
         </form>
 

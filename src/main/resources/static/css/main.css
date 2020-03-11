@@ -76,11 +76,32 @@ body {
   margin: 10px;
   padding: 20px;
   float: left;
-  background: burlywood;
+  background: rgb(210,180,140, 0.7);
 }
 
 #posts {
   margin-left: 20%;
+}
+
+#quackInput {
+  background-color: rgb(7, 121, 85);
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 25px;
+  margin: 5px;
+  padding: 15px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+#quack-attachment{
+  font-weight: bold;
+}
+
+label{
+  font-weight: bold;
+  font-size: 20px;
 }
 
 .center {
