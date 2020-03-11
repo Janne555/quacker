@@ -38,10 +38,14 @@ public class DefaultController {
         
         User user = userRepository.findByName(auth.getName());
         model.addAttribute("user", user);
-        if(user!=null && displayQuacks != null) {
-            if (user.getProfilePhoto() != null) {
-                model.addAttribute("profilePhotoHead", "/files/" + user.getProfilePhoto().getPublicId());
-            }
+        if(user == null)
+            return "redirect/login";
+
+        if (user.getProfilePhoto() != null) {
+            model.addAttribute("profilePhotoHead", "/files/" + user.getProfilePhoto().getPublicId());
+        }
+
+        if(displayQuacks != null) {
 
             switch(displayQuacks) {
                 case "followed":        // Vain seurattujen käyttäjien quackit näkyviin
