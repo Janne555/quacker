@@ -85,12 +85,15 @@
                         <a  th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary fa fa-thumbs-up"  ></a>
                     </div>
 
-                    <div th:if="${quack.getLikers().contains(loggedUser)}">
-                        <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Unlike</a>
+                    <div th:unless="${quack.getPoster().equals(user)}">
+                        <div th:if="${quack.getLikers().contains(user)}">
+                            <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-danger">Unlike</a>
+                        </div>
+                        <div th:unless="${quack.getLikers().contains(user)}">
+                            <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Like</a>
+                        </div>
                     </div>
-                    <div th:unless="${quack.getLikers().contains(loggedUser)}">
-                        <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Like</a>
-                    </div>
+
                 </div>
             </div>
         </div>
