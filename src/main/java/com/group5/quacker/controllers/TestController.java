@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -40,6 +42,15 @@ public class TestController {
             for(User followedUser : following) {
                 quacks.addAll(followedUser.getQuacks());
             }
+
+            Collections.sort(quacks, new Comparator<Quack>() {
+                public int compare(Quack o1, Quack o2) {
+                    return o1.getDatePosted().compareTo(o2.getDatePosted());
+                }
+            });
+
+            Collections.reverse(quacks);        // Uusin ylhäällä
+
 
             model.addAttribute("quacks", quacks);
             
