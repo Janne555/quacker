@@ -5,15 +5,15 @@ import com.group5.quacker.entities.Quack;
 import com.group5.quacker.entities.User;
 import com.group5.quacker.repositories.QuackRepository;
 import com.group5.quacker.repositories.UserRepository;
+import com.group5.quacker.services.AccountService;
 import com.group5.quacker.services.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,10 +37,14 @@ public class QuackController {
     @Autowired
     FileService fileService;
 
+    @Autowired
+    AccountService accountService;
+
     /**
      * Post mapping for /quack. New quacks are posted with this endpoint.
+     *
      * @param message Quack message to be posted
-     * @param file (optional) File attached to quack
+     * @param file    (optional) File attached to quack
      * @return Redirect to /
      * @throws IOException
      */
@@ -71,7 +75,8 @@ public class QuackController {
 
     /**
      * This endpoint provides the like functionality for a quack.
-     * @param id    Id value of the quack that will be liked
+     *
+     * @param id Id value of the quack that will be liked
      * @return Redirect to the users page who had posted the quack to be liked
      */
     @RequestMapping(value = "/like/{id}", method = RequestMethod.GET)
@@ -104,5 +109,25 @@ public class QuackController {
         return "redirect:/";
     }
 
+    @DeleteMapping("/quack/{id}")
+    public ResponseEntity deleteQuack(@PathVariable("id") long id, HttpServletRequest request) {
+        User user = accountService.currentUser();
+        if (user == null) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
 
+        Quack byId = quackRepository.findById(id);
+
+        if (byId == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        if (!byId.getPoster().equals(user)) {
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+
+        quackRepository.delete(byId);
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 }
