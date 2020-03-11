@@ -16,12 +16,12 @@
 
         <form id="post-quack-form" th:action="@{/quack}" enctype="multipart/form-data" method="post">
             <div>
-                <label for="message">Message</label>: <input type="text" name="message" id="message"/>
-                <input type="submit" value="Submit"/>
+                <label for="message" style="color:rgb(7, 121, 85)">Message:</label> <input type="text" name="message" id="message"/>
+                <input id="quackInput" type="submit" value="Quack!" />
             </div>
             <div>
                 <input type="file" id="quack-attachment"
-                       name="file" aria-describedby="inputGroupFileAddon01">
+                       name="file" aria-describedby="inputGroupFileAddon01" style="color:rgb(7, 121, 85)">
             </div>
         </form>
 
@@ -100,8 +100,9 @@ for (var i = 0; i < btns.length; i++) {
      * Lisää esikatselukuva jos tiedosto on jokin kuvaformaatti
      */
     document.querySelector("#quack-attachment").addEventListener('change', function () {
-        if (this.files && this.files[0] && this.files[0].type.includes('image')) {
-            const image = new Image()
+        if (this.files?.[0]?.type.includes('image')) {
+            const image = document.querySelector("#quack-image-preview") ?? new Image()
+            image.id = "quack-image-preview"
             const objectURL = URL.createObjectURL(this.files[0])
             image.onload = () => {
                 document.querySelector("#post-quack-form").prepend(image)

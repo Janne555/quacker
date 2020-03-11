@@ -1,9 +1,14 @@
 package com.group5.quacker.controllers;
 
 import com.group5.quacker.entities.FileMap;
+import com.group5.quacker.entities.Quack;
 import com.group5.quacker.entities.User;
+import com.group5.quacker.models.CurrentPasswordForm;
+import com.group5.quacker.models.PasswordForm;
 import com.group5.quacker.models.PersonalInfoForm;
+import com.group5.quacker.repositories.QuackRepository;
 import com.group5.quacker.repositories.UserRepository;
+import com.group5.quacker.services.AccountService;
 import com.group5.quacker.services.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -14,9 +19,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,19 +38,27 @@ public class SettingsController {
     @Autowired
     private FileService fileService;
 
-
+    @Autowired
+    private AccountService accountService;
     /**
      * Includes the class as an attribute
+     *
      * @return
      */
     @ModelAttribute("personalInfoForm")
-    public PersonalInfoForm newMyForm() {
+    public PersonalInfoForm newPersonalInfoForm() {
         return new PersonalInfoForm();
+    }
+
+    @ModelAttribute("currentPasswordForm")
+    public CurrentPasswordForm newMyForm() {
+        return new CurrentPasswordForm();
     }
 
     /**
      * Returns the specific settings page requested in the URL.
      * Includes attributes required by the page.
+     *
      * @param setting
      * @param allParams
      * @param model
@@ -81,19 +97,21 @@ public class SettingsController {
             case "personal-info":
                 model.addAttribute("setting", "personal-info");
                 break;
+            case "delete-account":
+                model.addAttribute("setting", "delete-account");
+                break;
             default:
                 break;
         }
 
         return "settings";
     }
-    
-    
 
 
     /**
      * Accepts a new profile photo and sets
      * it as the users current profile photo
+     *
      * @param file
      * @return
      * @throws IOException
@@ -119,6 +137,7 @@ public class SettingsController {
      * Accepts a validated personal info form.
      * If the form has errors, returns a redirect and
      * includes the errors as a flash attribute
+     *
      * @param personalInfoForm
      * @param bindingResult
      * @param redirectAttributes
@@ -145,5 +164,50 @@ public class SettingsController {
         }
 
         return "redirect:/settings/personal-info";
+    }
+
+    @PostMapping("/settings/password-change")
+    public String postPassword(@Valid PasswordForm passWordForm, final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
+        org.springframework.security.crypto.password.PasswordEncoder encoder = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = userRepository.findByName(auth.getName());
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+
+        //System.out.println(passWordForm.getNew_password() + ", " + passWordForm.getConfirm_new_password());
+        System.out.println(user.hashCode());
+        System.out.println(encoder.matches(encoder.encode(passWordForm.getCurrent_password()), user.getPasswordHash()));
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("message", "Given new passwords does not match!");
+        }
+
+        return "redirect:/settings/password-change";
+    }
+
+    @PostMapping("/settings/delete-account")
+    public String postAccountDeletion(
+            @Valid CurrentPasswordForm currentPasswordForm,
+            final BindingResult bindingResult,
+            final RedirectAttributes redirectAttributes) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = userRepository.findByName(auth.getName());
+
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.currentPasswordForm", bindingResult);
+            redirectAttributes.addFlashAttribute("currentPasswordForm", currentPasswordForm);
+        } else {
+            accountService.deleteAccount(user);
+        }
+
+        return "redirect:/settings/delete-account";
     }
 }
