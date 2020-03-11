@@ -64,11 +64,16 @@
             <p class="card-text" th:text="${quack.getQuackMessage()}">
             </p>
 
-            <div th:if="${quack.getLikers().contains(loggedUser)}">
-                <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Unlike</a>
-            </div>
-            <div th:unless="${quack.getLikers().contains(loggedUser)}">
-                <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Like</a>
+            <div class="quack-buttons">
+                <div th:if="${quack.getLikers().contains(loggedUser)}">
+                    <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Unlike</a>
+                </div>
+                <div th:unless="${quack.getLikers().contains(loggedUser)}">
+                    <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Like</a>
+                </div>
+                <div th:if="${quack.getPoster().equals(loggedUser)}">
+                    <button th:onclick="|deleteQuack('${quack.getId()}')|" class="btn btn-primary">Delete</button>
+                </div>
             </div>
 
             <p>Likes: <span th:text="${quack.getLikers().size()}"></span></p>
@@ -77,6 +82,27 @@
 
 
 </div>
+<script th:inline="javascript">
+    function deleteQuack(quackId) {
+        if (!confirm(`Are you sure you want to delete quack?`)) {
+            return
+        }
+
+        const baseUrl = [[@{/quack}]]
+        const csrfToken = [[${_csrf.token}]]
+        const headers = new Headers({
+            'X-CSRF-TOKEN': csrfToken
+        })
+
+        fetch(`${baseUrl}/${quackId}`, {
+            method: 'DELETE',
+            headers
+        }).finally(() => {
+            window.location.reload()
+        })
+    }
+</script>
+
 </body>
 
 

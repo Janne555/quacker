@@ -5,6 +5,8 @@ import com.group5.quacker.entities.User;
 import com.group5.quacker.repositories.QuackRepository;
 import com.group5.quacker.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -42,5 +44,10 @@ public class AccountService {
         quackRepository.saveAll(likedQuacks);
         userRepository.saveAll(toSave);
         userRepository.delete(user);
+    }
+
+    public User currentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return userRepository.findByName(auth.getName());
     }
 }
