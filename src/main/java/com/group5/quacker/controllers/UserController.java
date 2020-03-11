@@ -49,8 +49,8 @@ public class UserController {
             return "user-search";
         }
 
-        model.addAttribute("loggedUser", loggedUser);               // populate the model with the user models
-        model.addAttribute("user", user);
+        model.addAttribute("user", loggedUser);               // populate the model with the user models
+        model.addAttribute("watchedUser", user);
 
         if (user.getProfilePhoto() != null) {                           // populate model with the profile photo
             model.addAttribute("profilePhotoUrl", "/files/" + user.getProfilePhoto().getPublicId());
@@ -137,6 +137,7 @@ public class UserController {
          User user = userRepository.findByName(auth.getName());
          if(user==null)
              return "redirect:/login";
+        model.addAttribute("user", user);
          
             List<User> users = userRepository.findAll();
 

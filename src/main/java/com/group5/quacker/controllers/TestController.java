@@ -33,6 +33,7 @@ public class TestController {
 
         
         User user = userRepository.findByName(auth.getName());
+        model.addAttribute("user", user);
         if(user!=null) {
             List<User> following = user.getFollowing();
             ArrayList<Quack> quacks = new ArrayList();
