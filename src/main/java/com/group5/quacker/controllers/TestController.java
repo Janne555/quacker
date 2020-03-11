@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -27,8 +28,9 @@ public class TestController {
     @Autowired
     QuackRepository quackRepository;
 
-    @RequestMapping(value = {"/", "/index", "/index/"}, method = RequestMethod.GET)
-    public String pageRootGet(Model model) {
+    @RequestMapping(value = {"/{display}", "/index", "/index/", "/"}, method = RequestMethod.GET)
+    public String pageRootGet(Model model,
+                              @PathVariable(value = "display", required = false) String displayQuacks) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         System.out.println("User: \"" + auth.getName() + "\" got the index page.");
         model.addAttribute("username", auth.getName());
@@ -36,28 +38,62 @@ public class TestController {
         
         User user = userRepository.findByName(auth.getName());
         model.addAttribute("user", user);
-        if(user!=null) {
-            List<User> following = user.getFollowing();
-            ArrayList<Quack> quacks = new ArrayList();
-            for(User followedUser : following) {
-                quacks.addAll(followedUser.getQuacks());
-            }
+        if(user!=null && displayQuacks != null) {
+            switch(displayQuacks) {
+                case "followed":
+                    List<User> following = user.getFollowing();
+                    ArrayList<Quack> quacks = new ArrayList();
+                    for(User followedUser : following) {
+                        quacks.addAll(followedUser.getQuacks());
+                    }
 
-            Collections.sort(quacks, new Comparator<Quack>() {
+                    Collections.sort(quacks, new Comparator<Quack>() {
+                        public int compare(Quack o1, Quack o2) {
+                            return o1.getDatePosted().compareTo(o2.getDatePosted());
+                        }
+                    });
+
+                    Collections.reverse(quacks);        // Uusin ylhäällä
+
+
+                    model.addAttribute("quacks", quacks);
+
+                    if (user.getProfilePhoto() != null) {
+                        model.addAttribute("profilePhotoHead", "/files/" + user.getProfilePhoto().getPublicId());
+                    }
+                    break;
+
+                default:
+                    ArrayList<Quack> quacksDefault = new ArrayList();
+
+                    quacksDefault.addAll(quackRepository.findAll());
+
+                    Collections.sort(quacksDefault, new Comparator<Quack>() {
+                        public int compare(Quack o1, Quack o2) {
+                            return o1.getDatePosted().compareTo(o2.getDatePosted());
+                        }
+                    });
+
+                    Collections.reverse(quacksDefault);        // Uusin ylhäällä
+
+                    model.addAttribute("quacks", quacksDefault);
+
+                    break;
+            }
+        } else {
+            ArrayList<Quack> quacksDefault = new ArrayList();
+
+            quacksDefault.addAll(quackRepository.findAll());
+
+            Collections.sort(quacksDefault, new Comparator<Quack>() {
                 public int compare(Quack o1, Quack o2) {
                     return o1.getDatePosted().compareTo(o2.getDatePosted());
                 }
             });
 
-            Collections.reverse(quacks);        // Uusin ylhäällä
+            Collections.reverse(quacksDefault);        // Uusin ylhäällä
 
-
-            model.addAttribute("quacks", quacks);
-            
-            if (user.getProfilePhoto() != null) {
-                model.addAttribute("profilePhotoHead", "/files/" + user.getProfilePhoto().getPublicId());
-            }
-
+            model.addAttribute("quacks", quacksDefault);
         }
 
         /*

@@ -9,7 +9,7 @@
 
     <div id="container" align="center">
     
-    <div id="posts" align="center">    
+    <div id="posts" align="center">
         <a href="/index">
             <img border="0" class="center" src="../static/images/Quacks.png" th:src="@{/images/Quacks.png}" style="width:400px; height:400">
         </a>
@@ -36,60 +36,53 @@
         <a href="/index">
             <img border="0" class="center" src="../static/images/LatestQuacks.png" th:src="@{/images/LatestQuacks.png}" style="width:600px; height:600">
         </a>
-        
-        
-       <div id="myDIV" class="feedFilterMain">
-             <button class="feedFilter active">
-          <p> All users </p>
-      </button>
-            <button class="feedFilter">
-          <p> Followed users </p>
-      </button>
-      </div>
-      
-      <script>
-var header = document.getElementById("myDIV");
-var btns = header.getElementsByClassName("feedFilter");
-for (var i = 0; i < btns.length; i++) {
-  btns[i].addEventListener("click", function() {
-  var current = document.getElementsByClassName("active");
-  current[0].className = current[0].className.replace(" active", "");
-  this.className += " active";
-  });
-}
-</script>
+        <div id="myDIV" class="feedFilterMain">
+            <a class="feedFilter active" th:href="@{/all}">
+                <p> All users </p>
+            </a>
+            <a class="feedFilter" th:href="@{/followed}">
+                <p> Followed users </p>
+            </a>
+        </div>
 
+        <div th:switch="${quackView}">
+            <div th:case="allQuacks">
 
-        
-        <div th:each="quack : ${quacks}" class="postaus">        
-                  <img border="0" alt="oma profiilikuva" class="rounded-circle border border-dark" 
-  src="${profilePhotoUrl}" th:src="@{/images/quackerhar.png}" 
-  style="width:60px; height:40px ">
-  
-  
-              <b><span th:text="${quack.poster.getName()}">poster</span></b>:
-                
-                <div class="quacki">
-                <span th:text="${quack.getQuackMessage()}">message</span>
-                </div>
-                
-                <div class="oikea">
-                <span th:text="${quack.getFormattedDate()}">dateposted
-                </span>
-                 <a  th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary fa fa-thumbs-up"  ></a>
-               </div> 
-               
-             <div th:if="${quack.getLikers().contains(loggedUser)}">
-                <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Unlike</a>
             </div>
-            <div th:unless="${quack.getLikers().contains(loggedUser)}">
-                <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Like</a>
+            <div th:case="followedQuacks">
+
+            </div>
+            <div th:case="*">
+                <div th:each="quack : ${quacks}" class="postaus">
+                    <img border="0" alt="oma profiilikuva" class="rounded-circle border border-dark"
+                         src="${profilePhotoUrl}" th:src="@{/images/quackerhar.png}"
+                         style="width:60px; height:40px ">
+
+
+                    <b><span th:text="${quack.poster.getName()}">poster</span></b>:
+
+                    <div class="quacki">
+                        <span th:text="${quack.getQuackMessage()}">message</span>
+                    </div>
+
+                    <div class="oikea">
+                    <span th:text="${quack.getFormattedDate()}">dateposted</span>
+                        <a  th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary fa fa-thumbs-up"  ></a>
+                    </div>
+
+                    <div th:if="${quack.getLikers().contains(loggedUser)}">
+                        <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Unlike</a>
+                    </div>
+                    <div th:unless="${quack.getLikers().contains(loggedUser)}">
+                        <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Like</a>
+                    </div>
+                </div>
             </div>
         </div>
-        
-        
-        
-        
+
+      </div>
+
+
     </div>    
         
 
