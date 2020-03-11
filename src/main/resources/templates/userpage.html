@@ -9,6 +9,11 @@
 
 <div class="container con4">
     <div class="jumbotron con4">
+        <div th:if="${watchedUser.equals(user)}">
+            <h1>This is your page!</h1>
+            <a class="btn btn-primary" th:href="@{/settings}">Settings</a>
+        </div>
+        <div th:unless="${watchedUser.equals(user)}">
         <div class="row">
             <h4>This is the page for user: <span th:text="${watchedUser.getName()}">username</span></h4>
         </div>
@@ -33,13 +38,21 @@
         </div>
         </div>
 
+        </div>
     </div>
 
     <div class="card con4">
         <div class="card-body">
-        <h2>
-        Latest quacks posted by <span th:text="${watchedUser.getName()}">username</span>:
-        </h2>
+            <div th:unless="${watchedUser.equals(user)}">
+                <h2>
+                Latest quacks posted by <span th:text="${watchedUser.getName()}">username</span>:
+                </h2>
+            </div>
+            <div th:if="${watchedUser.equals(user)}">
+                <h2>
+                    Latest quacks posted by you:
+                </h2>
+            </div>
         </div>
     </div>
 
@@ -57,11 +70,13 @@
             <p class="card-text"  th:text="${quack.getQuackMessage()}">
             </p>
 
-            <div th:if="${quack.getLikers().contains(loggedUser)}">
-                <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Unlike</a>
-            </div>
-            <div th:unless="${quack.getLikers().contains(loggedUser)}">
-                <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Like</a>
+            <div th:unless="${watchedUser.equals(user)}">
+                <div th:if="${quack.getLikers().contains(loggedUser)}">
+                    <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Unlike</a>
+                </div>
+                <div th:unless="${quack.getLikers().contains(loggedUser)}">
+                    <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Like</a>
+                </div>
             </div>
 
             <p>Likes: <span th:text="${quack.getLikers().size()}"></span></p>
