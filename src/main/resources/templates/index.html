@@ -82,16 +82,18 @@
 
                     <div class="oikea">
                     <span th:text="${quack.getFormattedDate()}">dateposted</span>
-                        <a  th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary fa fa-thumbs-up"  ></a>
+                        <span th:unless="${quack.getPoster().equals(user)}">
+                            <span th:if="${quack.getLikers().contains(user)}">
+                                <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-danger fa fa-thumbs-down"></a>
+                            </span>
+                            <span th:unless="${quack.getLikers().contains(user)}">
+                                <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary fa fa-thumbs-up"></a>
+                            </span>
+                        </span>
                     </div>
 
-                    <div th:unless="${quack.getPoster().equals(user)}">
-                        <div th:if="${quack.getLikers().contains(user)}">
-                            <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-danger">Unlike</a>
-                        </div>
-                        <div th:unless="${quack.getLikers().contains(user)}">
-                            <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Like</a>
-                        </div>
+                    <div>
+                        <span th:text="@{'Likes: ' + ${quack.getLikers().size()}}">likes</span>
                     </div>
 
                 </div>
