@@ -66,10 +66,10 @@
   <a href="#" id="imageDropdown" data-toggle="dropdown">
   
   
-  <img th:if="${profilePhotoUrl != null}" border="0" alt="oma profiilikuva" class="rounded-circle border border-dark" 
-  src="${profilePhotoUrl}" th:src="${profilePhotoUrl}" 
+  <img th:if="${profilePhotoHead != null}" border="0" alt="oma profiilikuva" class="rounded-circle border border-dark" 
+  src="${profilePhotoUrl}" th:src="${profilePhotoHead}" 
   style="width:100px; height:65px ">
-  <img th:if="${profilePhotoUrl == null}" border="0" alt="oma profiilikuva" class="rounded-circle border border-dark" 
+  <img th:if="${profilePhotoHead == null}" border="0" alt="oma profiilikuva" class="rounded-circle border border-dark" 
   src="${profilePhotoUrl}" th:src="@{/images/quackerhar.png}" 
   style="width:100px; height:65px ">
   
@@ -94,6 +94,14 @@
 		
 		</div>
 	</div>
+	
+	
+<!-- 	<script type="text/javascript">
+	var bgPattern = document.getElementById("bg")
+	window.addEventListener("")
+	</script> -->
+	
+	
 </div>
 
 

@@ -55,6 +55,10 @@ public class UserController {
         if (user.getProfilePhoto() != null) {                           // populate model with the profile photo
             model.addAttribute("profilePhotoUrl", "/files/" + user.getProfilePhoto().getPublicId());
         }
+        if (loggedUser.getProfilePhoto() != null) {
+            model.addAttribute("profilePhotoHead", "/files/" + loggedUser.getProfilePhoto().getPublicId());
+        }
+
 
         if(user.getFollowers().contains(userRepository.findByName(auth.getName()))) {   // check if the viewing user has followed the user
             model.addAttribute("isFollowed", true);
@@ -139,7 +143,7 @@ public class UserController {
             model.addAttribute("users", users);
             
             if (user.getProfilePhoto() != null) {
-                model.addAttribute("profilePhotoUrl", "/files/" + user.getProfilePhoto().getPublicId());
+                model.addAttribute("profilePhotoHead", "/files/" + user.getProfilePhoto().getPublicId());
             }
 
             

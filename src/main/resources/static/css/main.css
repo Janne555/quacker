@@ -11,12 +11,15 @@ body {
   background-image: var(--bg-image);
 }
 
+
 .centered {
   position: absolute;
   top: 0.7em;
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+
 /* WebKit, Blink, Edge */
 .form-control::-webkit-input-placeholder {
   color: var(--placeholdercolor);
@@ -68,7 +71,7 @@ body {
 #container {
   margin: auto;
   width: 100%;
-  padding-top: 100px;
+  padding-top: 20px;
 }
 
 #latestQuacks,
@@ -76,11 +79,11 @@ body {
   margin: 10px;
   padding: 20px;
   float: left;
-  background: rgb(210,180,140, 0.7);
-}
+  width: 800px;
+  background: var(--maincolor);
 
 #posts {
-  margin-left: 20%;
+  margin-left:5%;
 }
 
 #quackInput {
@@ -189,16 +192,55 @@ span.error {
   color: red;
 }
 
-#quack-image-preview, .quack-image {
-  max-width: 500px;
-  max-height: 500px;
+.feedFilterMain{
+	height: 50px;
 }
 
-.quack-buttons {
-  display: flex;
-  justify-content: center;
+.feedFilter{
+	padding-top: 10px;
+  	font-size: 20px;
+	margin-left: 2%;
+	margin-right: 2%;	
+	margin-bottom: 0%;
+  	border: 1px solid black;
+	float: left; 
+	width: 46%;
+    background-color: var(--maincolor);
 }
 
-.quack-buttons > * {
-  margin: 10px;
+.active {
+  background-color: rgba(230, 230, 228, 0.5);
+  color: black;
 }
+
+.postaus{
+  	border: 1px solid black;
+   	border-radius: 5px;
+    text-align: left;
+    width: 90%;
+    height: 100%;
+    background-color: var(--maincolor);
+    margin-top: 20px;
+}
+
+.quacki{
+    background-color: rgba(230, 230, 228, 0.5);
+	position: relative;
+    width: 90%;
+    left: 5%;
+    font-size: 20px;
+    padding-left: 1%;
+    
+}
+
+.oikea{
+  	position: relative;
+  	left: 505px
+}
+
+.fa-thumbs-up{
+	border-color: black;
+	background-color: var(--maincolor);
+	color: white;
+}
+
