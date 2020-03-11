@@ -58,6 +58,8 @@ public class TestController {
 
                     model.addAttribute("quacks", quacks);
 
+                    model.addAttribute("quackView", "followed");    // All/Followed napin highlightausta varten
+
                     if (user.getProfilePhoto() != null) {
                         model.addAttribute("profilePhotoHead", "/files/" + user.getProfilePhoto().getPublicId());
                     }

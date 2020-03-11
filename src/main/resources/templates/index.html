@@ -36,14 +36,29 @@
         <a href="/index">
             <img border="0" class="center" src="../static/images/LatestQuacks.png" th:src="@{/images/LatestQuacks.png}" style="width:600px; height:600">
         </a>
+
         <div id="myDIV" class="feedFilterMain">
-            <a class="feedFilter active" th:href="@{/all}">
-                <p> All users </p>
-            </a>
-            <a class="feedFilter" th:href="@{/followed}">
-                <p> Followed users </p>
-            </a>
+        <div th:switch="${quackView}">
+            <div th:case="followed">
+                    <a class="feedFilter" th:href="@{/all}">
+                        <p> All users </p>
+                    </a>
+                    <a class="feedFilter active" th:href="@{/followed}">
+                        <p> Followed users </p>
+                    </a>
+            </div>
+            <div th:case="*">
+
+                <a class="feedFilter active" th:href="@{/all}">
+                    <p> All users </p>
+                </a>
+                <a class="feedFilter" th:href="@{/followed}">
+                    <p> Followed users </p>
+                </a>
+            </div>
+            </div>
         </div>
+
 
         <div th:switch="${quackView}">
             <div th:case="allQuacks">
