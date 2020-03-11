@@ -20,7 +20,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @Controller
-public class TestController {
+public class DefaultController {
 
     @Autowired
     UserRepository userRepository;
@@ -40,7 +40,7 @@ public class TestController {
         model.addAttribute("user", user);
         if(user!=null && displayQuacks != null) {
             switch(displayQuacks) {
-                case "followed":
+                case "followed":        // Vain seurattujen käyttäjien quackit näkyviin
                     List<User> following = user.getFollowing();
                     ArrayList<Quack> quacks = new ArrayList();
                     for(User followedUser : following) {
@@ -55,8 +55,12 @@ public class TestController {
 
                     Collections.reverse(quacks);        // Uusin ylhäällä
 
-
-                    model.addAttribute("quacks", quacks);
+                    if(quacks.size() >= 10) {            // Vain 10 viimeistä quackia sivulle
+                        model.addAttribute("quacks", quacks.subList(0, 10));
+                    }
+                    else {
+                        model.addAttribute("quacks", quacks);
+                    }
 
                     model.addAttribute("quackView", "followed");    // All/Followed napin highlightausta varten
 
@@ -65,7 +69,7 @@ public class TestController {
                     }
                     break;
 
-                default:
+                default:            // Kaikki quackit näkyviin
                     ArrayList<Quack> quacksDefault = new ArrayList();
 
                     quacksDefault.addAll(quackRepository.findAll());
@@ -78,8 +82,12 @@ public class TestController {
 
                     Collections.reverse(quacksDefault);        // Uusin ylhäällä
 
-                    model.addAttribute("quacks", quacksDefault);
-
+                    if(quacksDefault.size() >= 10) {            // Vain 10 viimeistä quackia sivulle
+                        model.addAttribute("quacks", quacksDefault.subList(0, 10));
+                    }
+                    else {
+                        model.addAttribute("quacks", quacksDefault);
+                    }
                     break;
             }
         } else {
@@ -95,7 +103,12 @@ public class TestController {
 
             Collections.reverse(quacksDefault);        // Uusin ylhäällä
 
-            model.addAttribute("quacks", quacksDefault);
+            if(quacksDefault.size() >= 10) {            // Vain 10 viimeistä quackia sivulle
+                model.addAttribute("quacks", quacksDefault.subList(0, 10));
+            }
+            else {
+                model.addAttribute("quacks", quacksDefault);
+            }
         }
 
         /*
