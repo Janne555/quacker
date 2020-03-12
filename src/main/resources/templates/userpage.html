@@ -63,7 +63,7 @@
                 <b><span th:text="${quack.poster.getName()}">poster</span></b>
             </h5>
             <div th:if="${quack.attachment != null}">
-                <img class="quack-image" th:if="${quack.attachment.getContentType().startsWith('image')}"
+                <img width="80%" class="quack-image" th:if="${quack.attachment.getContentType().startsWith('image')}"
                      th:src="${quack.attachment.getUrl()}"/>
                 <!--TODO: Find out if size could be dynamic-->
                 <video width="500px" height="281px" controls

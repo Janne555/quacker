@@ -103,6 +103,10 @@ body {
   font-weight: bold;
 }
 
+#quack-image-preview{
+	width: 100%;
+}
+
 label{
   font-weight: bold;
   font-size: 20px;
