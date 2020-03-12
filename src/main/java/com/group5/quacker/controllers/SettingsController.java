@@ -46,14 +46,15 @@ public class SettingsController {
      * @return
      */
     @ModelAttribute("personalInfoForm")
-    public PersonalInfoForm newPersonalInfoForm() {
-        return new PersonalInfoForm();
-    }
+    public PersonalInfoForm newPersonalInfoForm() { return new PersonalInfoForm(); }
 
     @ModelAttribute("currentPasswordForm")
     public CurrentPasswordForm newMyForm() {
         return new CurrentPasswordForm();
     }
+
+    @ModelAttribute("passwordForm")
+    public PasswordForm newpasswordForm() { return new PasswordForm(); }
 
     /**
      * Returns the specific settings page requested in the URL.
@@ -164,7 +165,6 @@ public class SettingsController {
 
     @PostMapping("/settings/password-change")
     public String postPassword(@Valid PasswordForm passWordForm, final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
-        org.springframework.security.crypto.password.PasswordEncoder encoder = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         User user = userRepository.findByName(auth.getName());
@@ -172,13 +172,9 @@ public class SettingsController {
             return "redirect:/login";
         }
 
-
-        //System.out.println(passWordForm.getNew_password() + ", " + passWordForm.getConfirm_new_password());
-        System.out.println(user.hashCode());
-        System.out.println(encoder.matches(encoder.encode(passWordForm.getCurrent_password()), user.getPasswordHash()));
-
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("message", "Given new passwords does not match!");
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.passwordForm", bindingResult);
+            redirectAttributes.addFlashAttribute("passwordError", "Passwords does not match!");
         }
 
         return "redirect:/settings/password-change";
