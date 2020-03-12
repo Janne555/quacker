@@ -29,6 +29,7 @@ public class CurrentPasswordValidator implements ConstraintValidator<CurrentPass
         if (user == null) {
             return false;
         } else {
+
             return passwordEncoder.matches(password, user.getPasswordHash());
         }
     }

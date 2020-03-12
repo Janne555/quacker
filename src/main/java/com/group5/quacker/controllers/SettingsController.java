@@ -39,6 +39,9 @@ public class SettingsController {
     private FileService fileService;
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     private AccountService accountService;
     /**
      * Includes the class as an attribute
@@ -176,6 +179,13 @@ public class SettingsController {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.passwordForm", bindingResult);
             redirectAttributes.addFlashAttribute("passwordError", "Passwords does not match!");
         }
+        else
+        {
+            user.setPasswordHash(passwordEncoder.encode(passWordForm.getNew_password()));
+            userRepository.save(user);
+        }
+
+
 
         return "redirect:/settings/password-change";
     }
