@@ -1,6 +1,5 @@
 package com.group5.quacker.constraints;
 
-import com.group5.quacker.repositories.UserRepository;
 import com.group5.quacker.validators.NewPasswordValidator;
 
 import javax.validation.Constraint;
@@ -12,7 +11,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = NewPasswordValidator.class)
 public @interface NewPasswordConstraint {
-    String message() default "New password confirmation does not match";
+    String message() default "Passwords does not match";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

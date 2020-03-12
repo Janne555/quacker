@@ -1,13 +1,11 @@
 package com.group5.quacker.validators;
 
 import com.group5.quacker.constraints.CurrentPasswordConstraint;
-import com.group5.quacker.constraints.UniqueEmailConstraint;
 import com.group5.quacker.entities.User;
 import com.group5.quacker.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.ConstraintValidator;
@@ -31,6 +29,7 @@ public class CurrentPasswordValidator implements ConstraintValidator<CurrentPass
         if (user == null) {
             return false;
         } else {
+
             return passwordEncoder.matches(password, user.getPasswordHash());
         }
     }

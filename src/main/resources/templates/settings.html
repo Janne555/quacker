@@ -98,19 +98,30 @@
                 <div th:case="password-change">
                     <div>
                         <h3>Change Password</h3>
-                        <form th:action="@{/settings/password-change}" method="post">
+                        <form th:action="@{/settings/password-change}"
+                              th:object="${passwordForm}"
+                              method="post">
                             <div class="form-group">
                                 <p><label for="current_password">Current Password</label>:<br> <input type="password"
                                                                                                       name="current_password"
                                                                                                       id="current_password"
                                                                                                       required/></p>
+                                <span class="error" th:if="${#fields.hasErrors('current_password')}" th:errors="*{current_password}"></span>
                                 <p><label for="new_password">New Password</label>:<br> <input type="password"
                                                                                               name="new_password"
                                                                                               id="new_password"
                                                                                               required/></p>
-                                <p><label for="confirm_new_password">Confirm New Password</label>:<br> <input
-                                        type="password" name="confirm_new_password" id="confirm_new_password" required/>
-                                </p>
+                                <span class="error" th:if="${#fields.hasErrors('confirm_new_password')}" th:errors="*{confirm_new_password}"></span>
+                                <p><label for="confirm_new_password">Confirm New Password</label>:<br> <input type="password"
+                                                                                                              name="confirm_new_password"
+                                                                                                              id="confirm_new_password"
+                                                                                                              th:field="*{confirm_new_password}"
+                                                                                                              required/></p>
+
+                                <div th:if="${passwordError}">
+                                    <span th:text="${passwordError}" class="error"></span>
+                                </div>
+
                             </div>
                             <button type="submit" class="btn btn-primary">Change password</button>
                         </form>

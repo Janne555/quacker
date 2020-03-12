@@ -6,6 +6,7 @@ import com.group5.quacker.constraints.CurrentPasswordConstraint;
 @NewPasswordConstraint
 public class PasswordForm {
 
+    @CurrentPasswordConstraint
     private String current_password;
     private String new_password;
     private String confirm_new_password;
