@@ -80,7 +80,7 @@ public class QuackController {
      * @return Redirect to the users page who had posted the quack to be liked
      */
     @RequestMapping(value = "/like/{id}", method = RequestMethod.GET)
-    public String newQuack(@PathVariable("id") long id) {
+    public String newQuack(@PathVariable("id") long id, HttpServletRequest request) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         User liker = userRepository.findByName(auth.getName());     // check that the user liking a quack actually exists in the database
@@ -105,7 +105,8 @@ public class QuackController {
             quackRepository.save(quack);
         }
 
-        return "redirect:/user/" + quack.getPoster().getName();
+        System.out.println(request.getRequestURI());
+        return "redirect:/";
     }
 
     @DeleteMapping("/quack/{id}")
