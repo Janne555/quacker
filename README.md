@@ -9,7 +9,7 @@ The project is a spring boot application and uses thymeleaf templating engine to
 ## installation
 - install jdk 1.8 and maven
 - clone the repository
-- create a folder for filestorage and set it as a value for QUACKER_FILE_STORAGE environment variable (alternatively change the file storage property in application.properties)
+- create a folder for filestorage and set its path as a value for QUACKER_FILE_STORAGE environment variable (alternatively change the file storage property in application.properties)
 - next steps inside the repository folder
 - run mvn clean package
 - run java -jar target/quacker-0.0.1-SNAPSHOT.jar
