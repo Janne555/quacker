@@ -76,7 +76,19 @@
 
                     <b><span th:text="${quack.poster.getName()}">poster</span></b>:
 
+                    <div th:if="${quack.attachment != null}">
+                        <img width="80%" class="quack-image" th:if="${quack.attachment.getContentType().startsWith('image')}"
+                             th:src="${quack.attachment.getUrl()}"/>
+                        <!--TODO: Find out if size could be dynamic-->
+                        <video width="500px" height="281px" controls
+                               th:if="${quack.attachment.getContentType().startsWith('video')}"
+                               th:src="${quack.attachment.getUrl()}"/>
+                        <audio controls th:if="${quack.attachment.getContentType().startsWith('audio')}"
+                               th:src="${quack.attachment.getUrl()}"/>
+                    </div>
+
                     <div class="quacki">
+
                         <span th:text="${quack.getQuackMessage()}">message</span>
                     </div>
 
