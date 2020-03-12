@@ -84,7 +84,7 @@
                       <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Like</a>
                   </div>
                 </div>
-                <div th:if="${quack.getPoster().equals(loggedUser)}">
+                <div th:if="${quack.getPoster().equals(user)}">
                     <button th:onclick="|deleteQuack('${quack.getId()}')|" class="btn btn-primary">Delete</button>
                 </div>
             </div>
