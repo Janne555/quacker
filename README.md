@@ -7,6 +7,7 @@ Ryhmä 5
 The project is a spring boot application and uses thymeleaf templating engine to create dynamic web pages. It follows the basic mvc pattern and relies heavily on the spring framework's features.
 
 ## installation
+- install jdk 1.8 and maven
 - clone the repository
 - create a folder for filestorage and set it as a value for QUACKER_FILE_STORAGE environment variable (alternatively change the file storage property in application.properties)
 - next steps inside the repository folder
