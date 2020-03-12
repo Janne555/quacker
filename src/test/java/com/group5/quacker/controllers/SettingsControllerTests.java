@@ -3,7 +3,9 @@ package com.group5.quacker.controllers;
 import com.group5.quacker.entities.FileMap;
 import com.group5.quacker.entities.User;
 import com.group5.quacker.repositories.UserRepository;
+import com.group5.quacker.services.AccountService;
 import com.group5.quacker.services.FileService;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -45,6 +48,12 @@ public class SettingsControllerTests {
 
     @MockBean
     private UserRepository userRepository;
+
+    @MockBean
+    private AccountService accountService;
+
+    @MockBean
+    private PasswordEncoder passwordEncoder;
 
     private User user;
     private FileMap fileMap;
@@ -129,7 +138,7 @@ public class SettingsControllerTests {
     }
 
     @Test
-    @DisplayName("Post to /settings/personal-info/email with unique email updates email address")
+    @DisplayName("Post to /settings/personal-info/email with non-unique email doesn't update the email")
     @WithMockUser(username = "test", password = "pwd", roles = "USER")
     public void postNonUniqueEmail() throws Exception {
         when(userRepository.findByName(anyString())).thenReturn(user);
@@ -141,5 +150,37 @@ public class SettingsControllerTests {
                         .param("email", "tääSpostiPitääVaihtaaSitkuValidoidaanSpostei"));
 
         verify(userRepository, times(0)).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("Post to /settings/delete-account should delete an account")
+    @WithMockUser(username = "test", password = "pwd", roles = "USER")
+    public void postAccountDelete() throws Exception {
+        when(userRepository.findByName(anyString())).thenReturn(user);
+        when(passwordEncoder.matches("pwd", "hashyhash")).thenReturn(true);
+
+        mockMvc
+                .perform(post("/settings/delete-account")
+                        .with(csrf())
+                        .param("currentPassword", "pwd"))
+                .andExpect(status().is3xxRedirection());
+
+        verify(accountService, times(1)).deleteAccount(any(User.class));
+    }
+
+    @Test
+    @DisplayName("Post to /settings/delete-account with the wrong password should return binding error")
+    @WithMockUser(username = "test", password = "pwd", roles = "USER")
+    public void postAccountDeleteWrongPassword() throws Exception {
+        when(userRepository.findByName(anyString())).thenReturn(user);
+
+        mockMvc
+                .perform(post("/settings/delete-account")
+                        .with(csrf())
+                        .param("currentPassword", "pwd"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(flash().attributeExists("org.springframework.validation.BindingResult.currentPasswordForm"));
+
+        verify(accountService, times(0)).deleteAccount(any(User.class));
     }
 }

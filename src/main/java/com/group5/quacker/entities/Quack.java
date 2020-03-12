@@ -44,7 +44,7 @@ public class Quack {
     /**
      * Object reference for the attachment posted with the quack
      */
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "file_map_id")
     private FileMap attachment;
 

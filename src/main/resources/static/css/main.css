@@ -81,10 +81,30 @@ body {
   float: left;
   width: 800px;
   background: var(--maincolor);
-}
 
 #posts {
   margin-left:5%;
+}
+
+#quackInput {
+  background-color: rgb(7, 121, 85);
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 25px;
+  margin: 5px;
+  padding: 15px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+#quack-attachment{
+  font-weight: bold;
+}
+
+label{
+  font-weight: bold;
+  font-size: 20px;
 }
 
 .center {

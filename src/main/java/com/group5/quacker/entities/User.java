@@ -2,6 +2,7 @@ package com.group5.quacker.entities;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Entity for users
@@ -23,14 +24,14 @@ public class User {
     /**
      * Object reference for the profile photo of a user
      */
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "file_map_id")
     private FileMap profilePhoto;
 
     /**
      * Object references to the quacks posted by a user as a JPA relation
      */
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "quack_id")
     private List<Quack> quacks;
 
@@ -124,5 +125,25 @@ public class User {
 
     public void setFollowers(List<User> followers) {
         this.followers = followers;
+    }
+
+    public void setFollowing(List<User> following) {
+        this.following = following;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                getName().equals(user.getName()) &&
+                getEmail().equals(user.getEmail()) &&
+                getPasswordHash().equals(user.getPasswordHash());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, getName(), getEmail(), getPasswordHash());
     }
 }

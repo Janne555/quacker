@@ -62,20 +62,30 @@
                 <span th:text="${quack.getFormattedDate()}">dateposted</span>
                 <b><span th:text="${quack.poster.getName()}">poster</span></b>
             </h5>
-                        <div th:if="${quack.attachment != null}">
-                <img th:if="${quack.attachment.getContentType().startsWith('image')}" th:src="${quack.attachment.getUrl()}" />
-                <video controls th:if="${quack.attachment.getContentType().startsWith('video')}" th:src="${quack.attachment.getUrl()}" />
-                <audio controls th:if="${quack.attachment.getContentType().startsWith('audio')}" th:src="${quack.attachment.getUrl()}" />
+            <div th:if="${quack.attachment != null}">
+                <img class="quack-image" th:if="${quack.attachment.getContentType().startsWith('image')}"
+                     th:src="${quack.attachment.getUrl()}"/>
+                <!--TODO: Find out if size could be dynamic-->
+                <video width="500px" height="281px" controls
+                       th:if="${quack.attachment.getContentType().startsWith('video')}"
+                       th:src="${quack.attachment.getUrl()}"/>
+                <audio controls th:if="${quack.attachment.getContentType().startsWith('audio')}"
+                       th:src="${quack.attachment.getUrl()}"/>
             </div>
-            <p class="card-text"  th:text="${quack.getQuackMessage()}">
+            <p class="card-text" th:text="${quack.getQuackMessage()}">
             </p>
 
-            <div th:unless="${watchedUser.equals(user)}">
-                <div th:if="${quack.getLikers().contains(user)}">
-                    <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-danger">Unlike</a>
+            <div class="quack-buttons">
+                <div th:unless="${watchedUser.equals(user)}">
+                  <div th:if="${quack.getLikers().contains(user)}">
+                      <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-danger">Unlike</a>
+                  </div>
+                  <div th:unless="${quack.getLikers().contains(user)}">
+                      <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Like</a>
+                  </div>
                 </div>
-                <div th:unless="${quack.getLikers().contains(user)}">
-                    <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary">Like</a>
+                <div th:if="${quack.getPoster().equals(loggedUser)}">
+                    <button th:onclick="|deleteQuack('${quack.getId()}')|" class="btn btn-primary">Delete</button>
                 </div>
             </div>
 
@@ -84,10 +94,29 @@
     </div>
 
 
-
 </div>
-</body>
+<script th:inline="javascript">
+    function deleteQuack(quackId) {
+        if (!confirm(`Are you sure you want to delete quack?`)) {
+            return
+        }
 
+        const baseUrl = [[@{/quack}]]
+        const csrfToken = [[${_csrf.token}]]
+        const headers = new Headers({
+            'X-CSRF-TOKEN': csrfToken
+        })
+
+        fetch(`${baseUrl}/${quackId}`, {
+            method: 'DELETE',
+            headers
+        }).finally(() => {
+            window.location.reload()
+        })
+    }
+</script>
+
+</body>
 
 
 </html>
