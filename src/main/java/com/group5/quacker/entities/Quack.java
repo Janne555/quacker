@@ -117,4 +117,11 @@ public class Quack {
     public void setLikers(List<User> likers) {
         this.likers = likers;
     }
+
+    public boolean isNew(Date latestQuackView) {
+        if (latestQuackView == null) {
+            return true;
+        }
+        return getDatePosted().after(latestQuackView);
+    }
 }

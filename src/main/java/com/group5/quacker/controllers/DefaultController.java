@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class DefaultController {
@@ -34,12 +31,16 @@ public class DefaultController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         System.out.println("User: \"" + auth.getName() + "\" got the index page.");
         model.addAttribute("username", auth.getName());
-
         
         User user = userRepository.findByName(auth.getName());
-        model.addAttribute("user", user);
-        if(user == null)
+        if(user == null){
             return "redirect/login";
+        }
+
+        model.addAttribute("user", user);
+        model.addAttribute("latestQuackView", user.getLatestQuackView());
+        user.setLatestQuackView(new Date());
+        userRepository.save(user);
 
         if (user.getProfilePhoto() != null) {
             model.addAttribute("profilePhotoHead", "/files/" + user.getProfilePhoto().getPublicId());

@@ -5,19 +5,21 @@
 </head>
 
 <body>
-    <div th:replace="fragments/common :: headermain"></div>
+<div th:replace="fragments/common :: headermain"></div>
 
-    <div id="container" align="center">
-    
+<div id="container" align="center">
+
     <div id="posts" align="center">
         <a href="/index">
-            <img border="0" class="center" src="../static/images/Quacks.png" th:src="@{/images/Quacks.png}" style="width:400px; height:400">
+            <img border="0" class="center" src="../static/images/Quacks.png" th:src="@{/images/Quacks.png}"
+                 style="width:400px; height:400">
         </a>
 
         <form id="post-quack-form" th:action="@{/quack}" enctype="multipart/form-data" method="post">
             <div>
-                <label for="message" style="color:rgb(7, 121, 85)">Message:</label> <input type="text" name="message" id="message"/>
-                <input id="quackInput" type="submit" value="Quack!" />
+                <label for="message" style="color:rgb(7, 121, 85)">Message:</label> <input type="text" name="message"
+                                                                                           id="message"/>
+                <input id="quackInput" type="submit" value="Quack!"/>
             </div>
             <div>
                 <input type="file" id="quack-attachment"
@@ -26,36 +28,34 @@
         </form>
 
         <a class="btn btn-primary" th:href="@{/users}">List users</a>
-    </div>   
-    
-    
+    </div>
 
-    
-    
+
     <div id="latestQuacks" align="center">
         <a href="/index">
-            <img border="0" class="center" src="../static/images/LatestQuacks.png" th:src="@{/images/LatestQuacks.png}" style="width:600px; height:600">
+            <img border="0" class="center" src="../static/images/LatestQuacks.png" th:src="@{/images/LatestQuacks.png}"
+                 style="width:600px; height:600">
         </a>
 
         <div id="myDIV" class="feedFilterMain">
-        <div th:switch="${quackView}">
-            <div th:case="followed">
+            <div th:switch="${quackView}">
+                <div th:case="followed">
                     <a class="feedFilter" th:href="@{/all}">
                         <p> All users </p>
                     </a>
                     <a class="feedFilter active" th:href="@{/followed}">
                         <p> Followed users </p>
                     </a>
-            </div>
-            <div th:case="*">
+                </div>
+                <div th:case="*">
 
-                <a class="feedFilter active" th:href="@{/all}">
-                    <p> All users </p>
-                </a>
-                <a class="feedFilter" th:href="@{/followed}">
-                    <p> Followed users </p>
-                </a>
-            </div>
+                    <a class="feedFilter active" th:href="@{/all}">
+                        <p> All users </p>
+                    </a>
+                    <a class="feedFilter" th:href="@{/followed}">
+                        <p> Followed users </p>
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -68,55 +68,56 @@
 
             </div>
             <div th:case="*">
-                <div th:each="quack : ${quacks}" class="postaus">
-                    <img border="0" alt="oma profiilikuva" class="rounded-circle border border-dark"
-                         src="${profilePhotoUrl}" th:src="@{/images/quackerhar.png}"
-                         style="width:60px; height:40px ">
+                <div th:each="quack : ${quacks}">
+                    <div class="postaus" th:classappend="${quack.isNew(latestQuackView) ? 'uusi-quack' : ''}">
+                        <img border="0" alt="oma profiilikuva" class="rounded-circle border border-dark"
+                             src="${profilePhotoUrl}" th:src="@{/images/quackerhar.png}"
+                             style="width:60px; height:40px ">
 
+                        <b><span th:text="${quack.poster.getName()}">poster</span></b>:
 
-                    <b><span th:text="${quack.poster.getName()}">poster</span></b>:
+                        <div th:if="${quack.attachment != null}">
+                            <img width="80%" class="quack-image"
+                                 th:if="${quack.attachment.getContentType().startsWith('image')}"
+                                 th:src="${quack.attachment.getUrl()}"/>
+                            <!--TODO: Find out if size could be dynamic-->
+                            <video width="500px" height="281px" controls
+                                   th:if="${quack.attachment.getContentType().startsWith('video')}"
+                                   th:src="${quack.attachment.getUrl()}"/>
+                            <audio controls th:if="${quack.attachment.getContentType().startsWith('audio')}"
+                                   th:src="${quack.attachment.getUrl()}"/>
+                        </div>
 
-                    <div th:if="${quack.attachment != null}">
-                        <img width="80%" class="quack-image" th:if="${quack.attachment.getContentType().startsWith('image')}"
-                             th:src="${quack.attachment.getUrl()}"/>
-                        <!--TODO: Find out if size could be dynamic-->
-                        <video width="500px" height="281px" controls
-                               th:if="${quack.attachment.getContentType().startsWith('video')}"
-                               th:src="${quack.attachment.getUrl()}"/>
-                        <audio controls th:if="${quack.attachment.getContentType().startsWith('audio')}"
-                               th:src="${quack.attachment.getUrl()}"/>
-                    </div>
+                        <div class="quacki">
+                            <span th:text="${quack.getQuackMessage()}">message</span>
+                        </div>
 
-                    <div class="quacki">
-
-                        <span th:text="${quack.getQuackMessage()}">message</span>
-                    </div>
-
-                    <div class="oikea">
-                    <span th:text="${quack.getFormattedDate()}">dateposted</span>
-                        <span th:unless="${quack.getPoster().equals(user)}">
+                        <div class="oikea">
+                            <span th:text="${quack.getFormattedDate()}">dateposted</span>
+                            <span th:unless="${quack.getPoster().equals(user)}">
                             <span th:if="${quack.getLikers().contains(user)}">
-                                <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-danger fa fa-thumbs-down"></a>
+                                <a th:href="@{'/like/' + ${quack.getId()}}"
+                                   class="btn btn-danger fa fa-thumbs-down"></a>
                             </span>
                             <span th:unless="${quack.getLikers().contains(user)}">
                                 <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary fa fa-thumbs-up"></a>
                             </span>
                         </span>
-                    </div>
+                        </div>
 
-                    <div>
-                        <span th:text="@{'Likes: ' + ${quack.getLikers().size()}}">likes</span>
+                        <div>
+                            <span th:text="@{'Likes: ' + ${quack.getLikers().size()}}">likes</span>
+                        </div>
                     </div>
-
                 </div>
             </div>
         </div>
 
-      </div>
+    </div>
 
 
-    </div>    
-        
+</div>
+
 
 </div>
 
