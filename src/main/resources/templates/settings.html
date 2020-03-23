@@ -111,16 +111,12 @@
                                                                                               name="new_password"
                                                                                               id="new_password"
                                                                                               required/></p>
-                                <span class="error" th:if="${#fields.hasErrors('confirm_new_password')}" th:errors="*{confirm_new_password}"></span>
+                                <span class="error" th:if="${#fields.hasErrors('global')}" th:errors="*{global}"></span>
                                 <p><label for="confirm_new_password">Confirm New Password</label>:<br> <input type="password"
                                                                                                               name="confirm_new_password"
                                                                                                               id="confirm_new_password"
                                                                                                               th:field="*{confirm_new_password}"
                                                                                                               required/></p>
-
-                                <div th:if="${passwordError}">
-                                    <span th:text="${passwordError}" class="error"></span>
-                                </div>
 
                             </div>
                             <button type="submit" class="btn btn-primary">Change password</button>
