@@ -1,6 +1,7 @@
 package com.group5.quacker.entities;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,6 +21,16 @@ public class User {
     private String email;
 
     private String passwordHash;
+
+    private Date latestQuackView;
+
+    public Date getLatestQuackView() {
+        return latestQuackView;
+    }
+
+    public void setLatestQuackView(Date lastLogin) {
+        this.latestQuackView = lastLogin;
+    }
 
     /**
      * Object reference for the profile photo of a user
