@@ -158,7 +158,7 @@ public class User {
     public List<User> getBlocked() {
         return blocked;
     }
-
+/*
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -168,7 +168,7 @@ public class User {
                 getName().equals(user.getName()) &&
                 getEmail().equals(user.getEmail()) &&
                 getPasswordHash().equals(user.getPasswordHash());
-    }
+    }*/
 
     @Override
     public int hashCode() {

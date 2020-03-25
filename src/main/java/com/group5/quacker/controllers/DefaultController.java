@@ -81,16 +81,7 @@ public class DefaultController {
 
                     quacksDefault.addAll(quackRepository.findAll());
 
-                    ArrayList<Quack> quackCopy = new ArrayList<>(); // loopin sisällä poistamista varten
-                    quackCopy.addAll(quacksDefault);
-                    List<User> blocked = user.getBlocked();
-                    for(Quack quack : quackCopy) {          // poista blokattujen quackit näkymästä
-                        for(User block : blocked) {
-                            if(block.getName().equals(quack.getPoster().getName())) {
-                                quacksDefault.remove(quack);
-                            }
-                        }
-                    }
+                    quacksDefault.removeIf(quack -> user.getBlocked().contains(quack.getPoster())); // poista blokattujen käyttäjien quackit feedistä
 
                     Collections.sort(quacksDefault, new Comparator<Quack>() {
                         public int compare(Quack o1, Quack o2) {
@@ -113,16 +104,7 @@ public class DefaultController {
 
             quacksDefault.addAll(quackRepository.findAll());
 
-            ArrayList<Quack> quackCopy = new ArrayList<>(); // loopin sisällä poistamista varten
-            quackCopy.addAll(quacksDefault);
-            List<User> blocked = user.getBlocked();
-            for(Quack quack : quackCopy) {          // poista blokattujen quackit näkymästä
-                for(User block : blocked) {
-                    if(block.getName().equals(quack.getPoster().getName())) {
-                        quacksDefault.remove(quack);
-                    }
-                }
-            }
+            quacksDefault.removeIf(quack -> user.getBlocked().contains(quack.getPoster())); // poista blokattujen käyttäjien quackit feedistä
 
             Collections.sort(quacksDefault, new Comparator<Quack>() {
                 public int compare(Quack o1, Quack o2) {
