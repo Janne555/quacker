@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 @Controller
@@ -80,6 +81,17 @@ public class DefaultController {
 
                     quacksDefault.addAll(quackRepository.findAll());
 
+                    ArrayList<Quack> quackCopy = new ArrayList<>(); // loopin sisällä poistamista varten
+                    quackCopy.addAll(quacksDefault);
+                    List<User> blocked = user.getBlocked();
+                    for(Quack quack : quackCopy) {          // poista blokattujen quackit näkymästä
+                        for(User block : blocked) {
+                            if(block.getName().equals(quack.getPoster().getName())) {
+                                quacksDefault.remove(quack);
+                            }
+                        }
+                    }
+
                     Collections.sort(quacksDefault, new Comparator<Quack>() {
                         public int compare(Quack o1, Quack o2) {
                             return o1.getDatePosted().compareTo(o2.getDatePosted());
@@ -100,6 +112,17 @@ public class DefaultController {
             ArrayList<Quack> quacksDefault = new ArrayList();
 
             quacksDefault.addAll(quackRepository.findAll());
+
+            ArrayList<Quack> quackCopy = new ArrayList<>(); // loopin sisällä poistamista varten
+            quackCopy.addAll(quacksDefault);
+            List<User> blocked = user.getBlocked();
+            for(Quack quack : quackCopy) {          // poista blokattujen quackit näkymästä
+                for(User block : blocked) {
+                    if(block.getName().equals(quack.getPoster().getName())) {
+                        quacksDefault.remove(quack);
+                    }
+                }
+            }
 
             Collections.sort(quacksDefault, new Comparator<Quack>() {
                 public int compare(Quack o1, Quack o2) {
