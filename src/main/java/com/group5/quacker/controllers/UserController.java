@@ -152,6 +152,13 @@ public class UserController {
         // check that the user has not already blocked the other user and that the user is not trying to block himself
         if(!blocker.getBlocked().contains(user) && !blocker.equals(user)) {
             blocker.addBlocked(user);
+
+            if(blocker.getFollowing().contains(user)) {     // Remove following status when blocking a user
+                blocker.removeFollowing(user);
+                user.removeFollower(blocker);
+                userRepository.save(user);
+            }
+
             userRepository.save(blocker);
         } else if (blocker.getBlocked().contains(user) && !blocker.equals(user)) {
             blocker.removeBlocked(user);
