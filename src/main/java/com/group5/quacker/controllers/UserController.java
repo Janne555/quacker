@@ -130,8 +130,8 @@ public class UserController {
     }
 
     /**
-     * GET mapping for following users
-     * @param name Name of the user to be followed
+     * GET mapping for blocking & unblocking users
+     * @param name Name of the user to be blocked
      * @param model Model for populating the thyeleaf template
      * @return Redirects to the users page that was followed
      */

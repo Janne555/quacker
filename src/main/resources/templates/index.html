@@ -74,7 +74,7 @@
                              src="${profilePhotoUrl}" th:src="@{/images/quackerhar.png}"
                              style="width:60px; height:40px ">
 
-                        <b><span th:text="${quack.poster.getName()}">poster</span></b>:
+                        <b><a th:href="'/user/' + ${quack.getPoster().getName()}" th:text="${quack.poster.getName()}">poster</a></b>:
 
                         <div th:if="${quack.attachment != null}">
                             <img width="80%" class="quack-image"
