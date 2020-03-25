@@ -97,6 +97,11 @@ public class UserController {
         if(!follower.getFollowing().contains(user) && !user.getFollowers().contains(follower) && !user.equals(follower)) {
             follower.addFollowing(user);
             user.addFollower(follower);
+
+            if(follower.getBlocked().contains(user)) {  // If the user is following a blocked user, unblock that user
+                follower.removeBlocked(user);
+            }
+
             userRepository.save(follower);
             userRepository.save(user);
         }
