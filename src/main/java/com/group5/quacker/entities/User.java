@@ -61,6 +61,7 @@ public class User {
     private List<User> followers;
 
 
+
     /**
      * Object references to users that this user has blocked
      */
@@ -144,6 +145,10 @@ public class User {
      */
     public void setQuacks(List<Quack> quacks) {
         this.quacks = quacks;
+    }
+
+    public void setBlocked(List<User> blocked) {
+        this.blocked = blocked;
     }
 
     public void setFollowers(List<User> followers) {
