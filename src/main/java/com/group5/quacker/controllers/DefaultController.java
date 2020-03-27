@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 @Controller
@@ -80,6 +81,8 @@ public class DefaultController {
 
                     quacksDefault.addAll(quackRepository.findAll());
 
+                    quacksDefault.removeIf(quack -> user.getBlocked().contains(quack.getPoster())); // poista blokattujen käyttäjien quackit feedistä
+
                     Collections.sort(quacksDefault, new Comparator<Quack>() {
                         public int compare(Quack o1, Quack o2) {
                             return o1.getDatePosted().compareTo(o2.getDatePosted());
@@ -100,6 +103,8 @@ public class DefaultController {
             ArrayList<Quack> quacksDefault = new ArrayList();
 
             quacksDefault.addAll(quackRepository.findAll());
+
+            quacksDefault.removeIf(quack -> user.getBlocked().contains(quack.getPoster())); // poista blokattujen käyttäjien quackit feedistä
 
             Collections.sort(quacksDefault, new Comparator<Quack>() {
                 public int compare(Quack o1, Quack o2) {

@@ -66,6 +66,7 @@ class UserControllerTests {
         user.setEmail("test@quacker.com");
         user.setQuacks(new ArrayList<>());
         user.setFollowers(new ArrayList<>());
+        user.setBlocked(new ArrayList<>());
 
         quack = new Quack();
         quack.setAttachment(fileMap);

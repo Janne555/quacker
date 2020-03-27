@@ -64,6 +64,10 @@ public class UserController {
             model.addAttribute("isFollowed", true);
         }
 
+        if(userRepository.findByName(auth.getName()).getBlocked().contains(user)) {       // check if the viewing user has blocked the user
+            model.addAttribute("isBlocked", true);
+        }
+
         model.addAttribute("userquacks", quackRepository.findByPoster(user));       // populate model with the users quacks
 
         return "userpage";
@@ -93,6 +97,11 @@ public class UserController {
         if(!follower.getFollowing().contains(user) && !user.getFollowers().contains(follower) && !user.equals(follower)) {
             follower.addFollowing(user);
             user.addFollower(follower);
+
+            if(follower.getBlocked().contains(user)) {  // If the user is following a blocked user, unblock that user
+                follower.removeBlocked(user);
+            }
+
             userRepository.save(follower);
             userRepository.save(user);
         }
@@ -121,6 +130,46 @@ public class UserController {
             userRepository.save(follower);
             userRepository.save(user);
         }
+
+        return "redirect:/user/" + name;
+    }
+
+    /**
+     * GET mapping for blocking & unblocking users
+     * @param name Name of the user to be blocked
+     * @param model Model for populating the thyeleaf template
+     * @return Redirects to the users page that was followed
+     */
+    @RequestMapping(value = "/block/{name}", method = RequestMethod.GET)
+    public String userBlock(@PathVariable("name") String name, Model model) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        User blocker = userRepository.findByName(auth.getName());      // check that the logged in user actually exists in the database
+        if(blocker == null)
+            return "redirect:/login";
+
+        User user = userRepository.findByName(name);                    // check that the user to be blocked actually exists
+        if(user==null) {
+            return "redirect:/";
+        }
+
+        // check that the user has not already blocked the other user and that the user is not trying to block himself
+        if(!blocker.getBlocked().contains(user) && !blocker.equals(user)) {
+            blocker.addBlocked(user);
+
+            if(blocker.getFollowing().contains(user)) {     // Remove following status when blocking a user
+                blocker.removeFollowing(user);
+                user.removeFollower(blocker);
+                userRepository.save(user);
+            }
+
+            userRepository.save(blocker);
+        } else if (blocker.getBlocked().contains(user) && !blocker.equals(user)) {
+            blocker.removeBlocked(user);
+            userRepository.save(blocker);
+        }
+
 
         return "redirect:/user/" + name;
     }
