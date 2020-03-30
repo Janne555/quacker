@@ -188,9 +188,8 @@ public class SettingsController {
         {
             user.setPasswordHash(passwordEncoder.encode(passWordForm.getNew_password()));
             userRepository.save(user);
+            redirectAttributes.addFlashAttribute("success", "Password changed successfully!");
         }
-
-
 
         return "redirect:/settings/password-change";
     }

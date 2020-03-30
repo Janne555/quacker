@@ -118,6 +118,9 @@
                                                                                                               th:field="*{confirm_new_password}"
                                                                                                               required/></p>
 
+                                <div th:if="${success != null}">
+                                    <span class="error" th:text="${success}"></span>
+                                </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Change password</button>
                         </form>
