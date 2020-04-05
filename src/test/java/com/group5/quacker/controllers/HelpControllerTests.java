@@ -3,8 +3,6 @@ package com.group5.quacker.controllers;
 import com.group5.quacker.entities.Feedback;
 import com.group5.quacker.entities.User;
 import com.group5.quacker.repositories.FeedbackRepository;
-import com.group5.quacker.repositories.QuackRepository;
-import com.group5.quacker.repositories.UserRepository;
 import com.group5.quacker.services.AccountService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
