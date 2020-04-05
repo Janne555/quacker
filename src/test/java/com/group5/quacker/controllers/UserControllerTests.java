@@ -92,6 +92,7 @@ class UserControllerTests {
     @WithMockUser(username = "test", password = "pwd", roles = "USER")
     void getUserPageWhenQuackHasImage() throws Exception {
         when(accountService.currentUser()).thenReturn(user);
+        when(userRepository.findByName(anyString())).thenReturn(user);
         when(quackRepository.findByPoster(any(User.class))).thenReturn(user.getQuacks());
 
         MvcResult mvcResult = this.mockMvc
