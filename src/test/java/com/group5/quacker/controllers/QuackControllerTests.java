@@ -88,7 +88,7 @@ public class QuackControllerTests {
     @DisplayName("Posting a quack with file works")
     @WithMockUser(username = "test", password = "pwd", roles = "USER")
     public void postQuackWithFile() throws Exception {
-        when(userRepository.findByName(anyString())).thenReturn(user);
+        when(accountService.currentUser()).thenReturn(user);
         when(fileService.storeFile(any(MultipartFile.class))).thenReturn(fileMap);
 
         MockMultipartFile mockMultipartFile = new MockMultipartFile(

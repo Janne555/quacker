@@ -74,9 +74,8 @@ public class SettingsController {
             @PathVariable(value = "setting", required = false) String setting,
             @RequestParam Map<String, String> allParams,
             Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        User user = userRepository.findByName(auth.getName());
+        User user = accountService.currentUser();
         if (user == null) {
             return "redirect:/login";
         }
@@ -123,9 +122,7 @@ public class SettingsController {
      */
     @PostMapping("/settings/profile-photo")
     public String postProfilePhoto(@RequestParam("file") MultipartFile file) throws IOException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        User user = userRepository.findByName(auth.getName());
+        User user = accountService.currentUser();
         if (user == null) {
             return "redirect:/login";
         }
@@ -153,9 +150,7 @@ public class SettingsController {
             @Valid PersonalInfoForm personalInfoForm,
             final BindingResult bindingResult,
             final RedirectAttributes redirectAttributes) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        User user = userRepository.findByName(auth.getName());
+        User user = accountService.currentUser();
         if (user == null) {
             return "redirect:/login";
         }
@@ -173,9 +168,7 @@ public class SettingsController {
 
     @PostMapping("/settings/password-change")
     public String postPassword(@Valid PasswordForm passWordForm, final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        User user = userRepository.findByName(auth.getName());
+        User user = accountService.currentUser();
         if (user == null) {
             return "redirect:/login";
         }
@@ -200,9 +193,7 @@ public class SettingsController {
             @Valid CurrentPasswordForm currentPasswordForm,
             final BindingResult bindingResult,
             final RedirectAttributes redirectAttributes) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        User user = userRepository.findByName(auth.getName());
+        User user = accountService.currentUser();
 
         if (user == null) {
             return "redirect:/login";
