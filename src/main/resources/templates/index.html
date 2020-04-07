@@ -16,18 +16,22 @@
         </a>
 
         <form id="post-quack-form" th:action="@{/quack}" enctype="multipart/form-data" method="post">
-            <div>
-                <label for="message" style="color:rgb(7, 121, 85)">Message:</label> <input type="text" name="message"
-                                                                                           id="message"/>
-                <input id="quackInput" type="submit" value="Quack!"/>
-            </div>
-            <div>
-                <input type="file" id="quack-attachment"
-                       name="file" aria-describedby="inputGroupFileAddon01" style="color:rgb(7, 121, 85)">
-            </div>
-        </form>
+   
+                                                                      
+                        <div>
+        <textarea id="subject" class="textbox" name="message" placeholder="Write something.." style="height:200px; width:400px;"></textarea>
+      </div>    
+      
+      
+                          <div>
+                <input type="file" 
+                       name="file" aria-describedby="inputGroupFileAddon01" >
+            </div>                                                             
+                                                                                           
+                <input  type="submit" value="Quack!"/>
+        
 
-        <a class="btn btn-primary" th:href="@{/users}">List users</a>
+        </form>
     </div>
 
 
@@ -77,14 +81,14 @@
                         <b><span th:text="${quack.poster.getName()}">poster</span></b>:
 
                         <div th:if="${quack.attachment != null}">
-                            <img width="80%" class="quack-image"
+                            <img class="quack-image"
                                  th:if="${quack.attachment.getContentType().startsWith('image')}"
                                  th:src="${quack.attachment.getUrl()}"/>
                             <!--TODO: Find out if size could be dynamic-->
-                            <video width="500px" height="281px" controls
+                            <video class="quack-image" width="500px" height="281px" controls 
                                    th:if="${quack.attachment.getContentType().startsWith('video')}"
                                    th:src="${quack.attachment.getUrl()}"/>
-                            <audio controls th:if="${quack.attachment.getContentType().startsWith('audio')}"
+                            <audio class="quack-image"  controls th:if="${quack.attachment.getContentType().startsWith('audio')}"
                                    th:src="${quack.attachment.getUrl()}"/>
                         </div>
 

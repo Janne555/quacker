@@ -29,15 +29,21 @@
 
 
     <div th:fragment="footer">
-<!-- <div class="container con2" style="width: 30em; background-color: #f0ede5 ; padding: 1em; text-align: center;">
+<footer class="page-footer">
 
-     <footer>
-  <p>Posted by: Hege Refsnes</p>
-  <p>Contact information: <a href="mailto:someone@example.com">someone@example.com</a>.</p>
+<div class="left_foot">
+  <p> <a href="@{/about}" style="color:black">About us</a></p>
+  <p> <a href="@{/faq}" style="color:black">FAQ</a></p>
+ </div>
+  
+  <div >
+   <p>Contact:</p>
+  <p> <a href="mailto:someone@example.com">contact@quacker.com</a></p>
+  </div>
+  
 </footer>
   
-  </div> -->
-    </div>
+  </div>
     
  
     
@@ -49,9 +55,13 @@
     <div class="page-header">
         <div class="container">
             
-            <a th:href="@{/}">
-<img border="0" alt="logo" src="../static/images/quacker1.png" th:src="@{/images/quacker1.png}" style="width:100px; height:100">
+            <a th:href="@{/}" >
+<img border="0" alt="logo" src="../static/images/quacker1.png" th:src="@{/images/quacker1.png}" style="width:100px; height:100" >
             </a>
+            
+
+            
+            <a class="btn btn-primary left" th:href="@{/users}" >List users</a>
             
  
             <h2 class="centered" style="font-family: Amiri; font-size: 50px ; letter-spacing: 10px;">   
