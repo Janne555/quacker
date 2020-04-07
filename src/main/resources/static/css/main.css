@@ -156,7 +156,8 @@ input[type=file]{
 }
 
 #quack-image-preview{
-	width: 100%;
+	width: 80%;
+	padding: 20px;
 }
 
 label{
