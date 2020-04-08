@@ -11,15 +11,15 @@
 
     <div id="posts" align="center">
         <a href="/index">
-            <img border="0" class="center" src="../static/images/Quacks.png" th:src="@{/images/Quacks.png}"
-                 style="width:400px; height:400">
+            <img border="0" class="center quackimage" src="../static/images/Quacks.png" th:src="@{/images/Quacks.png}"
+                 >
         </a>
 
         <form id="post-quack-form" th:action="@{/quack}" enctype="multipart/form-data" method="post">
    
                                                                       
                         <div>
-        <textarea id="subject" class="textbox" name="message" placeholder="Write something.." style="height:200px; width:400px;"></textarea>
+        <textarea id="subject" class="textbox" name="message" placeholder="Write something.." ></textarea>
       </div>    
       
       
@@ -37,8 +37,8 @@
 
     <div id="latestQuacks" align="center">
         <a href="/index">
-            <img border="0" class="center" src="../static/images/LatestQuacks.png" th:src="@{/images/LatestQuacks.png}"
-                 style="width:600px; height:600">
+            <img border="0" class="center latestquacksimage" src="../static/images/LatestQuacks.png" th:src="@{/images/LatestQuacks.png}"
+                 >
         </a>
 
         <div id="myDIV" class="feedFilterMain">
@@ -101,7 +101,7 @@
                             <span th:unless="${quack.getPoster().equals(user)}">
                             <span th:if="${quack.getLikers().contains(user)}">
                                 <a th:href="@{'/like/' + ${quack.getId()}}"
-                                   class="btn btn-danger fa fa-thumbs-down"></a>
+                                   class="btn btn-danger fa fa-thumbs-up" style="background-color:green;"></a>
                             </span>
                             <span th:unless="${quack.getLikers().contains(user)}">
                                 <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary fa fa-thumbs-up"></a>

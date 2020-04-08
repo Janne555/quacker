@@ -53,24 +53,42 @@
    <!-- Headeri sivuille jotka käyttäjä näkee kirjauduttuaan sivulle--> 
 <div th:fragment="headermain">  
     <div class="page-header">
-        <div class="container">
+        
+     <div  class="headerLeft">
+                    <a th:href="@{/}" class="w3-xxlarge">
+					<i class="fa fa-home">
+					</i>
+		 </a>
+            <a class="btn btn-primary userlist" th:href="@{/users}" >List users</a>
+  </div>          
+  
+       <div  class="headerSearch">
+                     <form action="/action_page.php">
+      <input type="text" placeholder="Search.." name="search" class="searchBar">
+      <button class="searchIcon" type="submit"><i class="fa fa-search"></i></button>
+    </form>
+  </div>    
             
+            
+  <div class="headerCenter"> 
+   		<div> 
             <a th:href="@{/}" >
-<img border="0" alt="logo" src="../static/images/quacker1.png" th:src="@{/images/quacker1.png}" style="width:100px; height:100" >
+<img class="headerQuakImg" border="0" alt="logo" src="../static/images/quacker1.png" th:src="@{/images/quacker1.png}" >
             </a>
+            </div>
+            
+            <div class="headerQuakerText2"> 
+            <h2>   
+			<a class="headerQuakerText" th:href="@{/}">
+				 Quacker
+ 		   	</a>
+            </h2>
+            </div>       
+</div>
             
 
             
-            <a class="btn btn-primary left" th:href="@{/users}" >List users</a>
-            
- 
-            <h2 class="centered" style="font-family: Amiri; font-size: 50px ; letter-spacing: 10px;">   
-			<a style="color: black; text-decoration: none" th:href="@{/}">
-				 Quacker
- 		   	</a>
-            </h2> 
-            
-            
+ <div class="headerRight">            
             <div class="dropdown profileimg" >
           <p style="display:inline; font-family: Amiri; font-size: 30px ; letter-spacing: 5px;">  [[${#httpServletRequest.remoteUser}]]  </p>
   <a href="#" id="imageDropdown" data-toggle="dropdown">
@@ -94,15 +112,8 @@
     </form></li>
   </ul>
 			</div>
-			
-		<a th:href="@{/}" class="w3-xxlarge">
-					<i class="fa fa-home">
-					</i>
-		 </a>
+</div>			
 		
-		
-		
-		</div>
 	</div>
 	
 	
@@ -119,11 +130,11 @@
 
    <!-- Headeri sivuille jotka käyttäjä näkee ilman kirjautumista sivulle--> 
 <div th:fragment="headernotin">  
-    <div class="page-header">
-        <div class="container">
+    <div class="page-headerNotIn">
+        <div class="container" style="text-aling:center;">
             
             <a th:href="@{/}">
-<img border="0" alt="W3Schools" src="../static/images/quacker1.png" th:src="@{/images/quacker1.png}" style="width:100px; height:100">
+<img  border="0" alt="W3Schools" src="../static/images/quacker1.png" th:src="@{/images/quacker1.png}" style="width:100px; height:100;" >
             </a>
             <h2 class="centered" style="font-family: Amiri; font-size: 50px ; letter-spacing: 10px;">   
 			<a style="color: black; text-decoration: none" th:href="@{/}">
