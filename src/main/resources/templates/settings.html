@@ -6,7 +6,6 @@
 
 <div th:replace="fragments/common :: headermain"></div>
 
-
 <div class="container">
     <div class="row">
         <div class="col">
@@ -106,17 +105,19 @@
                                                                                                       name="current_password"
                                                                                                       id="current_password"
                                                                                                       required/></p>
-                                <span class="error" th:if="${#fields.hasErrors('current_password')}" th:errors="*{current_password}"></span>
+                                <span class="error" th:if="${#fields.hasErrors('current_password')}"
+                                      th:errors="*{current_password}"></span>
                                 <p><label for="new_password">New Password</label>:<br> <input type="password"
                                                                                               name="new_password"
                                                                                               id="new_password"
                                                                                               required/></p>
                                 <span class="error" th:if="${#fields.hasErrors('global')}" th:errors="*{global}"></span>
-                                <p><label for="confirm_new_password">Confirm New Password</label>:<br> <input type="password"
-                                                                                                              name="confirm_new_password"
-                                                                                                              id="confirm_new_password"
-                                                                                                              th:field="*{confirm_new_password}"
-                                                                                                              required/></p>
+                                <p><label for="confirm_new_password">Confirm New Password</label>:<br> <input
+                                        type="password"
+                                        name="confirm_new_password"
+                                        id="confirm_new_password"
+                                        th:field="*{confirm_new_password}"
+                                        required/></p>
 
                                 <div th:if="${success != null}">
                                     <span class="error" th:text="${success}"></span>
