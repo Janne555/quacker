@@ -47,8 +47,10 @@
    <!-- Headeri sivuille jotka käyttäjä näkee kirjauduttuaan sivulle--> 
 <div th:fragment="headermain">  
     <div class="page-header">
+    
+
         <div class="container">
-            
+        
             <a th:href="@{/}">
 <img border="0" alt="logo" src="../static/images/quacker1.png" th:src="@{/images/quacker1.png}" style="width:100px; height:100">
             </a>
@@ -79,6 +81,7 @@
   <ul class="dropdown-menu">
     <li><a th:href="@{/settings}">settings</a></li>
     <li><a th:href="@{'/user/' + ${user.getName()}}">profile</a></li>
+    <li><a th:href="@{/user/search}">search</a></li>
     <li><form th:action="@{/logout}" method="post">
         <input type="submit" value="Sign Out"/>
     </form></li>
@@ -88,8 +91,8 @@
 		<a th:href="@{/}" class="w3-xxlarge">
 					<i class="fa fa-home">
 					</i>
+					
 		 </a>
-		
 		
 		
 		</div>

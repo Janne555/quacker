@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * This is the controller for quack related endpoints
@@ -109,6 +111,12 @@ public class QuackController {
         return "redirect:/";
     }
 
+    /**
+     * Mapping to delete a quack
+     * @param id
+     * @param request
+     * @return
+     */
     @DeleteMapping("/quack/{id}")
     public ResponseEntity deleteQuack(@PathVariable("id") long id, HttpServletRequest request) {
         User user = accountService.currentUser();
@@ -130,4 +138,66 @@ public class QuackController {
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
+    
+    /**
+     * Mapping to list quacks
+     */
+    @RequestMapping(value = {"/quack/", "/quacks", "/quacks"}, method = RequestMethod.GET)
+    public String quackPageGet(Model model) {
+    	
+    	Authentication a = SecurityContextHolder.getContext().getAuthentication();
+    	
+    	User user = userRepository.findByName(a.getName());
+    	if(user == null)
+    		return "redirect:/login";
+    	
+    	model.addAttribute("user", user);
+    	
+    	if (user.getProfilePhoto() != null) {
+            model.addAttribute("profilePhotoHead", "/files/" + user.getProfilePhoto().getPublicId());
+        }
+    	
+    		List<Quack> quacks = quackRepository.findAll();
+    		
+    		model.addAttribute("quacks", quacks);
+    	
+    		return "quack-search";
+    }
+    
+    @GetMapping("/quack/search")
+    public String searchForm(Model model) {
+    	Authentication a = SecurityContextHolder.getContext().getAuthentication();
+
+        User loggedUser = userRepository.findByName(a.getName());
+        if(loggedUser==null)
+            return "redirect:/login";
+        
+        model.addAttribute("user", loggedUser);
+		
+		if (loggedUser.getProfilePhoto() != null) {
+            model.addAttribute("profilePhotoHead", "/files/" + loggedUser.getProfilePhoto().getPublicId());
+        }
+    	return "search";
+    }
+    
+    @RequestMapping(value = {"/quack/search/result"}, method = RequestMethod.POST)
+	public String searchSubmitted(@RequestParam("quackSearch") String search, Model model) {
+		
+		Authentication a = SecurityContextHolder.getContext().getAuthentication();
+
+        User loggedUser = userRepository.findByName(a.getName());
+        if(loggedUser==null)
+            return "redirect:/login";
+        
+        model.addAttribute("user", loggedUser);
+        
+        List<Quack> quacks = quackRepository.findByQuackMessageContaining(search);
+
+		model.addAttribute("quacks", quacks);
+		
+		if (loggedUser.getProfilePhoto() != null) {
+            model.addAttribute("profilePhotoHead", "/files/" + loggedUser.getProfilePhoto().getPublicId());
+        }
+        return "quack-search-result";
+	}
 }
