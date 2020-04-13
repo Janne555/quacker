@@ -11,30 +11,34 @@
 
     <div id="posts" align="center">
         <a href="/index">
-            <img border="0" class="center" src="../static/images/Quacks.png" th:src="@{/images/Quacks.png}"
-                 style="width:400px; height:400">
+            <img border="0" class="center quackimage" src="../static/images/Quacks.png" th:src="@{/images/Quacks.png}"
+                 >
         </a>
 
         <form id="post-quack-form" th:action="@{/quack}" enctype="multipart/form-data" method="post">
-            <div>
-                <label for="message" style="color:rgb(7, 121, 85)">Message:</label> <input type="text" name="message"
-                                                                                           id="message"/>
-                <input id="quackInput" type="submit" value="Quack!"/>
-            </div>
-            <div>
-                <input type="file" id="quack-attachment"
-                       name="file" aria-describedby="inputGroupFileAddon01" style="color:rgb(7, 121, 85)">
-            </div>
-        </form>
+   
+                                                                      
+                        <div>
+        <textarea id="subject" class="textbox" name="message" placeholder="Write something.." ></textarea>
+      </div>    
+      
+      
+                          <div>
+                <input type="file"  id="quack-attachment"
+                       name="file" aria-describedby="inputGroupFileAddon01"  >
+            </div>                                                             
+                                                                                           
+                <input  type="submit" value="Quack!"/>
+        
 
-        <a class="btn btn-primary" th:href="@{/users}">List users</a>
+        </form>
     </div>
 
 
     <div id="latestQuacks" align="center">
         <a href="/index">
-            <img border="0" class="center" src="../static/images/LatestQuacks.png" th:src="@{/images/LatestQuacks.png}"
-                 style="width:600px; height:600">
+            <img border="0" class="center latestquacksimage" src="../static/images/LatestQuacks.png" th:src="@{/images/LatestQuacks.png}"
+                 >
         </a>
 
         <div id="myDIV" class="feedFilterMain">
@@ -77,14 +81,14 @@
                         <b><a th:href="'/user/' + ${quack.getPoster().getName()}" th:text="${quack.poster.getName()}">poster</a></b>:
 
                         <div th:if="${quack.attachment != null}">
-                            <img width="80%" class="quack-image"
+                            <img class="quack-image"
                                  th:if="${quack.attachment.getContentType().startsWith('image')}"
                                  th:src="${quack.attachment.getUrl()}"/>
                             <!--TODO: Find out if size could be dynamic-->
-                            <video width="500px" height="281px" controls
+                            <video class="quack-image" width="500px" height="281px" controls 
                                    th:if="${quack.attachment.getContentType().startsWith('video')}"
                                    th:src="${quack.attachment.getUrl()}"/>
-                            <audio controls th:if="${quack.attachment.getContentType().startsWith('audio')}"
+                            <audio class="quack-image"  controls th:if="${quack.attachment.getContentType().startsWith('audio')}"
                                    th:src="${quack.attachment.getUrl()}"/>
                         </div>
 
@@ -96,8 +100,13 @@
                             <span th:text="${quack.getFormattedDate()}">dateposted</span>
                             <span th:unless="${quack.getPoster().equals(user)}">
                             <span th:if="${quack.getLikers().contains(user)}">
+
+                                <a th:href="@{'/like/' + ${quack.getId()}}"
+                                   class="btn btn-danger fa fa-thumbs-up" style="background-color:green;"></a>
+
                                 <button th:onclick="|likeQuack('${quack.getId()}')|"
                                    class="btn btn-danger fa fa-thumbs-down"></button>
+
                             </span>
                             <span th:unless="${quack.getLikers().contains(user)}">
                                 <button th:onclick="|likeQuack('${quack.getId()}')|" class="btn btn-primary fa fa-thumbs-up"></button>

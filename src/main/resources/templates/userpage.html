@@ -69,6 +69,47 @@
         </div>
     </div>
 
+
+    <div  th:each="quack : ${userquacks}">
+          <div class="postaus cent" >
+
+                        <b><span th:text="${quack.poster.getName()}">poster</span></b>:
+
+                        <div th:if="${quack.attachment != null}">
+                            <img width="80%" class="quack-image"
+                                 th:if="${quack.attachment.getContentType().startsWith('image')}"
+                                 th:src="${quack.attachment.getUrl()}"/>
+                            <!--TODO: Find out if size could be dynamic-->
+                            <video class="quack-image" width="500px" height="281px" controls
+                                   th:if="${quack.attachment.getContentType().startsWith('video')}"
+                                   th:src="${quack.attachment.getUrl()}"/>
+                            <audio class="quack-image" controls th:if="${quack.attachment.getContentType().startsWith('audio')}"
+                                   th:src="${quack.attachment.getUrl()}"/>
+                        </div>
+
+                        <div class="quacki">
+                            <span th:text="${quack.getQuackMessage()}">message</span>
+                        </div>
+
+                        <div class="oikea">
+                            <span th:text="${quack.getFormattedDate()}">dateposted</span>
+                            <span th:unless="${quack.getPoster().equals(user)}">
+                            <span th:if="${quack.getLikers().contains(user)}">
+                                <a th:href="@{'/like/' + ${quack.getId()}}"
+                                   class="btn btn-danger fa fa-thumbs-down"></a>
+                            </span>
+                            <span th:unless="${quack.getLikers().contains(user)}">
+                                <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary fa fa-thumbs-up"></a>
+                            </span>
+                        </span>
+                        </div>
+
+                        <div>
+                            <span th:text="@{'Likes: ' + ${quack.getLikers().size()}}">likes</span>
+                        </div>
+                    </div>
+        
+
     <div class="card" th:each="quack : ${userquacks}">
         <div class="card-body">
             <h5 class="card-title">
@@ -104,6 +145,7 @@
 
             <p>Likes: <span th:text="${quack.getLikers().size()}"></span></p>
         </div>
+
     </div>
 
 
@@ -145,7 +187,6 @@
     }
 
 </script>
-
 </body>
 
 
