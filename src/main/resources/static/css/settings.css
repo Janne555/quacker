@@ -25,3 +25,13 @@
     align-items: flex-start;
 }
 
+ul li a {
+    color: #FFFF00;
+    display: block;
+    font-size: 15px;
+}
+
+ul li a:hover {
+    color: #000000;
+    background: #FFFF00;
+}

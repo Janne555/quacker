@@ -4,6 +4,7 @@ import com.group5.quacker.entities.Quack;
 import com.group5.quacker.entities.User;
 import com.group5.quacker.repositories.QuackRepository;
 import com.group5.quacker.repositories.UserRepository;
+import com.group5.quacker.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 @Controller
@@ -25,17 +27,18 @@ public class DefaultController {
     @Autowired
     QuackRepository quackRepository;
 
-    @RequestMapping(value = {"/{display}", "/index", "/index/", "/"}, method = RequestMethod.GET)
-    public String pageRootGet(Model model,
-                              @PathVariable(value = "display", required = false) String displayQuacks) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("User: \"" + auth.getName() + "\" got the index page.");
-        model.addAttribute("username", auth.getName());
-        
-        User user = userRepository.findByName(auth.getName());
+    @Autowired
+    AccountService accountService;
+
+    @RequestMapping(value = {"/index", "/index/", "/"}, method = RequestMethod.GET)
+    public String pageRootGet(Model model, String displayQuacks) {
+        User user = accountService.currentUser();
+        model.addAttribute("username", user.getName());
+
         if(user == null){
             return "redirect/login";
-        }
+
+     }
 
         model.addAttribute("user", user);
         model.addAttribute("latestQuackView", user.getLatestQuackView());
@@ -80,6 +83,8 @@ public class DefaultController {
 
                     quacksDefault.addAll(quackRepository.findAll());
 
+                    quacksDefault.removeIf(quack -> user.getBlocked().contains(quack.getPoster())); // poista blokattujen käyttäjien quackit feedistä
+
                     Collections.sort(quacksDefault, new Comparator<Quack>() {
                         public int compare(Quack o1, Quack o2) {
                             return o1.getDatePosted().compareTo(o2.getDatePosted());
@@ -100,6 +105,8 @@ public class DefaultController {
             ArrayList<Quack> quacksDefault = new ArrayList();
 
             quacksDefault.addAll(quackRepository.findAll());
+
+            quacksDefault.removeIf(quack -> user.getBlocked().contains(quack.getPoster())); // poista blokattujen käyttäjien quackit feedistä
 
             Collections.sort(quacksDefault, new Comparator<Quack>() {
                 public int compare(Quack o1, Quack o2) {

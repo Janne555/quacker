@@ -60,6 +60,15 @@ public class User {
     @JoinColumn(name = "user_id")
     private List<User> followers;
 
+
+
+    /**
+     * Object references to users that this user has blocked
+     */
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private List<User> blocked;
+
     public String getName() {
         return name;
     }
@@ -126,12 +135,20 @@ public class User {
 
     public List<Quack> getQuacks() { return quacks; }
 
+    public void addBlocked(User user) { blocked.add(user); }
+
+    public void removeBlocked(User user) {blocked.remove(user); }
+
     /**
      * Testaamista varten. Kunnes löytyy parempi tapa saada lista mukaan
      * @param quacks
      */
     public void setQuacks(List<Quack> quacks) {
         this.quacks = quacks;
+    }
+
+    public void setBlocked(List<User> blocked) {
+        this.blocked = blocked;
     }
 
     public void setFollowers(List<User> followers) {
@@ -142,6 +159,11 @@ public class User {
         this.following = following;
     }
 
+
+    public List<User> getBlocked() {
+        return blocked;
+    }
+/*
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -151,7 +173,7 @@ public class User {
                 getName().equals(user.getName()) &&
                 getEmail().equals(user.getEmail()) &&
                 getPasswordHash().equals(user.getPasswordHash());
-    }
+    }*/
 
     @Override
     public int hashCode() {

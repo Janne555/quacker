@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -73,9 +74,8 @@ public class SettingsController {
             @PathVariable(value = "setting", required = false) String setting,
             @RequestParam Map<String, String> allParams,
             Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        User user = userRepository.findByName(auth.getName());
+        User user = accountService.currentUser();
         if (user == null) {
             return "redirect:/login";
         }
@@ -122,9 +122,7 @@ public class SettingsController {
      */
     @PostMapping("/settings/profile-photo")
     public String postProfilePhoto(@RequestParam("file") MultipartFile file) throws IOException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        User user = userRepository.findByName(auth.getName());
+        User user = accountService.currentUser();
         if (user == null) {
             return "redirect:/login";
         }
@@ -152,9 +150,7 @@ public class SettingsController {
             @Valid PersonalInfoForm personalInfoForm,
             final BindingResult bindingResult,
             final RedirectAttributes redirectAttributes) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        User user = userRepository.findByName(auth.getName());
+        User user = accountService.currentUser();
         if (user == null) {
             return "redirect:/login";
         }
@@ -172,24 +168,21 @@ public class SettingsController {
 
     @PostMapping("/settings/password-change")
     public String postPassword(@Valid PasswordForm passWordForm, final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        User user = userRepository.findByName(auth.getName());
+        User user = accountService.currentUser();
         if (user == null) {
             return "redirect:/login";
         }
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.passwordForm", bindingResult);
-            redirectAttributes.addFlashAttribute("passwordError", "Passwords does not match!");
+            redirectAttributes.addFlashAttribute("passwordForm", passWordForm);
         }
         else
         {
             user.setPasswordHash(passwordEncoder.encode(passWordForm.getNew_password()));
             userRepository.save(user);
+            redirectAttributes.addFlashAttribute("success", "Password changed successfully!");
         }
-
-
 
         return "redirect:/settings/password-change";
     }
@@ -199,9 +192,7 @@ public class SettingsController {
             @Valid CurrentPasswordForm currentPasswordForm,
             final BindingResult bindingResult,
             final RedirectAttributes redirectAttributes) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        User user = userRepository.findByName(auth.getName());
+        User user = accountService.currentUser();
 
         if (user == null) {
             return "redirect:/login";

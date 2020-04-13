@@ -456,6 +456,16 @@ span.error {
 	height: 50px;
 }
 
+.feedFilter {
+    color: #FFFF00;
+    display: block;
+}
+
+a.feedFilter:hover {
+    color: #000000;
+    background: #FFFF00;
+}
+
 .feedFilter{
 	padding-top: 10px;
   	font-size: 20px;
@@ -516,6 +526,7 @@ margin-left:5%;
 
 
 
+
 .left_foot{
   position: absolute;
   left: 0;
@@ -526,4 +537,5 @@ margin-left:5%;
   position: relative;
   min-height: 79vh;
 }
+
 

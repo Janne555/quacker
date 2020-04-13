@@ -5,6 +5,7 @@ import com.group5.quacker.entities.Quack;
 import com.group5.quacker.entities.User;
 import com.group5.quacker.repositories.QuackRepository;
 import com.group5.quacker.repositories.UserRepository;
+import com.group5.quacker.services.AccountService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,6 +47,9 @@ class UserControllerTests {
     @MockBean
     private QuackRepository quackRepository;
 
+    @MockBean
+    private AccountService accountService;
+
     private User user;
     private FileMap fileMap;
     private InputStream testStream;
@@ -66,6 +70,7 @@ class UserControllerTests {
         user.setEmail("test@quacker.com");
         user.setQuacks(new ArrayList<>());
         user.setFollowers(new ArrayList<>());
+        user.setBlocked(new ArrayList<>());
 
         quack = new Quack();
         quack.setAttachment(fileMap);
@@ -86,6 +91,7 @@ class UserControllerTests {
     @DisplayName("Image for quack gets included")
     @WithMockUser(username = "test", password = "pwd", roles = "USER")
     void getUserPageWhenQuackHasImage() throws Exception {
+        when(accountService.currentUser()).thenReturn(user);
         when(userRepository.findByName(anyString())).thenReturn(user);
         when(quackRepository.findByPoster(any(User.class))).thenReturn(user.getQuacks());
 

@@ -50,9 +50,8 @@ public class QuackController {
      */
     @RequestMapping(value = "/quack", method = RequestMethod.POST)
     public String newQuack(@RequestParam String message, @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        User poster = userRepository.findByName(auth.getName());    // Check that the user actually exists in the database
+        User poster = accountService.currentUser();    // Check that the user actually exists in the database
         if (poster == null)
             return "redirect:/login";
 
@@ -81,9 +80,7 @@ public class QuackController {
      */
     @RequestMapping(value = "/like/{id}", method = RequestMethod.GET)
     public String newQuack(@PathVariable("id") long id, HttpServletRequest request) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        User liker = userRepository.findByName(auth.getName());     // check that the user liking a quack actually exists in the database
+        User liker = accountService.currentUser();     // check that the user liking a quack actually exists in the database
         if (liker == null)
             return "redirect:/login";
 
