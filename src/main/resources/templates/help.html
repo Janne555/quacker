@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/common :: head">
+</head>
+<body>
+<div th:replace="fragments/common :: headermain"></div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <ul class="nav nav-pills flex-column">
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:classappend="${#strings.equals(subpage, 'howto')} ? 'active' : ''"
+                       th:href="@{/help}">How To Quack</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:classappend="${#strings.equals(subpage, 'aboutus')} ? 'active' : ''"
+                       th:href="@{/help}">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:classappend="${#strings.equals(subpage, 'feedback')} ? 'active' : ''"
+                       th:href="@{/help/feedback}">Send Feedback</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-8">
+            <div th:switch="${subpage}">
+                <div th:case="feedback">
+                    <h3>Feedback</h3>
+                    <div th:if="${feedbackSuccess}" class="alert alert-success" role="alert">
+                        Thanks for your feedback!
+                    </div>
+                    <form th:action="@{/help/feedback}" th:object="${feedbackForm}" method="post">
+                        <div class="form-group">
+                            <label for="category-select">Category</label>
+                            <select required th:field="*{category}" class="form-control" id="category-select">
+                                <option th:each="category : ${T(com.group5.quacker.enums.FeedbackCategory).values()}"
+                                        th:value="${category}"
+                                        th:text="${category.displayValue()}"
+                                />
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="header-input">Header</label>
+                            <input required class="form-control" th:field="*{header}" id="header-input"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="feedback-input">Description</label>
+                            <textarea required class="form-control" th:field="*{message}" id="feedback-input"/>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Feedback</button>
+                    </form>
+                </div>
+                <div th:default></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/common :: footer"></div>
+</body>
+</html>

@@ -79,7 +79,7 @@ public class SettingsControllerTests {
     @Test
     @DisplayName("Unauthorized request redirects to login")
     public void noAuthRedirectTest() throws Exception {
-        when(userRepository.findByName(anyString())).thenReturn(null);
+        when(accountService.currentUser()).thenReturn(null);
 
         this.mockMvc
                 .perform(get("/settings/anything_here"))
@@ -91,7 +91,7 @@ public class SettingsControllerTests {
     @DisplayName("Profile photo gets added when setting is profile-photo")
     @WithMockUser(username = "test", password = "pwd", roles = "USER")
     public void profilePhotoIncludedTest() throws Exception {
-        when(userRepository.findByName(anyString())).thenReturn(user);
+        when(accountService.currentUser()).thenReturn(user);
 
         this.mockMvc
                 .perform(get("/settings/profile-photo"))
@@ -102,7 +102,7 @@ public class SettingsControllerTests {
     @DisplayName("Post to /settings/profile-photo uploads file and redirects back to same page")
     @WithMockUser(username = "test", password = "pwd", roles = "USER")
     public void postProfilePhotoTest() throws Exception {
-        when(userRepository.findByName(anyString())).thenReturn(user);
+        when(accountService.currentUser()).thenReturn(user);
         when(fileService.storeFile(any(MultipartFile.class))).thenReturn(fileMap);
 
         MockMultipartFile mockMultipartFile = new MockMultipartFile(
@@ -127,7 +127,7 @@ public class SettingsControllerTests {
     @DisplayName("Post to /settings/personal-info/email with unique email updates email address")
     @WithMockUser(username = "test", password = "pwd", roles = "USER")
     public void postUniqueEmailAddress() throws Exception {
-        when(userRepository.findByName(anyString())).thenReturn(user);
+        when(accountService.currentUser()).thenReturn(user);
         mockMvc
                 .perform(post("/settings/personal-info/email")
                         .with(csrf())
@@ -141,7 +141,7 @@ public class SettingsControllerTests {
     @DisplayName("Post to /settings/personal-info/email with non-unique email doesn't update the email")
     @WithMockUser(username = "test", password = "pwd", roles = "USER")
     public void postNonUniqueEmail() throws Exception {
-        when(userRepository.findByName(anyString())).thenReturn(user);
+        when(accountService.currentUser()).thenReturn(user);
         when(userRepository.findByEmailIs(anyString())).thenReturn(user);
 
         mockMvc
@@ -156,7 +156,7 @@ public class SettingsControllerTests {
     @DisplayName("Post to /settings/delete-account should delete an account")
     @WithMockUser(username = "test", password = "pwd", roles = "USER")
     public void postAccountDelete() throws Exception {
-        when(userRepository.findByName(anyString())).thenReturn(user);
+        when(accountService.currentUser()).thenReturn(user);
         when(passwordEncoder.matches("pwd", "hashyhash")).thenReturn(true);
 
         mockMvc
@@ -172,7 +172,7 @@ public class SettingsControllerTests {
     @DisplayName("Post to /settings/delete-account with the wrong password should return binding error")
     @WithMockUser(username = "test", password = "pwd", roles = "USER")
     public void postAccountDeleteWrongPassword() throws Exception {
-        when(userRepository.findByName(anyString())).thenReturn(user);
+        when(accountService.currentUser()).thenReturn(user);
 
         mockMvc
                 .perform(post("/settings/delete-account")

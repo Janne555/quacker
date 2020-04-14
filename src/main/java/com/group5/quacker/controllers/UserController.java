@@ -3,6 +3,7 @@ package com.group5.quacker.controllers;
 import com.group5.quacker.entities.User;
 import com.group5.quacker.repositories.QuackRepository;
 import com.group5.quacker.repositories.UserRepository;
+import com.group5.quacker.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,23 +28,24 @@ public class UserController {
     @Autowired
     QuackRepository quackRepository;
 
+    @Autowired
+    AccountService accountService;
+
     /**
      * This is the GET mapping for a users page.
+     *
      * @param name  Name of the user
      * @param model Model for populating the thymeleaf template
      * @return Returns the thymeleaf template for a users page
      */
     @RequestMapping(value = "/user/{name}", method = RequestMethod.GET)
     public String userPageGet(@PathVariable("name") String name, Model model) {
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        User loggedUser = userRepository.findByName(auth.getName());    // check that the logged in user exists in the database
-        if(loggedUser==null)
+        User loggedUser = accountService.currentUser();   // check that the logged in user exists in the database
+        if (loggedUser == null)
             return "redirect:/login";
 
         User user = userRepository.findByName(name);                    // if the user was not found, search for users containing the supplied name value
-        if(user==null) {
+        if (user == null) {
             List<User> users = userRepository.findByNameContaining(name);
 
             model.addAttribute("users", users);
@@ -61,11 +63,11 @@ public class UserController {
         }
 
 
-        if(user.getFollowers().contains(userRepository.findByName(auth.getName()))) {   // check if the viewing user has followed the user
+        if (user.getFollowers().contains(user)) {   // check if the viewing user has followed the user
             model.addAttribute("isFollowed", true);
         }
 
-        if(userRepository.findByName(auth.getName()).getBlocked().contains(user)) {       // check if the viewing user has blocked the user
+        if (user.getBlocked().contains(user)) {       // check if the viewing user has blocked the user
             model.addAttribute("isBlocked", true);
         }
 
@@ -76,30 +78,28 @@ public class UserController {
 
     /**
      * GET mapping for following users
-     * @param name Name of the user to be followed
+     *
+     * @param name  Name of the user to be followed
      * @param model Model for populating the thyeleaf template
      * @return Redirects to the users page that was followed
      */
     @RequestMapping(value = "/follow/{name}", method = RequestMethod.GET)
     public String userFollow(@PathVariable("name") String name, Model model) {
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        User follower = userRepository.findByName(auth.getName());      // check that the logged in user actually exists in the database
-        if(follower == null)
+        User follower = accountService.currentUser();      // check that the logged in user actually exists in the database
+        if (follower == null)
             return "redirect:/login";
 
         User user = userRepository.findByName(name);                    // check that the user to be followed actually exists
-        if(user==null) {
+        if (user == null) {
             return "redirect:/";
         }
 
         // check that the user has not already followed the other user and that the user is not trying to follow himself
-        if(!follower.getFollowing().contains(user) && !user.getFollowers().contains(follower) && !user.equals(follower)) {
+        if (!follower.getFollowing().contains(user) && !user.getFollowers().contains(follower) && !user.equals(follower)) {
             follower.addFollowing(user);
             user.addFollower(follower);
 
-            if(follower.getBlocked().contains(user)) {  // If the user is following a blocked user, unblock that user
+            if (follower.getBlocked().contains(user)) {  // If the user is following a blocked user, unblock that user
                 follower.removeBlocked(user);
             }
 
@@ -112,20 +112,17 @@ public class UserController {
 
     @RequestMapping(value = "/unfollow/{name}", method = RequestMethod.GET)
     public String userUnfollow(@PathVariable("name") String name, Model model) {
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        User follower = userRepository.findByName(auth.getName());      // check that the logged in user actually exists in the database
-        if(follower == null)
+        User follower = accountService.currentUser();      // check that the logged in user actually exists in the database
+        if (follower == null)
             return "redirect:/login";
 
         User user = userRepository.findByName(name);                    // check that the user to be unfollowed actually exists
-        if(user==null) {
+        if (user == null) {
             return "redirect:/";
         }
 
         // check that the user has already followed the other user and that the user is not trying to unfollow himself
-        if(follower.getFollowing().contains(user) && user.getFollowers().contains(follower) && !user.equals(follower)) {
+        if (follower.getFollowing().contains(user) && user.getFollowers().contains(follower) && !user.equals(follower)) {
             follower.removeFollowing(user);
             user.removeFollower(follower);
             userRepository.save(follower);
@@ -137,29 +134,27 @@ public class UserController {
 
     /**
      * GET mapping for blocking & unblocking users
-     * @param name Name of the user to be blocked
+     *
+     * @param name  Name of the user to be blocked
      * @param model Model for populating the thyeleaf template
      * @return Redirects to the users page that was followed
      */
     @RequestMapping(value = "/block/{name}", method = RequestMethod.GET)
     public String userBlock(@PathVariable("name") String name, Model model) {
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        User blocker = userRepository.findByName(auth.getName());      // check that the logged in user actually exists in the database
-        if(blocker == null)
+        User blocker = accountService.currentUser();      // check that the logged in user actually exists in the database
+        if (blocker == null)
             return "redirect:/login";
 
         User user = userRepository.findByName(name);                    // check that the user to be blocked actually exists
-        if(user==null) {
+        if (user == null) {
             return "redirect:/";
         }
 
         // check that the user has not already blocked the other user and that the user is not trying to block himself
-        if(!blocker.getBlocked().contains(user) && !blocker.equals(user)) {
+        if (!blocker.getBlocked().contains(user) && !blocker.equals(user)) {
             blocker.addBlocked(user);
 
-            if(blocker.getFollowing().contains(user)) {     // Remove following status when blocking a user
+            if (blocker.getFollowing().contains(user)) {     // Remove following status when blocking a user
                 blocker.removeFollowing(user);
                 user.removeFollower(blocker);
                 userRepository.save(user);
@@ -177,29 +172,29 @@ public class UserController {
 
     /**
      * Mapping to list users
+     *
      * @param model Model to populate the thymeleaf template
      * @return returns a list of users
      */
     @RequestMapping(value = {"/user/", "/users/", "/user", "/users"}, method = RequestMethod.GET)
     public String userPageGet(Model model) {
-    	 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-         User user = userRepository.findByName(auth.getName());
-         if(user==null)
-             return "redirect:/login";
+        User user = accountService.currentUser();
+        if (user == null)
+            return "redirect:/login";
+        
         model.addAttribute("user", user);
-         
-            List<User> users = userRepository.findAll();
 
-            model.addAttribute("users", users);
-            
-            if (user.getProfilePhoto() != null) {
-                model.addAttribute("profilePhotoHead", "/files/" + user.getProfilePhoto().getPublicId());
-            }
+        List<User> users = userRepository.findAll();
 
-            
-            return "user-search";
-            
+        model.addAttribute("users", users);
+
+        if (user.getProfilePhoto() != null) {
+            model.addAttribute("profilePhotoHead", "/files/" + user.getProfilePhoto().getPublicId());
+        }
+
+
+        return "user-search";
+
     }
     
     @GetMapping("/user/search")

@@ -11,11 +11,221 @@ body {
   background-image: var(--bg-image);
 }
 
+.page-headerNotIn {
+  background-color: rgba(132, 87, 87, 0.5);
+  background-color: var(--maincolor);
+  margin-bottom: 10em;
+  text-align: center;
+  margin-bottom: 0em;
+}
+
+.headerQuakerText{
+	color: black; 
+	text-decoration: none;
+	font-family: Amiri; 
+	font-size: 50px ; 
+	letter-spacing: 10px;
+}
+
+.headerQuakerText:hover{
+	text-decoration: none;
+	color: black; 
+}
+
+
+
+@media screen and (min-width: 1060px) {
+.page-header {
+	display: flex;
+	justify-content: center;
+  align-items: center; 
+	} 
+}
+
+
+.page-header {
+  background-color: rgba(132, 87, 87, 0.5);
+  background-color: var(--maincolor);
+  margin-bottom: 0em;
+} 
+
+.headerQuakImg{
+	width:100px; 
+	height:100%;
+	z-index: -1;
+}
+
+
+
+.searchBar{
+  	background-color: rgba(230, 230, 228, 0.5);
+  	border-color: var(--maincolor);
+  	border-radius: 5px;
+}
+
+.fa-search{
+}
+
+.searchIcon{
+	background-color: rgba(230, 230, 228, 0.5);
+  	border-color: var(--maincolor);
+  	border-radius: 5px;
+}
+
+@media screen and (min-width: 1060px) {
+	
+	.userlist{
+	position: absolute;
+	margin-top: 0;
+	top: 26px;
+}
+
+.headerQuakerText2{
+	  position: absolute;
+  top: 3em;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.headerLeft{
+	display: inline-block;
+    width: 17%;
+    height: 100%;
+    top: 30%;
+    vertical-align: center;
+	float: left;
+	text-align: left;
+	
+}
+
+.headerSearch{
+	display: inline-block;
+    width: 17%;
+    height: 100%;
+    top: 30%;
+    vertical-align: center;
+	float: left;
+	text-align: left;
+	
+}
+
+.searchBar{
+	width: 80%;
+}
+
+
+
+.headerCenter{
+	display: inline-block;
+    width: 32%;
+	text-align: center;
+	
+}
+
+.headerRight{
+	display: inline-block;
+    width: 34%;
+	float: right;
+	text-align: right;
+	
+}
+}
+
+@media screen and (max-width: 1059px) {
+	
+	
+.userlist{
+	position: absolute;
+	margin-top: 0;
+	top: 13px;
+	left: 10px;
+}
+
+
+.headerQuakerText2{
+	  position: absolute;
+  top: 8.5em;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+	.headerLeft{
+	display: inline-block;
+    width: 100%;
+    height: 100%;
+    top: 30%;
+	text-align: center;
+	
+}
+
+
+
+.headerSearch{
+ 	display: inline-block;
+    width: 100%;
+    height: 100%;
+    top: 30%;
+	text-align: center;
+	border-top: 1px dotted black;
+	
+}
+.headerCenter{
+	display: inline-block;
+    width: 100%;
+	text-align: center;
+  border-top: 1px dotted black;
+  border-bottom: 1px dotted black;
+	
+}
+
+.headerRight{
+	display: inline-block;
+    width: 100%;
+  text-align: center;
+	
+}
+}
+
+
+
+
 
 .centered {
   position: absolute;
   top: 0.7em;
   left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.textbox {
+  background-color: rgba(230, 230, 228, 0.5);
+  color: black;
+  border: 1px solid black;
+  height:200px; 
+  width:90%;
+}
+
+#container {
+  width: 100%;
+  padding-top: 20px;
+  text-align: center;
+  
+}
+
+input[type=submit]:hover {
+  background-color: rgb(7, 121, 85);
+}
+
+input[type=file]:hover {
+  background-color: rgb(7, 121, 85);
+  color: white;
+}
+
+.left {
+  position: absolute;
+  top: 2.7em;
+  left: 10em;
   transform: translate(-50%, -50%);
 }
 
@@ -60,7 +270,12 @@ body {
   font-weight: normal;
 }
 
-.page-header {
+
+
+.page-footer {
+	 position: absolute;
+  bottom: 0;
+  width: 100%;
   background-color: rgba(132, 87, 87, 0.5);
   background-color: var(--maincolor);
   margin-bottom: 10em;
@@ -68,27 +283,46 @@ body {
   margin-bottom: 0em;
 }
 
-#container {
-  margin: auto;
-  width: 100%;
-  padding-top: 20px;
+
+
+.quackimage{
+	height:80%; 
+	width:80%;
+	
 }
+
+.latestquacksimage{
+	width:99%; 
+	height:99%;
+	
+}
+
+
 
 #latestQuacks,
 #posts {
-  margin: 10px;
-  padding: 20px;
-  float: left;
-  width: 800px;
+display: inline-block;
+  margin: 1%;
+  min-width: 340px;
+  max-width: 700px;
+  width: 48%;
   background: var(--maincolor);
+  vertical-align: top;
+  padding-bottom: 20px;
+ 
+}
+@media screen and (min-width: 1480px) {
+
+#posts { top: 0;
+top: 2%;
+  padding: 5px;
+position: -webkit-sticky;
+  position: sticky;
+}
 }
 
-#posts {
-  margin-left:5%;
-}
-
-#quackInput {
-  background-color: rgb(7, 121, 85);
+input[type=submit] {
+  background-color: blue;
   border: none;
   color: white;
   cursor: pointer;
@@ -99,12 +333,32 @@ body {
   font-size: 20px;
 }
 
-#quack-attachment{
+.register {
+  background-color: gray;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 25px;
+  margin: 5px;
+  padding: 15px;
   font-weight: bold;
+  font-size: 20px;
+}
+
+.resizable{
+    resize: both;
+    overflow: auto;
+    
+}
+
+input[type=file]{
+  font-weight: bold;
+  color: rgb(7, 121, 85);
 }
 
 #quack-image-preview{
-	width: 100%;
+	width: 80%;
+	padding: 20px;
 }
 
 label{
@@ -125,6 +379,11 @@ label{
   border-color: black;
   font-weight: bold;
 }
+.quack-image{
+	margin-left: 5%;
+	width:90%;
+}
+
 
 .con2 {
   margin-top: 1em;
@@ -145,7 +404,6 @@ label{
 }
 
 .profileimg {
-  text-align: right;
   background-color: rgba(132, 87, 87, 0.5);
   background-color: var(--maincolor);
 }
@@ -161,23 +419,20 @@ label{
   outline: none;
 }
 
+
+
+
+
 .fa-home {
-  position: absolute;
-  left: 1em;
-  top: 0.6em;
   z-index: 1;
   margin: 0;
-  padding: 0;
+  padding: 5px;
   color: rgba(0, 0, 0, 0.5);
 }
 
 .dropdown {
-  position: absolute;
-  right: 2em;
-  top: 0px;
   z-index: 1;
   background: transparent;
-  text-align: right;
   padding-right: 0px;
   margin-right: 0m;
   margin-top: 0.7em;
@@ -199,6 +454,16 @@ span.error {
 
 .feedFilterMain{
 	height: 50px;
+}
+
+.feedFilter {
+    color: #FFFF00;
+    display: block;
+}
+
+a.feedFilter:hover {
+    color: #000000;
+    background: #FFFF00;
 }
 
 .feedFilter{
@@ -240,7 +505,8 @@ span.error {
 
 .oikea{
   	position: relative;
-  	left: 505px
+  	text-align: right;
+  	right: 0%;
 }
 
 .fa-thumbs-up{
@@ -249,6 +515,27 @@ span.error {
 	color: white;
 }
 
+
+.cent{
+margin-left:5%;
+}
+
 .uusi-quack {
   background-color: #009688;
 }
+
+
+
+
+.left_foot{
+  position: absolute;
+  left: 0;
+}
+
+
+.page-container {
+  position: relative;
+  min-height: 79vh;
+}
+
+
