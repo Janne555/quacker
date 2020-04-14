@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -195,6 +196,41 @@ public class UserController {
         return "user-search";
 
     }
+    
+    @GetMapping("/user/search")
+    public String searchForm(Model model) {
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+        User loggedUser = userRepository.findByName(auth.getName());  
+        if(loggedUser==null)
+            return "redirect:/login";
+        
+        model.addAttribute("user", loggedUser);
+		
+		if (loggedUser.getProfilePhoto() != null) {
+            model.addAttribute("profilePhotoHead", "/files/" + loggedUser.getProfilePhoto().getPublicId());
+        }
+    	return "search";
+    }
 
+	@RequestMapping(value = {"/user/search/result"}, method = RequestMethod.POST)
+	public String searchSubmitted(@RequestParam("userSearch") String search, Model model) {
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        User loggedUser = userRepository.findByName(auth.getName());
+        if(loggedUser==null)
+            return "redirect:/login";
+        
+        model.addAttribute("user", loggedUser);
+        
+        List<User> users = userRepository.findByNameContaining(search);
+
+		model.addAttribute("users", users);
+		
+		if (loggedUser.getProfilePhoto() != null) {
+            model.addAttribute("profilePhotoHead", "/files/" + loggedUser.getProfilePhoto().getPublicId());
+        }
+        return "user-search-result";
+	}
 }

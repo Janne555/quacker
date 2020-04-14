@@ -105,6 +105,7 @@
   <ul class="dropdown-menu">
     <li><a th:href="@{/settings}">settings</a></li>
     <li><a th:if="${user != null}" th:href="@{'/user/' + ${user.getName()}}">profile</a></li>
+    <li><a th:href="@{/user/search}">search</a></li>
     <li><form th:action="@{/logout}" method="post">
         <input type="submit" value="Sign Out"/>
     </form></li>

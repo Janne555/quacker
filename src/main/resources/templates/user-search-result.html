@@ -11,7 +11,10 @@
         <table class="table table-bordered table-striped table-hover">
 
             <thead>
-            <a th:href="@{/user/search}" style="font-size:20px;">Search user</a> 
+            <tr>
+                <td style="font-size:20px;">Result for search</td>
+                <a th:href="@{/user/search}" style="font-size:20px;">Try another search</a>   
+            </tr>
             </thead>
 
             <tbody>
@@ -42,10 +45,6 @@
     </table>
 </div>
 
-<div th:replace="fragments/common :: footer"></div>
-
 </body>
-
-
 
 </html>

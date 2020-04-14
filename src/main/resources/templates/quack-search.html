@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/common :: head">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+<div th:replace="fragments/common :: headermain"></div>
+<div class="container">
+
+        <table class="table table-bordered table-striped table-hover">
+
+            <thead>
+            	<a th:href="@{/quack/search}" style="font-size:20px;">Search quacks</a> 
+            </thead>
+
+            <tbody>
+            <th class="text-center">Quacks</th>
+
+             <tr th:each="quack : ${quacks}">
+                 <td>
+                    <a th:text="${quack.getQuackMessage()}" th:href="@{'/quack/' + ${quack.getPoster()}}">poster</a>
+                 </td>
+
+            </tr>
+            </tbody>
+    </table>
+</div>
+
+</body>
+</html>
