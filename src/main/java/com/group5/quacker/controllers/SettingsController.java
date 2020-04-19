@@ -73,9 +73,8 @@ public class SettingsController {
     public String getSettings(
             @PathVariable(value = "setting", required = false) String setting,
             @RequestParam Map<String, String> allParams,
-            Model model) {
+            Model model, User user) {
 
-        User user = accountService.currentUser();
         if (user == null) {
             return "redirect:/login";
         }
@@ -121,8 +120,7 @@ public class SettingsController {
      * @throws IOException
      */
     @PostMapping("/settings/profile-photo")
-    public String postProfilePhoto(@RequestParam("file") MultipartFile file) throws IOException {
-        User user = accountService.currentUser();
+    public String postProfilePhoto(@RequestParam("file") MultipartFile file, User user) throws IOException {
         if (user == null) {
             return "redirect:/login";
         }
@@ -149,8 +147,7 @@ public class SettingsController {
     public String postEmail(
             @Valid PersonalInfoForm personalInfoForm,
             final BindingResult bindingResult,
-            final RedirectAttributes redirectAttributes) {
-        User user = accountService.currentUser();
+            final RedirectAttributes redirectAttributes, User user) {
         if (user == null) {
             return "redirect:/login";
         }
@@ -167,8 +164,7 @@ public class SettingsController {
     }
 
     @PostMapping("/settings/password-change")
-    public String postPassword(@Valid PasswordForm passWordForm, final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
-        User user = accountService.currentUser();
+    public String postPassword(@Valid PasswordForm passWordForm, final BindingResult bindingResult, final RedirectAttributes redirectAttributes, User user) {
         if (user == null) {
             return "redirect:/login";
         }
@@ -191,9 +187,7 @@ public class SettingsController {
     public String postAccountDeletion(
             @Valid CurrentPasswordForm currentPasswordForm,
             final BindingResult bindingResult,
-            final RedirectAttributes redirectAttributes) {
-        User user = accountService.currentUser();
-
+            final RedirectAttributes redirectAttributes, User user) {
         if (user == null) {
             return "redirect:/login";
         }
