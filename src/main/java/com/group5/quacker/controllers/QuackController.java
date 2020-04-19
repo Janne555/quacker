@@ -39,9 +39,6 @@ public class QuackController {
     @Autowired
     FileService fileService;
 
-    @Autowired
-    AccountService accountService;
-
     /**
      * Post mapping for /quack. New quacks are posted with this endpoint.
      *
@@ -51,10 +48,8 @@ public class QuackController {
      * @throws IOException
      */
     @RequestMapping(value = "/quack", method = RequestMethod.POST)
-    public String newQuack(@RequestParam String message, @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
-
-        User poster = accountService.currentUser();    // Check that the user actually exists in the database
-        if (poster == null)
+    public String newQuack(@RequestParam String message, @RequestParam(value = "file", required = false) MultipartFile file, User poster) throws IOException {
+        if (poster == null)     // Check that the user actually exists in the database
             return "redirect:/login";
 
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
@@ -81,9 +76,8 @@ public class QuackController {
      * @return Redirect to the users page who had posted the quack to be liked
      */
     @RequestMapping(value = "/like/{id}", method = RequestMethod.GET)
-    public String newQuack(@PathVariable("id") long id, HttpServletRequest request) {
-        User liker = accountService.currentUser();     // check that the user liking a quack actually exists in the database
-        if (liker == null)
+    public String newQuack(@PathVariable("id") long id, HttpServletRequest request, User liker) {
+        if (liker == null) // check that the user liking a quack actually exists in the database
             return "redirect:/login";
 
 
@@ -110,13 +104,13 @@ public class QuackController {
 
     /**
      * Mapping to delete a quack
+     *
      * @param id
      * @param request
      * @return
      */
     @DeleteMapping("/quack/{id}")
-    public ResponseEntity deleteQuack(@PathVariable("id") long id, HttpServletRequest request) {
-        User user = accountService.currentUser();
+    public ResponseEntity deleteQuack(@PathVariable("id") long id, HttpServletRequest request, User user) {
         if (user == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
@@ -135,66 +129,55 @@ public class QuackController {
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
-    
+
     /**
      * Mapping to list quacks
      */
     @RequestMapping(value = {"/quack/", "/quacks", "/quacks"}, method = RequestMethod.GET)
-    public String quackPageGet(Model model) {
-    	
-    	Authentication a = SecurityContextHolder.getContext().getAuthentication();
-    	
-    	User user = userRepository.findByName(a.getName());
-    	if(user == null)
-    		return "redirect:/login";
-    	
-    	model.addAttribute("user", user);
-    	
-    	if (user.getProfilePhoto() != null) {
+    public String quackPageGet(Model model, User user) {
+        if (user == null)
+            return "redirect:/login";
+
+        model.addAttribute("user", user);
+
+        if (user.getProfilePhoto() != null) {
             model.addAttribute("profilePhotoHead", "/files/" + user.getProfilePhoto().getPublicId());
         }
-    	
-    		List<Quack> quacks = quackRepository.findAll();
-    		
-    		model.addAttribute("quacks", quacks);
-    	
-    		return "quack-search";
-    }
-    
-    @GetMapping("/quack/search")
-    public String searchForm(Model model) {
-    	Authentication a = SecurityContextHolder.getContext().getAuthentication();
 
-        User loggedUser = userRepository.findByName(a.getName());
-        if(loggedUser==null)
+        List<Quack> quacks = quackRepository.findAll();
+
+        model.addAttribute("quacks", quacks);
+
+        return "quack-search";
+    }
+
+    @GetMapping("/quack/search")
+    public String searchForm(Model model, User loggedUser) {
+        if (loggedUser == null)
             return "redirect:/login";
-        
+
         model.addAttribute("user", loggedUser);
-		
-		if (loggedUser.getProfilePhoto() != null) {
+
+        if (loggedUser.getProfilePhoto() != null) {
             model.addAttribute("profilePhotoHead", "/files/" + loggedUser.getProfilePhoto().getPublicId());
         }
-    	return "search";
+        return "search";
     }
-    
-    @RequestMapping(value = {"/quack/search/result"}, method = RequestMethod.POST)
-	public String searchSubmitted(@RequestParam("quackSearch") String search, Model model) {
-		
-		Authentication a = SecurityContextHolder.getContext().getAuthentication();
 
-        User loggedUser = userRepository.findByName(a.getName());
-        if(loggedUser==null)
+    @RequestMapping(value = {"/quack/search/result"}, method = RequestMethod.POST)
+    public String searchSubmitted(@RequestParam("quackSearch") String search, Model model, User loggedUser) {
+        if (loggedUser == null)
             return "redirect:/login";
-        
+
         model.addAttribute("user", loggedUser);
-        
+
         List<Quack> quacks = quackRepository.findByQuackMessageContaining(search);
 
-		model.addAttribute("quacks", quacks);
-		
-		if (loggedUser.getProfilePhoto() != null) {
+        model.addAttribute("quacks", quacks);
+
+        if (loggedUser.getProfilePhoto() != null) {
             model.addAttribute("profilePhotoHead", "/files/" + loggedUser.getProfilePhoto().getPublicId());
         }
         return "quack-search-result";
-	}
+    }
 }

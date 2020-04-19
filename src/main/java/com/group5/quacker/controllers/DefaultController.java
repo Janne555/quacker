@@ -27,18 +27,13 @@ public class DefaultController {
     @Autowired
     QuackRepository quackRepository;
 
-    @Autowired
-    AccountService accountService;
-
     @RequestMapping(value = {"/index", "/index/", "/"}, method = RequestMethod.GET)
-    public String pageRootGet(Model model, String displayQuacks) {
-        User user = accountService.currentUser();
-        model.addAttribute("username", user.getName());
-
+    public String pageRootGet(Model model, String displayQuacks, User user) {
         if (user == null) {
             return "redirect/login";
         }
 
+        model.addAttribute("username", user.getName());
         model.addAttribute("user", user);
         model.addAttribute("latestQuackView", user.getLatestQuackView());
         user.setLatestQuackView(new Date());

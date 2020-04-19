@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.group5.quacker.entities.FileMap;
 import com.group5.quacker.repositories.FileMapRepository;
+import com.group5.quacker.services.AccountService;
 import com.group5.quacker.services.FileService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -41,7 +42,6 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
-
 @WebMvcTest(FileController.class)
 @TestPropertySource(properties = {"QUACKER_FILE_STORAGE = foo"})
 @AutoConfigureMockMvc
@@ -54,6 +54,9 @@ public class FileControllerTests {
 
     @MockBean
     private FileMapRepository fileMapRepository;
+
+    @MockBean
+    private AccountService accountService;
 
     private FileMap fileMap;
     private InputStream testdataText;

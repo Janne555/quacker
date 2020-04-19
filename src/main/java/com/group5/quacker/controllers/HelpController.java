@@ -1,8 +1,8 @@
 package com.group5.quacker.controllers;
 
+import com.group5.quacker.entities.User;
 import com.group5.quacker.models.FeedbackForm;
 import com.group5.quacker.repositories.FeedbackRepository;
-import com.group5.quacker.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,9 +17,6 @@ import javax.validation.Valid;
 @Controller
 public class HelpController {
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
     private FeedbackRepository feedbackRepository;
 
     @ModelAttribute("feedbackForm")
@@ -28,8 +25,8 @@ public class HelpController {
     }
 
     @GetMapping(value = {"/help", "/help/{subpage}"})
-    public String getHelpPage(Model model, @PathVariable(required = false) String subpage) {
-        model.addAttribute("user", accountService.currentUser());
+    public String getHelpPage(Model model, @PathVariable(required = false) String subpage, User user) {
+        model.addAttribute("user", user);
         model.addAttribute("subpage", subpage != null ? subpage : "default");
 
         return "help";
@@ -38,9 +35,9 @@ public class HelpController {
     @PostMapping("/help/feedback")
     public String postFeedback(
             @Valid FeedbackForm feedbackForm,
-            final RedirectAttributes redirectAttributes) {
+            final RedirectAttributes redirectAttributes, User user) {
 
-        feedbackRepository.save(feedbackForm.getFeedback(accountService.currentUser()));
+        feedbackRepository.save(feedbackForm.getFeedback(user));
 
         redirectAttributes.addFlashAttribute("feedbackSuccess", true);
 

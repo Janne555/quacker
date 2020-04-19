@@ -28,9 +28,6 @@ public class UserController {
     @Autowired
     QuackRepository quackRepository;
 
-    @Autowired
-    AccountService accountService;
-
     /**
      * This is the GET mapping for a users page.
      *
@@ -39,9 +36,8 @@ public class UserController {
      * @return Returns the thymeleaf template for a users page
      */
     @RequestMapping(value = "/user/{name}", method = RequestMethod.GET)
-    public String userPageGet(@PathVariable("name") String name, Model model) {
-        User loggedUser = accountService.currentUser();   // check that the logged in user exists in the database
-        if (loggedUser == null)
+    public String userPageGet(@PathVariable("name") String name, Model model, User loggedUser) {
+        if (loggedUser == null) // check that the logged in user exists in the database
             return "redirect:/login";
 
         User user = userRepository.findByName(name);                    // if the user was not found, search for users containing the supplied name value
@@ -84,9 +80,8 @@ public class UserController {
      * @return Redirects to the users page that was followed
      */
     @RequestMapping(value = "/follow/{name}", method = RequestMethod.GET)
-    public String userFollow(@PathVariable("name") String name, Model model) {
-        User follower = accountService.currentUser();      // check that the logged in user actually exists in the database
-        if (follower == null)
+    public String userFollow(@PathVariable("name") String name, Model model, User follower) {
+        if (follower == null)  // check that the logged in user actually exists in the database
             return "redirect:/login";
 
         User user = userRepository.findByName(name);                    // check that the user to be followed actually exists
@@ -111,9 +106,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/unfollow/{name}", method = RequestMethod.GET)
-    public String userUnfollow(@PathVariable("name") String name, Model model) {
-        User follower = accountService.currentUser();      // check that the logged in user actually exists in the database
-        if (follower == null)
+    public String userUnfollow(@PathVariable("name") String name, Model model, User follower) {
+        if (follower == null)  // check that the logged in user actually exists in the database
             return "redirect:/login";
 
         User user = userRepository.findByName(name);                    // check that the user to be unfollowed actually exists
@@ -140,9 +134,8 @@ public class UserController {
      * @return Redirects to the users page that was followed
      */
     @RequestMapping(value = "/block/{name}", method = RequestMethod.GET)
-    public String userBlock(@PathVariable("name") String name, Model model) {
-        User blocker = accountService.currentUser();      // check that the logged in user actually exists in the database
-        if (blocker == null)
+    public String userBlock(@PathVariable("name") String name, Model model, User blocker) {
+        if (blocker == null) // check that the logged in user actually exists in the database
             return "redirect:/login";
 
         User user = userRepository.findByName(name);                    // check that the user to be blocked actually exists
@@ -177,11 +170,10 @@ public class UserController {
      * @return returns a list of users
      */
     @RequestMapping(value = {"/user/", "/users/", "/user", "/users"}, method = RequestMethod.GET)
-    public String userPageGet(Model model) {
-        User user = accountService.currentUser();
+    public String userPageGet(Model model, User user) {
         if (user == null)
             return "redirect:/login";
-        
+
         model.addAttribute("user", user);
 
         List<User> users = userRepository.findAll();
@@ -196,41 +188,34 @@ public class UserController {
         return "user-search";
 
     }
-    
-    @GetMapping("/user/search")
-    public String searchForm(Model model) {
-    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        User loggedUser = userRepository.findByName(auth.getName());  
-        if(loggedUser==null)
+    @GetMapping("/user/search")
+    public String searchForm(Model model, User loggedUser) {
+        if (loggedUser == null)
             return "redirect:/login";
-        
+
         model.addAttribute("user", loggedUser);
-		
-		if (loggedUser.getProfilePhoto() != null) {
+
+        if (loggedUser.getProfilePhoto() != null) {
             model.addAttribute("profilePhotoHead", "/files/" + loggedUser.getProfilePhoto().getPublicId());
         }
-    	return "search";
+        return "search";
     }
 
-	@RequestMapping(value = {"/user/search/result"}, method = RequestMethod.POST)
-	public String searchSubmitted(@RequestParam("userSearch") String search, Model model) {
-		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        User loggedUser = userRepository.findByName(auth.getName());
-        if(loggedUser==null)
+    @RequestMapping(value = {"/user/search/result"}, method = RequestMethod.POST)
+    public String searchSubmitted(@RequestParam("userSearch") String search, Model model, User loggedUser) {
+        if (loggedUser == null)
             return "redirect:/login";
-        
+
         model.addAttribute("user", loggedUser);
-        
+
         List<User> users = userRepository.findByNameContaining(search);
 
-		model.addAttribute("users", users);
-		
-		if (loggedUser.getProfilePhoto() != null) {
+        model.addAttribute("users", users);
+
+        if (loggedUser.getProfilePhoto() != null) {
             model.addAttribute("profilePhotoHead", "/files/" + loggedUser.getProfilePhoto().getPublicId());
         }
         return "user-search-result";
-	}
+    }
 }
