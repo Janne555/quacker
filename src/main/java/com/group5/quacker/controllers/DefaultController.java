@@ -27,8 +27,9 @@ public class DefaultController {
     @Autowired
     QuackRepository quackRepository;
 
-    @RequestMapping(value = {"/index", "/index/", "/"}, method = RequestMethod.GET)
-    public String pageRootGet(Model model, String displayQuacks, User user) {
+    @RequestMapping(value = {"/{display}", "/index", "/index/", "/"}, method = RequestMethod.GET)
+    public String pageRootGet(Model model,
+    @PathVariable(value = "display", required = false) String displayQuacks, User user) {
         if (user == null) {
             return "redirect/login";
         }
