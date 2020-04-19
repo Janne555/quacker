@@ -85,8 +85,18 @@
             </div>
         </div>
 
+            <a th:href="@{/?lang=fi}">
+                <img class="flag_fi" border="0" alt="finnish" width="50px" src="../static/images/flag_fi.png"
+                     th:src="@{/images/flag_fi.png}">
+            </a>
+
+            <a th:href="@{/?lang=en}">
+                <img class="flag_en" border="0" alt="english" width="50px" src="../static/images/flag_en.png"
+                     th:src="@{/images/flag_en.png}">
+            </a>
 
         <div class="headerRight">
+
             <div class="dropdown profileimg">
                 <p style="display:inline; font-family: Amiri; font-size: 30px ; letter-spacing: 5px;">
                     [[${#httpServletRequest.remoteUser}]] </p>
