@@ -46,19 +46,19 @@
         <div id="myDIV" class="feedFilterMain">
             <div th:switch="${quackView}">
                 <div th:case="followed">
-                    <a class="feedFilter" th:href="@{/all}">
+                    <a class="feedFilter" th:href="@{/(display=all)}">
                         <p> All users </p>
                     </a>
-                    <a class="feedFilter active" th:href="@{/followed}">
+                    <a class="feedFilter active" th:href="@{/(display=followed)}">
                         <p> Followed users </p>
                     </a>
                 </div>
                 <div th:case="*">
 
-                    <a class="feedFilter active" th:href="@{/all}">
+                    <a class="feedFilter active" th:href="@{/(display=all)}">
                         <p> All users </p>
                     </a>
-                    <a class="feedFilter" th:href="@{/followed}">
+                    <a class="feedFilter" th:href="@{/(display=followed)}">
                         <p> Followed users </p>
                     </a>
                 </div>
