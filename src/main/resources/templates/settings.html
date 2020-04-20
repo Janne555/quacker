@@ -13,26 +13,26 @@
                 <li class="nav-item">
                     <a class="nav-link"
                        th:classappend="${#strings.equals(setting, 'personal-info')} ? 'active' : ''"
-                       th:href="@{/settings/personal-info}">Personal Information</a>
+                       th:href="@{/settings/personal-info}" th:text="#{personal_information}">Personal Information</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link"
                        th:classappend="${#strings.equals(setting, 'profile-photo')} ? 'active' : ''"
-                       th:href="@{/settings/profile-photo}">Profile Photo</a>
+                       th:href="@{/settings/profile-photo}" th:text="#{profile_photo}">Profile Photo</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link"
                        th:classappend="${#strings.equals(setting, 'password-change')} ? active : notactive"
-                       th:href="@{/settings/password-change}">Change Password</a>
+                       th:href="@{/settings/password-change}" th:text="#{change_password}">Change Password</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link"
                        th:classappend="${#strings.equals(setting, 'delete-account')} ? active : notactive"
-                       th:href="@{/settings/delete-account}">Delete Account</a>
+                       th:href="@{/settings/delete-account}" th:text="#{delete_account}">Delete Account</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link">More stuff</a>
+                    <a class="nav-link" th:text="#{more_stuff}">More stuff</a>
                 </li>
             </ul>
         </div>
@@ -40,7 +40,7 @@
             <div th:switch="${setting}">
                 <div th:case="profile-photo">
                     <div>
-                        <h3>Profile Photo</h3>
+                        <h3 th:text="#{profile_photo}">Profile Photo</h3>
                         <div th:if="${profilePhotoUrl != null}" class="card"
                              style="height: 100px; width: 100px; margin-bottom: 1rem">
                             <img class="card-img-top" th:src="${profilePhotoUrl}" alt="profile photo"/>
@@ -50,21 +50,21 @@
                                 <div class="custom-file">
                                     <input required type="file" class="custom-file-input" id="profile-photo-input"
                                            name="file" accept="image/*" aria-describedby="inputGroupFileAddon01">
-                                    <label class="custom-file-label" for="profile-photo-input" id="profile-photo-label">Choose
+                                    <label class="custom-file-label" for="profile-photo-input" id="profile-photo-label" th:text="#{choose_file}">Choose
                                         file</label>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary" th:text="#{submit}">Submit</button>
                         </form>
                     </div>
                 </div>
                 <div th:case="personal-info">
                     <div>
-                        <h3>Personal Information</h3>
+                        <h3 th:text="#{personal_information}">Personal Information</h3>
                         <ul class="list-group">
                             <li class="list-group-item">
                                 <div class="personal-info-item">
-                                    <span>Name </span><span th:text="${user.name}">name</span>
+                                    <span th:text="#{name}">Name </span><span th:text="${user.name}">name</span>
                                     <button class="not-a-button" style="visibility: hidden">
                                         <i data-feather="edit"></i>
                                     </button>
@@ -72,7 +72,7 @@
                             </li>
                             <li class="list-group-item">
                                 <div class="personal-info-item">
-                                    <span>Email </span><span th:text="${user.email}">email</span>
+                                    <span th:text="#{email}">Email </span><span th:text="${user.email}">email</span>
                                     <button class="not-a-button" onclick="$('#email-form').toggle()">
                                         <i data-feather="edit"></i>
                                     </button>
@@ -96,23 +96,23 @@
                 </div>
                 <div th:case="password-change">
                     <div>
-                        <h3>Change Password</h3>
+                        <h3 th:text="#{change_password}">Change Password</h3>
                         <form th:action="@{/settings/password-change}"
                               th:object="${passwordForm}"
                               method="post">
                             <div class="form-group">
-                                <p><label for="current_password">Current Password</label>:<br> <input type="password"
+                                <p><label for="current_password" th:text="#{current_password}">Current Password</label>:<br> <input type="password"
                                                                                                       name="current_password"
                                                                                                       id="current_password"
                                                                                                       required/></p>
                                 <span class="error" th:if="${#fields.hasErrors('current_password')}"
                                       th:errors="*{current_password}"></span>
-                                <p><label for="new_password">New Password</label>:<br> <input type="password"
+                                <p><label for="new_password" th:text="#{new_password}">New Password</label>:<br> <input type="password"
                                                                                               name="new_password"
                                                                                               id="new_password"
                                                                                               required/></p>
                                 <span class="error" th:if="${#fields.hasErrors('global')}" th:errors="*{global}"></span>
-                                <p><label for="confirm_new_password">Confirm New Password</label>:<br> <input
+                                <p><label for="confirm_new_password" th:text="#{confirm_password}">Confirm New Password</label>:<br> <input
                                         type="password"
                                         name="confirm_new_password"
                                         id="confirm_new_password"
@@ -123,12 +123,12 @@
                                     <span class="error" th:text="${success}"></span>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Change password</button>
+                            <button type="submit" class="btn btn-primary" th:text="#{change_password}">Change password</button>
                         </form>
                     </div>
                 </div>
                 <div th:case="delete-account">
-                    <h3>Delete Account</h3>
+                    <h3 th:text="#{delete_account}">Delete Account</h3>
                     <form th:object="${currentPasswordForm}"
                           th:action="@{/settings/delete-account}"
                           class="form"
@@ -136,14 +136,14 @@
                           id="delete-account-form"
                     >
                         <div class="form-group">
-                            <label for="delete-account-current-password">Current Password</label>
+                            <label for="delete-account-current-password" th:text="#{current_password}">Current Password</label>
                             <input type="password" required class="form-control"
                                    name="currentPassword" id="delete-account-current-password"
                                    th:field="*{currentPassword}">
                             <span class="error" th:if="${#fields.hasErrors('currentPassword')}"
                                   th:errors="*{currentPassword}">Password error</span>
                         </div>
-                        <button type="submit" class="btn btn-primary">Delete Account</button>
+                        <button type="submit" class="btn btn-primary" th:text="#{delete_account}">Delete Account</button>
                     </form>
                 </div>
             </div>
