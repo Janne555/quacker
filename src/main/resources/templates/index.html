@@ -19,7 +19,7 @@
    
                                                                       
                         <div>
-        <textarea id="subject" class="textbox" name="message" placeholder="Write something.." ></textarea>
+        <textarea id="subject" class="textbox" name="message" th:placeholder="#{write_something}" ></textarea>
       </div>    
       
       
@@ -31,8 +31,8 @@
                 <input  type="submit" value="Quack!"/>
         
 
-        <a class="btn btn-primary" th:href="@{/users}">List users</a>
-        <a class="btn btn-primary" th:href="@{/quacks}">List quacks</a>
+        <a class="btn btn-primary" th:href="@{/users}" th:text="#{list_users}">List users</a>
+        <a class="btn btn-primary" th:href="@{/quacks}" th:text="#{list_quacks}">List quacks</a>
         </form>
     </div>
 
@@ -46,20 +46,20 @@
         <div id="myDIV" class="feedFilterMain">
             <div th:switch="${quackView}">
                 <div th:case="followed">
-                    <a class="feedFilter" th:href="@{/(display=all)}">
-                        <p> All users </p>
+                    <a class="feedFilter" th:href="@{/all}">
+                        <p th:text="#{all_users}"> </p>
                     </a>
-                    <a class="feedFilter active" th:href="@{/(display=followed)}">
-                        <p> Followed users </p>
+                    <a class="feedFilter active" th:href="@{/followed}">
+                        <p th:text="#{followed_users}"> </p>
                     </a>
                 </div>
                 <div th:case="*">
 
-                    <a class="feedFilter active" th:href="@{/(display=all)}">
-                        <p> All users </p>
+                    <a class="feedFilter active" th:href="@{/all}">
+                        <p th:text="#{all_users}"> </p>
                     </a>
-                    <a class="feedFilter" th:href="@{/(display=followed)}">
-                        <p> Followed users </p>
+                    <a class="feedFilter" th:href="@{/followed}">
+                        <p th:text="#{followed_users}"> </p>
                     </a>
                 </div>
             </div>
@@ -117,7 +117,7 @@
                         </div>
 
                         <div>
-                            <span th:text="@{'Likes: ' + ${quack.getLikers().size()}}">likes</span>
+                            <span th:text="@{#{likes} + ${quack.getLikers().size()}}">likes</span>
                         </div>
                     </div>
                 </div>

@@ -57,12 +57,12 @@
                 <i class="fa fa-home">
                 </i>
             </a>
-            <a class="btn btn-primary userlist" th:href="@{/users}">List users</a>
+            <a class="btn btn-primary userlist" th:href="@{/users}" th:text="#{list_users}">List users</a>
         </div>
 
         <div class="headerSearch">
             <form action="/action_page.php">
-                <input type="text" placeholder="Search.." name="search" class="searchBar">
+                <input type="text" th:placeholder="#{search}" name="search" class="searchBar">
                 <button class="searchIcon" type="submit"><i class="fa fa-search"></i></button>
             </form>
         </div>
@@ -85,8 +85,18 @@
             </div>
         </div>
 
+            <a th:href="@{/?lang=fi}">
+                <img class="flag_fi" border="0" alt="finnish" width="50px" src="../static/images/flag_fi.png"
+                     th:src="@{/images/flag_fi.png}">
+            </a>
+
+            <a th:href="@{/?lang=en}">
+                <img class="flag_en" border="0" alt="english" width="50px" src="../static/images/flag_en.png"
+                     th:src="@{/images/flag_en.png}">
+            </a>
 
         <div class="headerRight">
+
             <div class="dropdown profileimg">
                 <p style="display:inline; font-family: Amiri; font-size: 30px ; letter-spacing: 5px;">
                     [[${#httpServletRequest.remoteUser}]] </p>
@@ -106,12 +116,12 @@
                 </a>
 
                 <ul class="dropdown-menu">
-                    <li><a th:href="@{/settings}">settings</a></li>
-                    <li><a th:if="${user != null}" th:href="@{'/user/' + ${user.getName()}}">profile</a></li>
-                    <li><a th:href="@{/user/search}">search</a></li>
+                    <li><a th:href="@{/settings}" th:text="#{settings}">settings</a></li>
+                    <li><a th:if="${user != null}" th:href="@{'/user/' + ${user.getName()}}" th:text="#{profile}">profile</a></li>
+                    <li><a th:href="@{/user/search}" th:text="#{search_button}">search</a></li>
                     <li>
                         <form th:action="@{/logout}" method="post">
-                            <input type="submit" value="Sign Out"/>
+                            <input type="submit" th:value="#{sign_out}"/>
                         </form>
                     </li>
                 </ul>
@@ -141,6 +151,16 @@
                     Quacker
                 </a>
             </h2>
+
+            <a th:href="@{/login?lang=fi}">
+                <img class="flag_fi" border="0" alt="finnish" width="50px" src="../static/images/flag_fi.png"
+                     th:src="@{/images/flag_fi.png}">
+            </a>
+
+            <a th:href="@{/login?lang=en}">
+                <img class="flag_en" border="0" alt="english" width="50px" src="../static/images/flag_en.png"
+                     th:src="@{/images/flag_en.png}">
+            </a>
 
         </div>
     </div>
