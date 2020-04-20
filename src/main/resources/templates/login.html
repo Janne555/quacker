@@ -13,16 +13,16 @@
 
     
     <div class="form-group">
-    <label for="username">Username:</label>
-    <input type="text" class="form-control" name="username" id="username" placeholder="Enter Username">
+    <label for="username" th:text="#{username}">Username:</label>
+    <input type="text" class="form-control" name="username" id="username" th:placeholder="#{enter_username}">
     </div>   
     
     <div class="form-group">
-    <label for="password">Password</label>: 
-    <input type="password" class="form-control" name="password" id="password" placeholder="Enter Password">
+    <label for="password" th:text="#{password}">Password</label>:
+    <input type="password" class="form-control" name="password" id="password" th:placeholder="#{enter_password}">
     </div> 
     
-    <input class="btn btn-primary btn-lg btn-block" type="submit" value="Sign in">
+    <input class="btn btn-primary btn-lg btn-block" type="submit" th:value="#{sign_in}">
 
     <div th:if="${loginError != null}">
         <span class="error" th:text="${loginError}"></span>
@@ -32,7 +32,7 @@
 <p> </p>
 <p style=" font-weight: bold">OR</p>
     
-<a class="btn btn-secondary btn-lg btn-block register" href="/register" role="button">Register</a>
+<a class="btn btn-secondary btn-lg btn-block register" href="/register" role="button" th:text="#{register}">Register</a>
 
 </form>
 </div>
