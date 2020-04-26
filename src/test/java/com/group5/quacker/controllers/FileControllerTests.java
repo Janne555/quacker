@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.group5.quacker.entities.FileMap;
+import com.group5.quacker.entities.User;
 import com.group5.quacker.repositories.FileMapRepository;
 import com.group5.quacker.services.AccountService;
 import com.group5.quacker.services.FileService;
@@ -27,6 +28,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -39,6 +41,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -139,9 +142,25 @@ public class FileControllerTests {
 
     @Test
     @DisplayName("Get request to /stream without range header should return bad request")
-    public void shouldReturnBadWithMissingHeader(@TempDir Path tempDir) throws Exception {
+    public void shouldReturnBadWithMissingHeader() throws Exception {
         this.mockMvc
                 .perform(get("/stream/fileId"))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("Get request to /gdpr returns a zip file")
+    @WithMockUser(username = "test", password = "pwd", roles = "USER")
+    public void testGdprEndpointShouldReturnZipFile() throws Exception {
+        User user = new User();
+        user.setName("test");
+        user.setPasswordHash("hashyhash");
+        user.setEmail("test@quacker.com");
+        user.setQuacks(new ArrayList<>());
+        when(accountService.currentUser()).thenReturn(user);
+        this.mockMvc
+                .perform(get("/gdpr"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Type", "application/zip"));
     }
 }

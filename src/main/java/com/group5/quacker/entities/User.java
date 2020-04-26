@@ -114,6 +114,7 @@ public class User {
         quacks.add(quack);
     }
 
+    @JsonIgnore
     public long getNumberOfQuacks() {
         return quacks.size();
     }
@@ -138,8 +139,10 @@ public class User {
 
     public List<User> getFollowers() { return followers; }
 
+    @JsonIgnore
     public long getNumberFollowing() { return following.size(); }
 
+    @JsonIgnore
     public long getNumberFollowers() { return followers.size(); }
 
     public List<Quack> getQuacks() { return quacks; }
