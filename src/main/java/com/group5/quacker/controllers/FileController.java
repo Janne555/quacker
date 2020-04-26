@@ -1,8 +1,13 @@
 package com.group5.quacker.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group5.quacker.entities.FileMap;
+import com.group5.quacker.entities.User;
 import com.group5.quacker.repositories.FileMapRepository;
+import com.group5.quacker.services.AccountService;
 import com.group5.quacker.services.FileService;
+import com.group5.quacker.utilities.zipper.Zipper;
+import com.group5.quacker.utilities.zipper.ZipperFactory;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
@@ -12,8 +17,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
-import java.io.InputStream;
+
+import java.io.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * The FileController class contains endpoints
@@ -22,16 +31,20 @@ import java.io.InputStream;
 @Controller
 public class FileController {
     @Autowired
-    FileService fileService;
+    private FileService fileService;
 
     @Autowired
-    FileMapRepository fileMapRepository;
+    private FileMapRepository fileMapRepository;
+
+    @Autowired
+    private AccountService accountService;
 
     private Long CHUNK_SIZE = 10000L;
 
     /**
      * Returns a file for an id. If a file can't be found responds
      * with not found
+     *
      * @param id
      * @param withOriginalName
      * @return
@@ -62,6 +75,7 @@ public class FileController {
 
     /**
      * Returns a part of a file. Requires range header.
+     *
      * @param id
      * @param headers
      * @return
@@ -96,6 +110,7 @@ public class FileController {
     /**
      * Saves a file to the server. Requires a file to be
      * in a multipart form under the file attribute.
+     *
      * @param file
      * @param redirect
      * @return
@@ -111,5 +126,27 @@ public class FileController {
 
         // TODO Tää redirect on enimmäkseen testausta varten. Me kuitenkin halutaan et se redirect riippuu kontekstista.
         return "redirect:/files/" + fileMap.getPublicId();
+    }
+
+    @GetMapping("/gdpr")
+    public ResponseEntity gdpr(User user) throws IOException {
+        Zipper zipper = ZipperFactory.createZipper("gdpr");
+
+        List<FileMap> files = this.accountService.getFilesForUser(user);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        File json = File.createTempFile("data", ".json");
+        objectMapper.writeValue(json, user);
+        zipper.addFile(json, "data.json");
+
+        for (FileMap fileMap : files) {
+            zipper.addFile(this.fileService.getFile(fileMap.getFileName()), fileMap.getOriginalFileName());
+        }
+        FileInputStream fos = new FileInputStream(zipper.getArchive());
+        byte[] array = IOUtils.toByteArray(fos);
+        fos.close();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/zip");
+        return new ResponseEntity(array, headers, HttpStatus.OK);
     }
 }
