@@ -23,12 +23,13 @@ public class ZipperContext extends Zipper {
     @Override
     public File getArchive() throws IOException {
         File archive = this.activeZipper.getArchive();
-        this.activeZipper.closeZipper();
+        this.activeZipper = this.activeZipper.closeZipper();
         return archive;
     }
 
     @Override
-    protected Zipper closeZipper() {
+    protected Zipper closeZipper() throws IOException {
+        this.activeZipper = this.activeZipper.closeZipper();
         return null;
     }
 }

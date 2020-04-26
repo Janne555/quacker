@@ -20,6 +20,6 @@ public class ClosedZipper extends Zipper {
 
     @Override
     protected Zipper closeZipper() {
-        return null;
+        return this;
     }
 }
