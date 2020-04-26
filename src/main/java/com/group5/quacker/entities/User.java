@@ -1,5 +1,7 @@
 package com.group5.quacker.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.Objects;
  */
 @Entity
 public class User {
-
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -20,14 +22,18 @@ public class User {
 
     private String email;
 
+    @JsonIgnore
     private String passwordHash;
 
+    @JsonIgnore
     private Date latestQuackView;
 
+    @JsonIgnore
     public Date getLatestQuackView() {
         return latestQuackView;
     }
 
+    @JsonIgnore
     public void setLatestQuackView(Date lastLogin) {
         this.latestQuackView = lastLogin;
     }
@@ -49,6 +55,7 @@ public class User {
     /**
      * Object references to users that this user has followed as a JPA relation
      */
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private List<User> following;
@@ -56,6 +63,7 @@ public class User {
     /**
      * Object references to users that have followed this user as a JPA relation
      */
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private List<User> followers;
@@ -65,6 +73,7 @@ public class User {
     /**
      * Object references to users that this user has blocked
      */
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private List<User> blocked;
