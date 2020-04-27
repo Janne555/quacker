@@ -103,6 +103,9 @@ public class SettingsController {
             case "delete-account":
                 model.addAttribute("setting", "delete-account");
                 break;
+            case "download-data":
+                model.addAttribute("setting", "download-data");
+                break;
             default:
                 break;
         }

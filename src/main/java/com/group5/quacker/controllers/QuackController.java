@@ -54,7 +54,7 @@ public class QuackController {
 
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
-        FileMap attachment = file != null ? fileService.storeFile(file) : null;     // If a file was supplied then store it
+        FileMap attachment = file.isEmpty() ? null : fileService.storeFile(file);     // If a file was supplied then store it
 
         Quack newQuack = new Quack();           // new quack object
         newQuack.setPoster(poster);             // set the posters name

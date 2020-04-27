@@ -1,5 +1,8 @@
 package com.group5.quacker.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +13,7 @@ import java.util.List;
 @Entity
 public class Quack {
 
-
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -21,10 +24,13 @@ public class Quack {
     @Lob
     private String quackMessage;
 
+    @JsonIgnore
     private int likes;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private Date datePosted;
 
+    @JsonIgnore
     private String formattedDate;
 
     /**
@@ -32,6 +38,7 @@ public class Quack {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     User poster;
 
     /**
@@ -39,6 +46,7 @@ public class Quack {
      */
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     List<User> likers;
 
     /**
@@ -88,11 +96,17 @@ public class Quack {
         this.formattedDate = formattedDate;
     }
 
-    public List<User> getLikers() { return likers; }
+    public List<User> getLikers() {
+        return likers;
+    }
 
-    public void addLiker(User user) { likers.add(user); }
+    public void addLiker(User user) {
+        likers.add(user);
+    }
 
-    public void removeLiker(User user) { likers.remove(user); }
+    public void removeLiker(User user) {
+        likers.remove(user);
+    }
 
     public long getId() {
         return id;
@@ -112,6 +126,7 @@ public class Quack {
 
     /**
      * Testaamista varten
+     *
      * @param likers
      */
     public void setLikers(List<User> likers) {

@@ -29,13 +29,12 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -114,6 +113,30 @@ public class QuackControllerTests {
         assertThat(argCaptor.getValue(), equalTo(mockMultipartFile));
         verify(quackRepository).save(quackCaptor.capture());
         assertThat(quackCaptor.getValue().getAttachment().getOriginalFileName(), equalTo("originalName.png"));
+    }
+
+    @Test
+    @DisplayName("Posting a quack without a file doesn't try to create a filemap")
+    @WithMockUser(username = "test", password = "pwd", roles = "USER")
+    public void postQuackWithNoFileWorks() throws Exception {
+        when(accountService.currentUser()).thenReturn(user);
+        when(fileService.storeFile(any(MultipartFile.class))).thenReturn(fileMap);
+
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", new byte[0]);
+        ArgumentCaptor<Quack> quackCaptor = ArgumentCaptor.forClass(Quack.class);
+
+        mockMvc
+                .perform(multipart("/quack")
+                        .file(mockMultipartFile)
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .with(csrf())
+                        .param("message", "test message"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
+
+        verify(fileService, never()).storeFile(any());
+        verify(quackRepository).save(quackCaptor.capture());
+        assertThat(quackCaptor.getValue().getAttachment(), is(nullValue()));
     }
 
     @Test
