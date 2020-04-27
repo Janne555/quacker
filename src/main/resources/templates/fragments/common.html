@@ -36,12 +36,12 @@
     <footer class="page-footer">
 
         <div class="left_foot">
-            <p><a href="@{/about}" style="color:black">About us</a></p>
-            <p><a href="@{/faq}" style="color:black">FAQ</a></p>
+            <p><a href="@{/about}" style="color:black" th:text="#{about_us}">About us</a></p>
+            <p><a href="@{/faq}" style="color:black" th:text="#{faq}">FAQ</a></p>
         </div>
 
         <div>
-            <p>Contact:</p>
+            <p th:text="#{contact}">Contact:</p>
             <p><a href="mailto:someone@example.com">contact@quacker.com</a></p>
         </div>
 
