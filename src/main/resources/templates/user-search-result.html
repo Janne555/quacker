@@ -12,16 +12,16 @@
 
             <thead>
             <tr>
-                <td style="font-size:20px;">Result for search</td>
-                <a th:href="@{/user/search}" style="font-size:20px;">Try another search</a>   
+                <td style="font-size:20px;" th:text="#{result_for_search}">Result for search</td>
+                <a th:href="@{/user/search}" style="font-size:20px;" th:text="#{try_another_search}">Try another search</a>
             </tr>
             </thead>
 
             <tbody>
-            <th class="text-center">Username</th>
-            <th class="text-center">Followers</th>
-            <th class="text-center">Following</th>
-            <th class="text-center">Total quacks</th>
+            <th class="text-center" th:text="#{username}">Username</th>
+            <th class="text-center" th:text="#{followers}">Followers</th>
+            <th class="text-center" th:text="#{following}">Following</th>
+            <th class="text-center" th:text="#{total_quacks}">Total quacks</th>
 
              <tr th:each="user : ${users}">
                  <td>
