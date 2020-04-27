@@ -15,7 +15,7 @@
         </div>
         <div th:unless="${watchedUser.equals(user)}">
             <div class="row">
-                <h4 th:text="#{page_for_user}">This is the page for user: <span th:text="${watchedUser.getName()}">username</span></h4>
+                <h4> <span th:text="#{page_for_user}">This is the page for user: </span><span th:text="${watchedUser.getName()}">username</span></h4>
             </div>
             <div class="row">
                 <p th:text="#{contact_email}">Contact email: <span th:text="${watchedUser.getEmail()}">email</span></p>
