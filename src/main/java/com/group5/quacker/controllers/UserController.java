@@ -59,11 +59,11 @@ public class UserController {
         }
 
 
-        if (user.getFollowers().contains(user)) {   // check if the viewing user has followed the user
+        if (user.getFollowers().contains(loggedUser)) {   // check if the viewing user has followed the user
             model.addAttribute("isFollowed", true);
         }
 
-        if (user.getBlocked().contains(user)) {       // check if the viewing user has blocked the user
+        if (loggedUser.getBlocked().contains(user)) {       // check if the viewing user has blocked the user
             model.addAttribute("isBlocked", true);
         }
 

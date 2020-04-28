@@ -11,14 +11,14 @@
         <table class="table table-bordered table-striped table-hover">
 
             <thead>
-            <a th:href="@{/user/search}" style="font-size:20px;">Search user</a> 
+            <a th:href="@{/user/search}" style="font-size:20px;" th:text="#{search_user_header}">Search user</a>
             </thead>
 
             <tbody>
-            <th class="text-center">Username</th>
-            <th class="text-center">Followers</th>
-            <th class="text-center">Following</th>
-            <th class="text-center">Total quacks</th>
+            <th class="text-center" th:text="#{username}">Username</th>
+            <th class="text-center" th:text="#{followers}">Followers</th>
+            <th class="text-center" th:text="#{following}">Following</th>
+            <th class="text-center" th:text="#{total_quacks}">Total quacks</th>
 
              <tr th:each="user : ${users}">
                  <td>
