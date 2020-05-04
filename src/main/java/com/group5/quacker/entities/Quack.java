@@ -26,6 +26,8 @@ public class Quack {
     private Date datePosted;
 
     private String formattedDate;
+    
+    private boolean publicClassification;
 
     /**
      * Object reference for the user who posted the quack as a JPA relation
@@ -86,6 +88,14 @@ public class Quack {
 
     public void setFormattedDate(String formattedDate) {
         this.formattedDate = formattedDate;
+    }
+    
+    public boolean isPublicClassification() {
+    	return publicClassification;
+    }
+    
+    public void setPublicClassification(boolean publicClassification) {
+    	this.publicClassification = publicClassification;
     }
 
     public List<User> getLikers() { return likers; }

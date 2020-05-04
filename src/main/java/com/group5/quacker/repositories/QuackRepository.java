@@ -14,4 +14,5 @@ public interface QuackRepository extends JpaRepository<Quack, Long> {
     List<Quack> findByPoster(User user);
     List<Quack> findAllByLikersContains(User user);
     List<Quack> findByQuackMessageContaining(String quackMessage);
+    List<Quack> findByPublicClassificationTrue();
 }

@@ -30,7 +30,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().sameOrigin();
 
         http
-                .authorizeRequests().antMatchers("/register", "/files" ,"/files/{id}", "/stream", "/stream/{id}", "/filetesting", "/images/**", "/css/**", "/login**").permitAll().anyRequest().authenticated() // TODO Laita POST requestit /files endpointtiin autentikaation taakse
+                .authorizeRequests().antMatchers("/publicQuacks","/register", "/files" ,"/files/{id}", "/stream", "/stream/{id}", "/filetesting", "/images/**", "/css/**", "/login**").permitAll().anyRequest().authenticated() // TODO Laita POST requestit /files endpointtiin autentikaation taakse
                 .and()
                 .formLogin().loginPage("/login").permitAll().failureUrl("/login-error")
                 .and()
