@@ -12,16 +12,28 @@ import java.util.Objects;
  */
 @Entity
 public class User {
+    /**
+     * Unique ID for the user
+     */
     @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    /**
+     * Unique name for the user (username)
+     */
     @Column(unique = true)
     private String name;
 
+    /**
+     * Email address of the user
+     */
     private String email;
 
+    /**
+     * Bcrypt hashed password
+     */
     @JsonIgnore
     private String passwordHash;
 

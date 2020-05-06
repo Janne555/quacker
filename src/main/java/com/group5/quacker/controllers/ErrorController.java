@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ErrorController {
     @RequestMapping(value = "/login-error", method = RequestMethod.GET)
     public String loginErrorGet(final RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("loginError", "Invalid credentials");
+        redirectAttributes.addFlashAttribute("loginError", "Invalid credentials");  // Add error message
         return "redirect:/login";
     }
 }

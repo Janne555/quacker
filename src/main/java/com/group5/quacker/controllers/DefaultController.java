@@ -15,15 +15,31 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.reflect.Array;
 import java.util.*;
 
+/**
+    Controller for the index and root endpoints
+ */
 @Controller
 public class DefaultController {
 
+    /**
+     * Autowired reference to the user repository
+     */
     @Autowired
     UserRepository userRepository;
 
+    /**
+     * Autowired reference to the quack repository
+     */
     @Autowired
     QuackRepository quackRepository;
 
+    /**
+     * Request mapping for the index or root page
+     * @param model Model for variables to be passed to the thymeleaf template
+     * @param displayQuacks Variable wich controls if quacks from all users or only followed users are displayed
+     * @param user  Reference to the logged in user
+     * @return  returns the thymeleaf template
+     */
     @RequestMapping(value = {"/{display}", "/index", "/index/", "/"}, method = RequestMethod.GET)
     public String pageRootGet(Model model,
     @PathVariable(value = "display", required = false) String displayQuacks, User user) {
