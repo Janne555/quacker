@@ -7,7 +7,7 @@
 <div th:replace="fragments/common :: headernotin"></div>
 
 <div class="container" align="center">
-<a> hello </a>
+
  <table class="table table-bordered table-striped table-hover">
 
             <tbody>
@@ -15,7 +15,7 @@
 
              <tr th:each="quack : ${publicQuacks}">
                  <td>
-                    <a th:text="${quack.getQuackMessage()}" th:href="@{'/quack/' + ${quack.getPoster()}}">poster</a>
+                    <a th:text="${quack.getQuackMessage()}">poster</a>
                  </td>
 
             </tr>

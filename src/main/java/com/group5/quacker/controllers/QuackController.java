@@ -49,7 +49,7 @@ public class QuackController {
      * @throws IOException
      */
     @RequestMapping(value = "/quack", method = RequestMethod.POST)
-    public String newQuack(@RequestParam String message, @RequestParam(defaultValue = "false") boolean checkbox,@RequestParam(value = "file", required = false) MultipartFile file, User poster, Model model) throws IOException {
+    public String newQuack(@RequestParam String message, @RequestParam(value = "publicClassification", defaultValue = "false") boolean checkbox,@RequestParam(value = "file", required = false) MultipartFile file, User poster, Model model) throws IOException {
         if (poster == null)     // Check that the user actually exists in the database
             return "redirect:/login";
 
@@ -156,6 +156,12 @@ public class QuackController {
         return "quack-search";
     }
 
+    /**
+     * Mapping for search page
+     * @param model 
+     * @param loggedUser
+     * @return search page
+     */
     @GetMapping("/quack/search")
     public String searchForm(Model model, User loggedUser) {
         if (loggedUser == null)
@@ -169,6 +175,13 @@ public class QuackController {
         return "search";
     }
 
+    /**
+     * Mapping for quack search results
+     * @param search Search word which is used to find the quack that contains it
+     * @param model For listing searched quacks
+     * @param loggedUser To check that the user is logged in
+     * @return page for search results
+     */
     @RequestMapping(value = {"/quack/search/result"}, method = RequestMethod.POST)
     public String searchSubmitted(@RequestParam("quackSearch") String search, Model model, User loggedUser) {
         if (loggedUser == null)
@@ -186,6 +199,11 @@ public class QuackController {
         return "quack-search-result";
     }
     
+    /**
+     * Mapping for public quacks
+     * @param model For listing public quacks
+     * @return page with public quacks
+     */
 	@RequestMapping(value = {"/publicQuacks"}, method = RequestMethod.GET)
     public String publicQuacks(Model model) {
 
