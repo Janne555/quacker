@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
 <head th:replace="fragments/common :: head">
 </head>
 
@@ -11,28 +10,26 @@
 
     <div id="posts" align="center">
         <a href="/index">
-            <img border="0" class="center quackimage" src="../static/images/Quacks.png" th:src="@{/images/Quacks.png}"
-                 >
+            <img border="0" class="center quackimage" src="../static/images/Quacks.png" th:src="@{/images/Quacks.png}">
         </a>
 
         <form id="post-quack-form" th:action="@{/quack}" enctype="multipart/form-data" method="post">
-   
-                                                                      
-                        <div>
-        <textarea id="subject" class="textbox" name="message" th:placeholder="#{write_something}" ></textarea>
-      </div>    
+                                                                
+        	<div>
+        		<textarea id="subject" class="textbox" name="message" th:placeholder="#{write_something}" ></textarea>
+        	</div>    
       
-      
-                          <div>
-                <input type="file"  id="quack-attachment"
-                       name="file" aria-describedby="inputGroupFileAddon01"  >
-            </div>                                                             
+   			<div>
+   				<label>
+   					<input type="checkbox" name="publicClassification" />Public Quack
+   				</label>
+   				<input type="file"  id="quack-attachment" name="file" aria-describedby="inputGroupFileAddon01"  >
+       		</div>                                                             
                                                                                            
-                <input  type="submit" value="Quack!"/>
+        	<input  type="submit" value="Quack!"/>
         
-
-        <a class="btn btn-primary" th:href="@{/users}" th:text="#{list_users}">List users</a>
-        <a class="btn btn-primary" th:href="@{/quacks}" th:text="#{list_quacks}">List quacks</a>
+        	<a class="btn btn-primary" th:href="@{/users}" th:text="#{list_users}">List users</a>
+        	<a class="btn btn-primary" th:href="@{/quacks}" th:text="#{list_quacks}">List quacks</a>
         </form>
     </div>
 

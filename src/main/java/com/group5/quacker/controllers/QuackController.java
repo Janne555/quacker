@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class QuackController {
      * @throws IOException
      */
     @RequestMapping(value = "/quack", method = RequestMethod.POST)
-    public String newQuack(@RequestParam String message, @RequestParam(value = "file", required = false) MultipartFile file, User poster) throws IOException {
+    public String newQuack(@RequestParam String message, @RequestParam(value = "publicClassification", defaultValue = "false") boolean checkbox,@RequestParam(value = "file", required = false) MultipartFile file, User poster, Model model) throws IOException {
         if (poster == null)     // Check that the user actually exists in the database
             return "redirect:/login";
 
@@ -74,6 +75,10 @@ public class QuackController {
         quackRepository.save(newQuack);         // save the quack
         poster.addQuack(newQuack);              // add the quack to the posting users quacks
         userRepository.save(poster);            // save the user
+        
+        if(checkbox) {				//set if quack is public or not
+        	newQuack.setPublicClassification(true);
+        }	
 
         return "redirect:/";
     }
@@ -200,5 +205,20 @@ public class QuackController {
             model.addAttribute("profilePhotoHead", "/files/" + loggedUser.getProfilePhoto().getPublicId());
         }
         return "quack-search-result";
+    }
+    
+    /**
+     * Mapping for public quacks
+     * @param model For listing public quacks
+     * @return page with public quacks
+     */
+	@RequestMapping(value = {"/publicQuacks"}, method = RequestMethod.GET)
+    public String publicQuacks(Model model) {
+
+    	List<Quack> publicQuacks = quackRepository.findByPublicClassificationTrue();
+
+    	model.addAttribute("publicQuacks", publicQuacks);
+    	
+        return "public-quacks";
     }
 }

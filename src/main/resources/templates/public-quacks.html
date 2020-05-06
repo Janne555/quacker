@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/common :: head">
+</head>
+<body>
+
+<div th:replace="fragments/common :: headernotin"></div>
+
+<div class="container" align="center">
+
+ <table class="table table-bordered table-striped table-hover">
+
+            <tbody>
+            <th class="text-center">Quacks</th>
+
+             <tr th:each="quack : ${publicQuacks}">
+                 <td>
+                    <a th:text="${quack.getQuackMessage()}">poster</a>
+                 </td>
+
+            </tr>
+            </tbody>
+    </table>
+</div>
+
+<div th:replace="fragments/common :: footer"></div>
+</body>
+</html>

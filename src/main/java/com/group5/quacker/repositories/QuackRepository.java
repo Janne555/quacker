@@ -35,4 +35,5 @@ public interface QuackRepository extends JpaRepository<Quack, Long> {
      * @return List of quacks that contain the provided string
      */
     List<Quack> findByQuackMessageContaining(String quackMessage);
+    List<Quack> findByPublicClassificationTrue();
 }

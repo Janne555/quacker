@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/common :: head">
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 </head>
 <body>
 
 <div th:replace="fragments/common :: headernotin"></div>
     
 <div class="container con2">
+
+<div>
+	<a class="btn btn-primary" href="/publicQuacks" role="button">See public Quacks</a>
+</div>
+
 <form action="#" th:action="@{/login}"
       method="POST">
 
-
-    
     <div class="form-group">
     <label for="username" th:text="#{username}">Username:</label>
     <input type="text" class="form-control" name="username" id="username" th:placeholder="#{enter_username}">
