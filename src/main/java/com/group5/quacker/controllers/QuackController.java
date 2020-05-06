@@ -30,12 +30,21 @@ import java.util.List;
 @Controller
 public class QuackController {
 
+    /**
+     * Autowired reference to the user repository
+     */
     @Autowired
     UserRepository userRepository;
 
+    /**
+     * Autowired reference to the quack repository
+     */
     @Autowired
     QuackRepository quackRepository;
 
+    /**
+     * Autowired reference to the file service
+     */
     @Autowired
     FileService fileService;
 
@@ -151,6 +160,12 @@ public class QuackController {
         return "quack-search";
     }
 
+    /**
+     * Request mapping for searching quacks
+     * @param model Model for variables to be passed to the thymeleaf template
+     * @param loggedUser Reference to the logged in user
+     * @return Returns a thymeleaf template
+     */
     @GetMapping("/quack/search")
     public String searchForm(Model model, User loggedUser) {
         if (loggedUser == null)
@@ -164,6 +179,12 @@ public class QuackController {
         return "search";
     }
 
+    /**
+     * Request mapping for the result of a quack search
+     * @param model Model for variables to be passed to the thymeleaf template
+     * @param loggedUser Reference to the logged in user
+     * @return Returns a thymeleaf template
+     */
     @RequestMapping(value = {"/quack/search/result"}, method = RequestMethod.POST)
     public String searchSubmitted(@RequestParam("quackSearch") String search, Model model, User loggedUser) {
         if (loggedUser == null)

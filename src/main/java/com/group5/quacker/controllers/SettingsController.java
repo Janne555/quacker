@@ -33,17 +33,31 @@ import java.util.Map;
  */
 @Controller
 public class SettingsController {
+
+    /**
+     * Autowired reference to the user repository
+     */
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Autowired reference to the file service
+     */
     @Autowired
     private FileService fileService;
 
+    /**
+     * Autowired reference to the bcrypt password encoder
+     */
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * Autowired reference to the account service
+     */
     @Autowired
     private AccountService accountService;
+
     /**
      * Includes the class as an attribute
      *

@@ -13,6 +13,9 @@ import java.util.List;
 @Entity
 public class Quack {
 
+    /**
+     * Unique ID for individual quacks
+     */
     @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,10 +59,16 @@ public class Quack {
     @JoinColumn(name = "file_map_id")
     private FileMap attachment;
 
+    /**
+     * @return Returns the message content as a String object
+     */
     public String getQuackMessage() {
         return quackMessage;
     }
 
+    /**
+     * @param quackMessage String that the message should be set to
+     */
     public void setQuackMessage(String quackMessage) {
         this.quackMessage = quackMessage;
     }
@@ -96,14 +105,23 @@ public class Quack {
         this.formattedDate = formattedDate;
     }
 
+    /**
+     * @return List of Users that have liked the quack
+     */
     public List<User> getLikers() {
         return likers;
     }
 
+    /**
+     * @param user User to be added to the list of users who have liked the quack
+     */
     public void addLiker(User user) {
         likers.add(user);
     }
 
+    /**
+     * @param user User to be removed from the list of Users who have liked the quack
+     */
     public void removeLiker(User user) {
         likers.remove(user);
     }
