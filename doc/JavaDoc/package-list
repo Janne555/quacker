@@ -1,0 +1,12 @@
+com.group5.quacker
+com.group5.quacker.config
+com.group5.quacker.constraints
+com.group5.quacker.controllers
+com.group5.quacker.entities
+com.group5.quacker.enums
+com.group5.quacker.models
+com.group5.quacker.repositories
+com.group5.quacker.services
+com.group5.quacker.utilities
+com.group5.quacker.utilities.zipper
+com.group5.quacker.validators
