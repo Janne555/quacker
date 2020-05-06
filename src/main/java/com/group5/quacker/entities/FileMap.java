@@ -1,5 +1,7 @@
 package com.group5.quacker.entities;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import javax.persistence.*;
 
 /**
@@ -61,6 +63,11 @@ public class FileMap {
         this.contentType = contentType;
     }
 
+    /**
+     * This will be the result when serializing this entity to json
+     * @return
+     */
+    @JsonValue
     public String getOriginalFileName() {
         return originalFileName;
     }

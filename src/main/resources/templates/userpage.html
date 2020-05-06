@@ -10,18 +10,18 @@
 <div class="container con4">
     <div class="jumbotron con4">
         <div th:if="${watchedUser.equals(user)}">
-            <h1>This is your page!</h1>
-            <a class="btn btn-primary" th:href="@{/settings}">Settings</a>
+            <h1 th:text="#{this_is_your_page}">This is your page!</h1>
+            <a class="btn btn-primary" th:href="@{/settings}" th:text="#{settings}">Settings</a>
         </div>
         <div th:unless="${watchedUser.equals(user)}">
             <div class="row">
-                <h4>This is the page for user: <span th:text="${watchedUser.getName()}">username</span></h4>
+                <h4> <span th:text="#{page_for_user}">This is the page for user: </span><span th:text="${watchedUser.getName()}">username</span></h4>
             </div>
             <div class="row">
-                <p>Contact email: <span th:text="${watchedUser.getEmail()}">email</span></p>
+                <p th:text="#{contact_email}">Contact email: <span th:text="${watchedUser.getEmail()}">email</span></p>
             </div>
             <div class="row">
-                <a class="btn btn-primary" role="button" th:href="'mailto:' + ${watchedUser.getEmail()}">Send email </a>
+                <a class="btn btn-primary" role="button" th:href="'mailto:' + ${watchedUser.getEmail()}" th:text="#{send_email}">Send email </a>
             </div>
 
             <div th:if="${profilePhotoUrl != null}" class="card" style="height: 100; width: 100px; margin-bottom: 1rem">
@@ -31,23 +31,23 @@
 
             <div class="row">
                 <div th:if="${isFollowed}">
-                    <h4><a class="btn btn-danger" role="button" th:text="@{Unfollow this user!}"
-                           th:href="@{'/unfollow/' + ${watchedUser.getName()}}">Unfollow</a></h4>
+                    <h4><a class="btn btn-danger" role="button"
+                           th:href="@{'/unfollow/' + ${watchedUser.getName()}}" th:text="#{unfollow_user}">Unfollow</a></h4>
                 </div>
                 <div th:unless="${isFollowed}">
-                    <h4><a class="btn btn-success" role="button" th:text="@{Follow this user!}"
-                           th:href="@{'/follow/' + ${watchedUser.getName()}}">Follow</a></h4>
+                    <h4><a class="btn btn-success" role="button"
+                           th:href="@{'/follow/' + ${watchedUser.getName()}}" th:text="#{follow_user}">Follow</a></h4>
                 </div>
             </div>
 
             <div class="row">
                 <div th:if="${isBlocked}">
-                    <h4><a class="btn btn-success" role="button" th:text="@{Unblock this user!}"
-                           th:href="@{'/block/' + ${watchedUser.getName()}}">Unblock</a></h4>
+                    <h4><a class="btn btn-success" role="button"
+                           th:href="@{'/block/' + ${watchedUser.getName()}}" th:text="#{unblock_user}">Unblock</a></h4>
                 </div>
                 <div th:unless="${isBlocked}">
-                    <h4><a class="btn btn-danger" role="button" th:text="@{Block this user!}"
-                           th:href="@{'/block/' + ${watchedUser.getName()}}">Block</a></h4>
+                    <h4><a class="btn btn-danger" role="button"
+                           th:href="@{'/block/' + ${watchedUser.getName()}}" th:text="#{block_user}">Block</a></h4>
                 </div>
             </div>
 
@@ -58,11 +58,11 @@
         <div class="card-body">
             <div th:unless="${watchedUser.equals(user)}">
                 <h2>
-                    Latest quacks posted by <span th:text="${watchedUser.getName()}">username</span>:
+                <span th:text="#{latest_quacks_by_user}">Latest quacks posted by </span><span th:text="${watchedUser.getName()}">username</span>:
                 </h2>
             </div>
             <div th:if="${watchedUser.equals(user)}">
-                <h2>
+                <h2 th:text="#{latest_quacks_posted_by_you}">
                     Latest quacks posted by you:
                 </h2>
             </div>
@@ -95,17 +95,17 @@
                             <span th:text="${quack.getFormattedDate()}">dateposted</span>
                             <span th:unless="${quack.getPoster().equals(user)}">
                             <span th:if="${quack.getLikers().contains(user)}">
-                                <a th:href="@{'/like/' + ${quack.getId()}}"
+                                <a th:onclick="|likeQuack('${quack.getId()}')|"
                                    class="btn btn-danger fa fa-thumbs-down"></a>
                             </span>
                             <span th:unless="${quack.getLikers().contains(user)}">
-                                <a th:href="@{'/like/' + ${quack.getId()}}" class="btn btn-primary fa fa-thumbs-up"></a>
+                                <a th:onclick="|likeQuack('${quack.getId()}')|" class="btn btn-primary fa fa-thumbs-up"></a>
                             </span>
                         </span>
                         </div>
 
                         <div>
-                            <span th:text="@{'Likes: ' + ${quack.getLikers().size()}}">likes</span>
+                            <span th:text="#{likes}"></span><span th:text="@{${quack.getLikers().size()}}"></span>
                         </div>
                     </div>
 </div>

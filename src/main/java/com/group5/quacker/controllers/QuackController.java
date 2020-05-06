@@ -31,12 +31,21 @@ import java.util.List;
 @Controller
 public class QuackController {
 
+    /**
+     * Autowired reference to the user repository
+     */
     @Autowired
     UserRepository userRepository;
 
+    /**
+     * Autowired reference to the quack repository
+     */
     @Autowired
     QuackRepository quackRepository;
 
+    /**
+     * Autowired reference to the file service
+     */
     @Autowired
     FileService fileService;
 
@@ -55,8 +64,8 @@ public class QuackController {
 
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
-        FileMap attachment = file != null ? fileService.storeFile(file) : null;     // If a file was supplied then store it
-        
+        FileMap attachment = file.isEmpty() ? null : fileService.storeFile(file);     // If a file was supplied then store it
+
         Quack newQuack = new Quack();           // new quack object
         newQuack.setPoster(poster);             // set the posters name
         newQuack.setQuackMessage(message);      // set the message
@@ -157,10 +166,10 @@ public class QuackController {
     }
 
     /**
-     * Mapping for search page
-     * @param model 
-     * @param loggedUser
-     * @return search page
+     * Request mapping for searching quacks
+     * @param model Model for variables to be passed to the thymeleaf template
+     * @param loggedUser Reference to the logged in user
+     * @return Returns a thymeleaf template
      */
     @GetMapping("/quack/search")
     public String searchForm(Model model, User loggedUser) {
@@ -176,11 +185,10 @@ public class QuackController {
     }
 
     /**
-     * Mapping for quack search results
-     * @param search Search word which is used to find the quack that contains it
-     * @param model For listing searched quacks
-     * @param loggedUser To check that the user is logged in
-     * @return page for search results
+     * Request mapping for the result of a quack search
+     * @param model Model for variables to be passed to the thymeleaf template
+     * @param loggedUser Reference to the logged in user
+     * @return Returns a thymeleaf template
      */
     @RequestMapping(value = {"/quack/search/result"}, method = RequestMethod.POST)
     public String searchSubmitted(@RequestParam("quackSearch") String search, Model model, User loggedUser) {

@@ -1,5 +1,8 @@
 package com.group5.quacker.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +13,10 @@ import java.util.List;
 @Entity
 public class Quack {
 
-
+    /**
+     * Unique ID for individual quacks
+     */
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -21,10 +27,13 @@ public class Quack {
     @Lob
     private String quackMessage;
 
+    @JsonIgnore
     private int likes;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private Date datePosted;
 
+    @JsonIgnore
     private String formattedDate;
     
     private boolean publicClassification;
@@ -34,6 +43,7 @@ public class Quack {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     User poster;
 
     /**
@@ -41,6 +51,7 @@ public class Quack {
      */
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     List<User> likers;
 
     /**
@@ -50,10 +61,16 @@ public class Quack {
     @JoinColumn(name = "file_map_id")
     private FileMap attachment;
 
+    /**
+     * @return Returns the message content as a String object
+     */
     public String getQuackMessage() {
         return quackMessage;
     }
 
+    /**
+     * @param quackMessage String that the message should be set to
+     */
     public void setQuackMessage(String quackMessage) {
         this.quackMessage = quackMessage;
     }
@@ -98,11 +115,26 @@ public class Quack {
     	this.publicClassification = publicClassification;
     }
 
-    public List<User> getLikers() { return likers; }
+    /**
+     * @return List of Users that have liked the quack
+     */
+    public List<User> getLikers() {
+        return likers;
+    }
 
-    public void addLiker(User user) { likers.add(user); }
+    /**
+     * @param user User to be added to the list of users who have liked the quack
+     */
+    public void addLiker(User user) {
+        likers.add(user);
+    }
 
-    public void removeLiker(User user) { likers.remove(user); }
+    /**
+     * @param user User to be removed from the list of Users who have liked the quack
+     */
+    public void removeLiker(User user) {
+        likers.remove(user);
+    }
 
     public long getId() {
         return id;
@@ -122,6 +154,7 @@ public class Quack {
 
     /**
      * Testaamista varten
+     *
      * @param likers
      */
     public void setLikers(List<User> likers) {

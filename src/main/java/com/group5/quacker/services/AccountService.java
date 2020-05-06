@@ -1,5 +1,6 @@
 package com.group5.quacker.services;
 
+import com.group5.quacker.entities.FileMap;
 import com.group5.quacker.entities.Quack;
 import com.group5.quacker.entities.User;
 import com.group5.quacker.repositories.QuackRepository;
@@ -9,8 +10,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class AccountService {
@@ -49,5 +53,16 @@ public class AccountService {
     public User currentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findByName(auth.getName());
+    }
+
+    public List<FileMap> getFilesForUser(User user) {
+        List<FileMap> files = user.getQuacks().stream()
+                .map(quack -> quack.getAttachment())
+                .filter(fileMap -> fileMap != null)
+                .collect(Collectors.toList());
+        if (user.getProfilePhoto() != null) {
+            files.add(user.getProfilePhoto());
+        }
+        return files;
     }
 }

@@ -30,6 +30,11 @@
                        th:classappend="${#strings.equals(setting, 'delete-account')} ? active : notactive"
                        th:href="@{/settings/delete-account}" th:text="#{delete_account}">Delete Account</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:classappend="${#strings.equals(setting, 'download-data')} ? active : notactive"
+                       th:href="@{/settings/download-data}" th:text="#{download_data}">Download Data</a>
+                </li>
 
                 <li class="nav-item">
                     <a class="nav-link" th:text="#{more_stuff}">More stuff</a>
@@ -50,7 +55,8 @@
                                 <div class="custom-file">
                                     <input required type="file" class="custom-file-input" id="profile-photo-input"
                                            name="file" accept="image/*" aria-describedby="inputGroupFileAddon01">
-                                    <label class="custom-file-label" for="profile-photo-input" id="profile-photo-label" th:text="#{choose_file}">Choose
+                                    <label class="custom-file-label" for="profile-photo-input" id="profile-photo-label"
+                                           th:text="#{choose_file}">Choose
                                         file</label>
                                 </div>
                             </div>
@@ -101,18 +107,21 @@
                               th:object="${passwordForm}"
                               method="post">
                             <div class="form-group">
-                                <p><label for="current_password" th:text="#{current_password}">Current Password</label>:<br> <input type="password"
-                                                                                                      name="current_password"
-                                                                                                      id="current_password"
-                                                                                                      required/></p>
+                                <p><label for="current_password" th:text="#{current_password}">Current Password</label>:<br>
+                                    <input type="password"
+                                           name="current_password"
+                                           id="current_password"
+                                           required/></p>
                                 <span class="error" th:if="${#fields.hasErrors('current_password')}"
                                       th:errors="*{current_password}"></span>
-                                <p><label for="new_password" th:text="#{new_password}">New Password</label>:<br> <input type="password"
-                                                                                              name="new_password"
-                                                                                              id="new_password"
-                                                                                              required/></p>
+                                <p><label for="new_password" th:text="#{new_password}">New Password</label>:<br> <input
+                                        type="password"
+                                        name="new_password"
+                                        id="new_password"
+                                        required/></p>
                                 <span class="error" th:if="${#fields.hasErrors('global')}" th:errors="*{global}"></span>
-                                <p><label for="confirm_new_password" th:text="#{confirm_password}">Confirm New Password</label>:<br> <input
+                                <p><label for="confirm_new_password" th:text="#{confirm_password}">Confirm New
+                                    Password</label>:<br> <input
                                         type="password"
                                         name="confirm_new_password"
                                         id="confirm_new_password"
@@ -123,7 +132,8 @@
                                     <span class="error" th:text="${success}"></span>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary" th:text="#{change_password}">Change password</button>
+                            <button type="submit" class="btn btn-primary" th:text="#{change_password}">Change password
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -136,15 +146,22 @@
                           id="delete-account-form"
                     >
                         <div class="form-group">
-                            <label for="delete-account-current-password" th:text="#{current_password}">Current Password</label>
+                            <label for="delete-account-current-password" th:text="#{current_password}">Current
+                                Password</label>
                             <input type="password" required class="form-control"
                                    name="currentPassword" id="delete-account-current-password"
                                    th:field="*{currentPassword}">
                             <span class="error" th:if="${#fields.hasErrors('currentPassword')}"
                                   th:errors="*{currentPassword}">Password error</span>
                         </div>
-                        <button type="submit" class="btn btn-primary" th:text="#{delete_account}">Delete Account</button>
+                        <button type="submit" class="btn btn-primary" th:text="#{delete_account}">Delete Account
+                        </button>
                     </form>
+                </div>
+                <div th:case="download-data">
+                    <h3 th:text="#{download_data}">Download Data</h3>
+                    <p th:text="#{download_data_help}">Download a zip file of all your quacks and files from the following link</p>
+                    <a th:href="@{/gdpr}" th:text="#{download_data}">Download Data</a>
                 </div>
             </div>
             <div th:default></div>

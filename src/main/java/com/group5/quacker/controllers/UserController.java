@@ -22,9 +22,16 @@ import java.util.List;
  */
 @Controller
 public class UserController {
+
+    /**
+     * Autowired reference to the user repository
+     */
     @Autowired
     UserRepository userRepository;
 
+    /**
+     * Autowired reference to the quack repository
+     */
     @Autowired
     QuackRepository quackRepository;
 
@@ -59,11 +66,11 @@ public class UserController {
         }
 
 
-        if (user.getFollowers().contains(user)) {   // check if the viewing user has followed the user
+        if (user.getFollowers().contains(loggedUser)) {   // check if the viewing user has followed the user
             model.addAttribute("isFollowed", true);
         }
 
-        if (user.getBlocked().contains(user)) {       // check if the viewing user has blocked the user
+        if (loggedUser.getBlocked().contains(user)) {       // check if the viewing user has blocked the user
             model.addAttribute("isBlocked", true);
         }
 
@@ -105,6 +112,13 @@ public class UserController {
         return "redirect:/user/" + name;
     }
 
+    /**
+     * Request mapping for unfollowing a user
+     * @param name  Name of the user to be unfollowed
+     * @param model Model for thymeleaf variables
+     * @param follower User that wants to unfollow
+     * @return Thymeleaf template
+     */
     @RequestMapping(value = "/unfollow/{name}", method = RequestMethod.GET)
     public String userUnfollow(@PathVariable("name") String name, Model model, User follower) {
         if (follower == null)  // check that the logged in user actually exists in the database
@@ -189,6 +203,12 @@ public class UserController {
 
     }
 
+    /**
+     * Request mapping for searching users
+     * @param model Model for thymeleaf variables
+     * @param loggedUser Logged in user object/model
+     * @return Thymeleaf template
+     */
     @GetMapping("/user/search")
     public String searchForm(Model model, User loggedUser) {
         if (loggedUser == null)
@@ -202,6 +222,13 @@ public class UserController {
         return "search";
     }
 
+    /**
+     * Request mapping for the user search result
+     * @param search String for searched user
+     * @param model Thymeleaf variables
+     * @param loggedUser User object of the logged in user
+     * @return Thymeleaf template with search result
+     */
     @RequestMapping(value = {"/user/search/result"}, method = RequestMethod.POST)
     public String searchSubmitted(@RequestParam("userSearch") String search, Model model, User loggedUser) {
         if (loggedUser == null)

@@ -8,18 +8,18 @@
 <div th:replace="fragments/common :: headermain"></div>
 
 <div align="center">
-<h1> Search user</h1>
+<h1 th:text="#{search_user_header}"> Search user</h1>
 
 	 <form th:action="@{/user/search/result}" method="post">
-     	<input id="searchInput" type="text" name="userSearch" placeholder="Search user...">
+     	<input id="searchInput" type="text" name="userSearch" th:placeholder="#{search_user_placeholder}">
         <button id="searchbtn" type="submit" ><i class="fa fa-search"></i></button>
      </form>
 </div>
 <div align="center">
-<h1> Search quacks</h1>
+<h1 th:text="#{search_quack_header}"> Search quacks</h1>
 
 	<form th:action="@{/quack/search/result}" method="post">
-    	<input id="searchInput" type="text" name="quackSearch" placeholder="Search quacks...">
+    	<input id="searchInput" type="text" name="quackSearch" th:placeholder="#{search_quack_placeholder}">
         <button id="searchbtn" type="submit" ><i class="fa fa-search"></i></button>
      </form>
 </div>     
